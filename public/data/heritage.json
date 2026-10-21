@@ -1,0 +1,357 @@
+{
+ "note": "Compiled by PBAG & TovuTech from published sources (see each entry). Coordinates from OpenStreetMap/Nominatim; entries marked approx are indicative.",
+ "sites": [
+  {
+   "id": "kamiriithu",
+   "name": "Kamĩrĩĩthũ",
+   "cat": "culture",
+   "lat": -1.1101,
+   "lon": 36.6246,
+   "period": "Early 1900s – today",
+   "used": "Village and home; colonial-era settlement; Emergency village from 1955; home of Ngũgĩ wa Thiong'o.",
+   "desc": "Named after mirithu — \"a flat place on which rests a pool of water defiant to drought\". Founded as a colonial village during the scramble for the \"White Highlands\", burned in 1955 and replaced by an Emergency village that later became permanent.",
+   "src": "Wikipedia: Kamirithu"
+  },
+  {
+   "id": "kcecc",
+   "name": "Kamĩrĩĩthũ Community Education & Cultural Centre (site)",
+   "cat": "culture",
+   "lat": -1.1118,
+   "lon": 36.6252,
+   "approx": true,
+   "period": "1976 – 1982",
+   "used": "Community open-air theatre, adult literacy and culture centre.",
+   "desc": "Founded in 1976 by villagers with Ngũgĩ wa Thiong'o and University of Nairobi scholars. Ngaahika Ndeenda premiered here on 2 Oct 1977 before 10,000+ people. Licence withdrawn Nov 1977; Ngũgĩ detained 31 Dec 1977; the theatre was razed by armed police on 12 Mar 1982.",
+   "src": "Wikipedia: Kamiriithu Community Education and Cultural Centre"
+  },
+  {
+   "id": "manguo",
+   "name": "Manguo Swamp",
+   "cat": "nature",
+   "lat": -1.105,
+   "lon": 36.6328,
+   "period": "Natural landmark",
+   "used": "Wetland, water source and bird-watching site north of Kamĩrĩĩthũ.",
+   "desc": "The pond that gives the area its watery character — today a bird-watching spot on Limuru's edge.",
+   "src": "Wikipedia: Kamirithu; OpenStreetMap"
+  },
+  {
+   "id": "limuru-station",
+   "name": "Limuru Railway Station",
+   "cat": "colonial",
+   "lat": -1.1152,
+   "lon": 36.6429,
+   "period": "c. 1900 – today",
+   "used": "Uganda Railway stop that carried settler tea, timber and produce — and drew settlement to the ridge.",
+   "desc": "The railway's climb past Limuru towards the Rift Valley turned the cool ridge into prime settler country close to Nairobi.",
+   "src": "Wikipedia: Limuru"
+  },
+  {
+   "id": "bata",
+   "name": "Bata, Limuru",
+   "cat": "colonial",
+   "lat": -1.1067,
+   "lon": 36.6454,
+   "period": "Colonial era – today",
+   "used": "Shoe factory and company town; described as the largest shoe factory in East & Central Africa.",
+   "desc": "Bata's head office and factory made Limuru an industrial as well as an agricultural town.",
+   "src": "Wikipedia: Limuru"
+  },
+  {
+   "id": "tigoni",
+   "name": "Tigoni",
+   "cat": "land",
+   "lat": -1.1297,
+   "lon": 36.6846,
+   "period": "1939 removals",
+   "used": "Ancestral mbari land turned settler tea and coffee estate.",
+   "desc": "Members of ten mbari (sub-clan) families and their tenants were removed from Tigoni for white settlers — many to Kimende, Githirioni and Kirenga in Lari. Among them was the future Chief Luka. During the Emergency a settler militia, the \"Tigoni Tigers\", formed here.",
+   "src": "Business Daily (Kiereini); Daily Nation"
+  },
+  {
+   "id": "tea",
+   "name": "Limuru tea estates",
+   "cat": "colonial",
+   "lat": -1.093,
+   "lon": 36.67,
+   "approx": true,
+   "period": "From 1903",
+   "used": "Plantations established from 1903 — the foundation of Kenya's tea industry.",
+   "desc": "Estates such as Karirana and Mabroukie grew on land the Kikuyu regarded as ithaka cia mbari — lineage land.",
+   "src": "Wikipedia: Limuru"
+  },
+  {
+   "id": "brackenhurst",
+   "name": "Brackenhurst",
+   "cat": "colonial",
+   "lat": -1.121,
+   "lon": 36.675,
+   "period": "Colonial era – today",
+   "used": "Settler-era estate; today a conference centre and botanic garden.",
+   "desc": "One of the colonial-era estates on the Limuru ridge, now open to the public.",
+   "src": "OpenStreetMap"
+  },
+  {
+   "id": "stpauls",
+   "name": "St. Paul's University",
+   "cat": "culture",
+   "lat": -1.1484,
+   "lon": 36.6669,
+   "period": "1930 – today",
+   "used": "Theological college, moved to Limuru in 1930; university since 2007.",
+   "desc": "Founded in 1903 as St Paul's Divinity School. PBAG RAW has performed here.",
+   "src": "Wikipedia: Limuru"
+  },
+  {
+   "id": "kentmere",
+   "name": "Kentmere Club, Tigoni",
+   "cat": "colonial",
+   "lat": -1.1508,
+   "lon": 36.7288,
+   "period": "Settler era – today",
+   "used": "Settler-era country club in the Tigoni highlands.",
+   "desc": "A reminder of the club life of the Limuru settler community.",
+   "src": "OpenStreetMap"
+  },
+  {
+   "id": "ihiga",
+   "name": "Ihiga rĩa Gũoya (Stone of Fear), Ndeiya",
+   "cat": "sacred",
+   "lat": -1.15,
+   "lon": 36.575,
+   "approx": true,
+   "period": "Pre-colonial – today",
+   "used": "Remembered locally as a place where boys became men (initiation); today a hiking landmark.",
+   "desc": "A rock leaning precariously over a cliff above the Ndeiya plains, with Ihiga rĩa Nyondo nearby. Location shown is approximate.",
+   "src": "Let's Drift (2022); Ndeiya FM"
+  },
+  {
+   "id": "kirenga",
+   "name": "Lari · Kirenga — site of the Lari Massacre",
+   "cat": "memorial",
+   "lat": -1.0086,
+   "lon": 36.6359,
+   "approx": true,
+   "period": "26 March 1953",
+   "used": "Homestead of Chief Luka wa Kahangara and Kirenga market.",
+   "desc": "On the night of 26 March 1953 Mau Mau fighters attacked loyalist homesteads; Chief Luka and many of his family were among those killed. Commonly cited tolls are about 74 dead (Anderson), with other accounts higher. Colonial forces and Home Guard reprisals then killed far more — about 400 by some estimates.",
+   "src": "Wikipedia: Lari massacre; Daily Nation (2011)"
+  },
+  {
+   "id": "kimende",
+   "name": "Kimende",
+   "cat": "land",
+   "lat": -0.9843,
+   "lon": 36.6288,
+   "period": "1939 – today",
+   "used": "Resettlement area for families removed from Tigoni; Lari administrative seat.",
+   "desc": "Where Tigoni families were moved — the grievance that echoed into 1953.",
+   "src": "Daily Nation (2011); Wikipedia: Lari Constituency"
+  },
+  {
+   "id": "bathi",
+   "name": "Bathi",
+   "cat": "land",
+   "lat": -0.9692,
+   "lon": 36.632,
+   "period": "1939 – 1953",
+   "used": "Resettlement area for Kiambu families; Chief Ikenya Charles's location.",
+   "desc": "Chief Ikenya escaped the 26 March 1953 attack though his property was burned.",
+   "src": "Daily Nation (2011)"
+  },
+  {
+   "id": "uplands",
+   "name": "Uplands",
+   "cat": "memorial",
+   "lat": -1.0539,
+   "lon": 36.6316,
+   "period": "1953",
+   "used": "Railway and factory settlement; a centre of the post-Lari crackdown.",
+   "desc": "Survivors recall round-ups and interrogations across Uplands, Kimende and Limuru after the massacre.",
+   "src": "Daily Nation (2011)"
+  },
+  {
+   "id": "kereita",
+   "name": "Kereita Forest",
+   "cat": "forest",
+   "lat": -0.955,
+   "lon": 36.665,
+   "approx": true,
+   "radius": 3500,
+   "period": "1950s – today",
+   "used": "Mau Mau hideout with caves; burial ground for many killed after Lari.",
+   "desc": "At the southern tip of the Aberdares — caves, the Gatamaiyu waterfall and an Important Bird Area, now managed with KENVO.",
+   "src": "Wikipedia: Kereita; Wikipedia: Lari Constituency"
+  },
+  {
+   "id": "kinale",
+   "name": "Kinale Forest",
+   "cat": "forest",
+   "lat": -0.8946,
+   "lon": 36.5895,
+   "radius": 4500,
+   "approx": true,
+   "period": "1950s – today",
+   "used": "Forest belt linking Lari to the Aberdare ranges.",
+   "desc": "One of Lari's great forests (with Uplands, Kereita and Kamae) on the windward side of the Aberdares.",
+   "src": "Wikipedia: Lari Constituency; OpenStreetMap"
+  },
+  {
+   "id": "kieni",
+   "name": "Kieni Forest",
+   "cat": "forest",
+   "lat": -0.854,
+   "lon": 36.6757,
+   "radius": 4000,
+   "approx": true,
+   "period": "1950s – today",
+   "used": "Forest belt in the Kiambu–Aberdare corridor.",
+   "desc": "Part of the southern Aberdare forests that sheltered fighters moving north.",
+   "src": "OpenStreetMap"
+  },
+  {
+   "id": "ragia",
+   "name": "Ragia & Sasumua (Aberdare gateway)",
+   "cat": "forest",
+   "lat": -0.7603,
+   "lon": 36.6813,
+   "approx": true,
+   "period": "1950s – today",
+   "used": "Gateway to the Aberdare forest; Mau Mau caves near the Ragia trail.",
+   "desc": "Ragia, reached past Sasumua Dam, is remembered as \"home of the Mau Mau fighters\".",
+   "src": "The Star (2021)"
+  },
+  {
+   "id": "kabete",
+   "name": "Kabete — Waiyaki's arrest (1892)",
+   "cat": "resistance",
+   "lat": -1.2623,
+   "lon": 36.7257,
+   "approx": true,
+   "period": "August 1892",
+   "used": "Area near Fort Smith where Waiyaki wa Hinga was wounded and arrested.",
+   "desc": "Waiyaki was disarmed near present-day Kabete Police Station, taken toward the coast and killed at Kibwezi. His army renewed the siege of Fort Smith.",
+   "src": "Ukombozi Review"
+  },
+  {
+   "id": "thogoto",
+   "name": "Thogoto (Kikuyu)",
+   "cat": "colonial",
+   "lat": -1.2666,
+   "lon": 36.6666,
+   "period": "1890s – today",
+   "used": "Mission station and hospital; Paramount Chief Kinyanjui died here in 1929.",
+   "desc": "Kinyanjui wa Gathirimu, the only Kikuyu paramount chief, died at Thogoto Mission Hospital on 1 March 1929.",
+   "src": "Wikipedia: Kinyanjui wa Gathirimu"
+  },
+  {
+   "id": "kiambaa",
+   "name": "Kiambaa — home of Senior Chief Koinange",
+   "cat": "resistance",
+   "lat": -1.1633,
+   "lon": 36.7519,
+   "period": "1865 – 1960",
+   "used": "Njunu clan lands of Koinange wa Mbiyu.",
+   "desc": "Senior Chief who campaigned against land alienation; detained from 1952 at about 87 and released only days before his death in 1960.",
+   "src": "Wikipedia: Koinange wa Mbiyu"
+  },
+  {
+   "id": "gachie",
+   "name": "Gachie — Waruhiu assassination",
+   "cat": "memorial",
+   "lat": -1.2168,
+   "lon": 36.7662,
+   "approx": true,
+   "period": "7 October 1952",
+   "used": "Roadside where Senior Chief Waruhiu wa Kung'u was shot.",
+   "desc": "His killing, weeks after he condemned Mau Mau, was followed by the State of Emergency on 20 October 1952.",
+   "src": "Wikipedia: Assassination of Waruhiu"
+  },
+  {
+   "id": "kamiti",
+   "name": "Kamiti Maximum Security Prison",
+   "cat": "memorial",
+   "lat": -1.1769,
+   "lon": 36.8945,
+   "period": "1950s – today",
+   "used": "Prison where Dedan Kimathi was executed (1957) and Ngũgĩ was detained (1978).",
+   "desc": "Ngũgĩ wrote Caitaani Mũtharaba-inĩ on prison toilet paper here.",
+   "src": "Wikipedia: Ngũgĩ wa Thiong'o"
+  },
+  {
+   "id": "aberdares",
+   "name": "Nyandarua (Aberdare) forests",
+   "cat": "forest",
+   "lat": -0.55,
+   "lon": 36.72,
+   "approx": true,
+   "radius": 9000,
+   "period": "1952 – 1956",
+   "used": "Main forest base of the Kenya Land and Freedom Army.",
+   "desc": "The destination of fighters leaving Kiambu through Lari's forests.",
+   "src": "General histories of the Emergency"
+  }
+ ],
+ "routes": [
+  {
+   "name": "Kamĩrĩĩthũ → Lari forests → Aberdares",
+   "note": "Indicative corridor reconstructed from accounts that Kiambu fighters moved north through Lari's forests into the Aberdares. Not a surveyed track.",
+   "coords": [
+    [
+     -1.1101,
+     36.6246
+    ],
+    [
+     -1.0539,
+     36.6316
+    ],
+    [
+     -0.9843,
+     36.6288
+    ],
+    [
+     -0.955,
+     36.665
+    ],
+    [
+     -0.8946,
+     36.5895
+    ],
+    [
+     -0.7603,
+     36.6813
+    ],
+    [
+     -0.55,
+     36.72
+    ]
+   ]
+  },
+  {
+   "name": "Kiambu ridges → Kieni → Aberdares",
+   "note": "Indicative corridor through Githunguri and the Kieni forest belt. Not a surveyed track.",
+   "coords": [
+    [
+     -1.1633,
+     36.7519
+    ],
+    [
+     -1.0565,
+     36.7783
+    ],
+    [
+     -0.96,
+     36.74
+    ],
+    [
+     -0.854,
+     36.6757
+    ],
+    [
+     -0.55,
+     36.72
+    ]
+   ]
+  }
+ ]
+}

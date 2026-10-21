@@ -15,7 +15,7 @@ fs.rmSync(path.join(out, 'staff.html'), { force: true }); // staff console needs
 
 await build({ entryPoints: [path.join(here, 'preview/mock.js')], bundle: true, format: 'iife', minify: true, outfile: path.join(out, 'assets/js/static-mock.js'), target: 'es2020' });
 
-const SEG = 'manifest.webmanifest|assets|api|data|about|subsidiaries|theatre|tickets|book|consultancy|contact|t/';
+const SEG = 'manifest.webmanifest|assets|api|data|about|subsidiaries|theatre|tickets|book|consultancy|contact|ithaka|heritage-map|ai-film|events|t/';
 const rebase = (s) => s
   .replace(new RegExp(`(["'\`(,]\\s?)/(${SEG})`, 'g'), `$1${BASE}$2`)
   .replace(/(href|src|action)="\/"/g, `$1="${BASE}"`);

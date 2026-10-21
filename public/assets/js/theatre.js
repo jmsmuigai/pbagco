@@ -27,18 +27,33 @@ function channelView() {
   screen.innerHTML = `<button class="facade" type="button" aria-label="Play PBAG channel"><img src="/assets/img/team-1100.webp" alt=""><span class="play">${icon('play')}</span><span class="np"><small class="muted">PBAG — Peers Best Art Group</small><b>Latest uploads</b></span></button>`;
   $('.facade', screen).addEventListener('click', () => roll(`https://www.youtube-nocookie.com/embed/videoseries?list=${channel}&autoplay=1&rel=0`, 'PBAG channel'));
 }
+const SECTIONS = [
+  { key: 'pbag', title: 'PBAG Originals', kicker: 'From our own stage', note: 'Sketches, stage plays, poetry and festival moments by PBAG RAW, PBAG Theatre, PBAG Generation and PGT.' },
+  { key: 'kenya', title: 'Kenyan Comedy Greats', kicker: 'The scene we celebrate', note: 'Hand-picked from the official channels of Kenya’s best-loved comics and shows.' },
+];
+function card(v) {
+  return `<button class="vcard reveal in" type="button" data-id="${esc(v.id)}">
+      <span class="vthumb"><img src="${thumb(v.id, 'mqdefault')}" alt="" loading="lazy" width="320" height="180">
+        ${v.section === 'pbag' ? '<span class="ribbon">PBAG Original</span>' : ''}<span class="pv">${icon('play')} Preview</span><span class="vplay">${icon('play')}</span></span>
+      <h4>${esc(v.title)}</h4><small>${esc(v.channel || '')}</small>
+    </button>`;
+}
 function render() {
   const list = mood ? videos.filter((v) => v.mood?.includes(mood)) : videos;
-  prog.innerHTML = (list.length ? list : videos).map((v) => `
-    <button class="vcard reveal in" type="button" data-id="${esc(v.id)}">
-      <span class="vthumb"><img src="${thumb(v.id, 'mqdefault')}" alt="" loading="lazy" width="320" height="180"><span class="pv">${icon('play')} Preview</span></span>
-      <h4>${esc(v.title)}</h4><small>${esc(v.channel || '')}</small>
-    </button>`).join('');
+  const shown = list.length ? list : videos;
+  prog.innerHTML = SECTIONS.map((sec) => {
+    const vs = shown.filter((v) => (v.section || 'kenya') === sec.key);
+    if (!vs.length) return '';
+    return `<section class="rail"><div class="rail-head"><div><span class="scene-no">${sec.kicker}</span><h3 class="display rail-title">${sec.title} <span class="count">${vs.length}</span></h3><p class="muted">${sec.note}</p></div>
+      ${sec.key === 'pbag' ? `<a class="btn btn-sm" href="https://www.youtube.com/channel/UCFV2mTNumJFcQG6-s-xg_Ew?sub_confirmation=1" target="_blank" rel="noopener">${icon('youtube')} Subscribe</a>` : ''}</div>
+      <div class="programme">${vs.map(card).join('')}</div></section>`;
+  }).join('');
   $$('.vcard', prog).forEach((c) => {
     const id = c.dataset.id, img = $('img', c); let t, f = 0;
-    // Animated preview: cycle YouTube's auto-generated storyboard frames (1/2/3.jpg) — zero video bytes.
+    // Animated preview: cycle YouTube's auto-generated frames (1/2/3.jpg) — zero video bytes.
     const start = () => { clearInterval(t); t = setInterval(() => { f = (f % 3) + 1; img.src = thumb(id, String(f)); }, 650); };
     const stop = () => { clearInterval(t); f = 0; img.src = thumb(id, 'mqdefault'); };
+    img.addEventListener('load', () => { if (img.naturalWidth && img.naturalWidth <= 120) c.closest('.vcard').hidden = true; }); // unavailable video -> hide
     c.addEventListener('mouseenter', start); c.addEventListener('mouseleave', stop);
     c.addEventListener('touchstart', start, { passive: true }); c.addEventListener('touchend', stop);
     c.addEventListener('click', () => { stop(); facade(videos.find((v) => v.id === id)); history.replaceState(null, '', `?v=${id}`); scrollTo({ top: 0, behavior: 'smooth' }); });

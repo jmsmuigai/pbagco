@@ -36,3 +36,6 @@ import { $, $$, api, poster, stub, observeReveals, icon, esc } from './app.js';
     s.innerHTML = `<div class="facade"><img src="https://i.ytimg.com/vi/${v.id}/hqdefault.jpg" alt="" loading="lazy" width="480" height="360"><span class="play">${icon('play')}</span><div class="np"><small class="muted">Now screening</small><b>${esc(v.title)}</b></div></div>`;
   } catch {}
 })();
+
+// nested link inside the story band
+document.querySelectorAll('[data-href]').forEach((b) => b.addEventListener('click', (e) => { e.preventDefault(); e.stopPropagation(); location.href = (window.PBAG_STATIC?.base || '/') + b.dataset.href.slice(1); }));

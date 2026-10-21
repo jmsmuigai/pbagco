@@ -29,6 +29,10 @@ Other builds: `BASE=/pbagco/ npm run build:pages` (static site in `_site/`), `np
 | `/tickets` | Box office: event calendar → date → tier/qty → details (+seller code) → M-Pesa/card/PayPal → QR tickets (PDF/PNG/calendar) · My Tickets lookup · QR verify · seller programme |
 | `/book` | Book Us: 5 services, live availability calendar, time slots, request + .ics |
 | `/consultancy` | PBAG AI Studio: Generative AI consultancy + live "AI Spark" Gemini demo |
+| `/ithaka` | **Ithaka cia Kamĩrĩĩthũ** — long-form, sourced history (creation, chiefs, Tigoni, Lari, Mau Mau, Ngũgĩ) in a colonial-archive design, three.js 3D hero, historic-sites gazetteer, tie-in to the play |
+| `/heritage-map` | **PBAG Heritage Atlas** (Leaflet GIS): colonial-sepia, street, hybrid satellite & topo basemaps; Kiambu/Limuru/Lari boundaries (OSM); 25 historic sites; forests; indicative Mau Mau routes |
+| `/ai-film` | PBAG AI in Theatre & Film — Google AI toolchain + interactive studio simulator |
+| `/events` | PBAG Events — event management, live shows, PR, digital content, publications, ticketing |
 | `/contact` | Contacts, map, form, FAQ |
 | `/staff` | PIN-protected: live dashboard, camera gate scanner, door POS, bookings, programme editor, seller codes + QR |
 

@@ -121,7 +121,7 @@ async function bookings() {
 /* ---------- programme ---------- */
 $('#addVideo').addEventListener('submit', async (e) => {
   e.preventDefault(); const m = $('#vMsg');
-  try { const v = await sapi('/api/staff/videos', { method: 'POST', body: { url: $('#vUrl').value, title: $('#vTitle').value, channel: $('#vChannel').value, mood: $('#vMood').value } }); m.className = 'form-msg ok'; m.textContent = `Added “${v.title}” — it’s live in the Virtual Theatre.`; e.target.reset(); }
+  try { const v = await sapi('/api/staff/videos', { method: 'POST', body: { url: $('#vUrl').value, title: $('#vTitle').value, channel: $('#vChannel').value, mood: $('#vMood').value, section: $('#vSection').value } }); m.className = 'form-msg ok'; m.textContent = `Added “${v.title}” — it’s live in the Virtual Theatre.`; e.target.reset(); }
   catch (err) { m.className = 'form-msg err'; m.textContent = err.message; }
 });
 

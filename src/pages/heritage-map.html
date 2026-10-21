@@ -1,0 +1,20 @@
+<!--{"title":"PBAG Heritage Atlas — GIS Map of Historic Sites in Limuru, Lari & Kiambu County","desc":"Interactive GIS map of historic sites in Kamĩrĩĩthũ, Limuru and Lari, Kiambu County: Lari Massacre site, Tigoni removals, Kereita and Kinale forests, indicative Mau Mau routes, colonial landmarks and the Kamĩrĩĩthũ theatre — on street, hybrid satellite and colonial-survey basemaps.","nav":"heritage","js":"heritage","bodyclass":"page-map"}-->
+<section class="atlas">
+  <aside class="atlas-panel" id="panel" aria-label="Heritage atlas">
+    <div class="cartouche">
+      <span class="stamp">PBAG Heritage Atlas · Sheet KBU/1</span>
+      <h1 class="display">Ithaka cia <span class="serif">Kamĩrĩĩthũ</span></h1>
+      <p>Historic sites of Limuru, Lari &amp; Kiambu County — compiled for PBAG Theatre's <a href="/ithaka">Ithaka cia Kamĩrĩĩthũ</a>.</p>
+    </div>
+    <div class="row atlas-focus">
+      <button class="chip" data-focus="kiambu">Kiambu County</button><button class="chip" data-focus="limuru">Limuru</button><button class="chip" data-focus="lari">Lari</button><button class="chip on" data-focus="kamiriithu">Kamĩrĩĩthũ</button>
+    </div>
+    <label class="sr-only" for="siteSearch">Search sites</label>
+    <input class="input" id="siteSearch" placeholder="Search sites, e.g. Lari, Tigoni, forest…" autocomplete="off">
+    <div class="atlas-cats" id="cats"></div>
+    <ol class="atlas-list" id="siteList"></ol>
+    <p class="atlas-note">{{i:info}} Coordinates from OpenStreetMap. Sites marked ◌ are approximate. Mau Mau routes are <b>indicative corridors</b> drawn from historical accounts, not surveyed tracks. Know a site we've missed? <a href="/contact">Tell PBAG</a>.</p>
+    <button class="btn btn-sm atlas-toggle" id="panelToggle" type="button" aria-expanded="true">{{i:list}} Sites</button>
+  </aside>
+  <div id="map" class="atlas-map" role="application" aria-label="Map of historic sites"></div>
+</section>

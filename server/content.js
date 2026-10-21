@@ -201,19 +201,56 @@ export const SEED_EVENTS = [
 // Virtual theatre programme. Video IDs were checked against public pages;
 // PBAG can add more from Staff › Programme (stored in the `videos` collection).
 export const SEED_VIDEOS = [
-  { id: 'aWPWFBrcGZk', title: 'Njugush Ame Nduthika', channel: 'Njugush', mood: ['silly', 'everyday'] },
-  { id: 'nml3nN1fbjM', title: 'The Calls That Changed My Life Financially', channel: 'Njugush', mood: ['story', 'everyday'] },
-  { id: '7RiKaAmYXYo', title: 'Usicheze na Conductor wa Mat za Mwihoko', channel: 'Henry Desagu', mood: ['silly', 'everyday'] },
-  { id: 'woSyco8DLm8', title: 'Churchill Show — All Star Edition', channel: 'Churchill Show', mood: ['standup', 'classic'] },
-  { id: 'lp1SEc7pWCQ', title: 'Try Not To Laugh — Comedy Compilation', channel: 'Eric Omondi', mood: ['silly', 'standup'] },
-  { id: '4KpaPg0kox8', title: '10 Years in Comedy — In Conversation', channel: 'Njugush', mood: ['story', 'classic'] },
+  // PBAG originals first — from PBAG's official YouTube channel (uploads playlist), verified Oct 2026.
+  { id: 'wcxiNt5-RLk', title: 'Familia Baridi Show', channel: 'PBAG', section: 'pbag', mood: ['silly', 'everyday'] },
+  { id: '3cG_naNVfbE', title: 'Laugh 23 Sketch Show — Limuru', channel: 'PBAG', section: 'pbag', mood: ['silly', 'standup'] },
+  { id: 'NADZxgbG0jc', title: 'Toxic — Trailer', channel: 'PBAG', section: 'pbag', mood: ['story'] },
+  { id: 'RDOxsPwBAh8', title: 'Bring Back My Husband — 2018 stage play', channel: 'PBAG Theatre', section: 'pbag', mood: ['story', 'classic'] },
+  { id: 't5QGNTeomGY', title: 'PGT Festival — Season 5', channel: 'PBAG · PGT', section: 'pbag', mood: ['classic'] },
+  { id: 'Jh15BGjLMsk', title: 'PBAG RAW: Introductory Edition', channel: 'PBAG RAW', section: 'pbag', mood: ['standup', 'silly'] },
+  { id: '8O_k3Kq3y8E', title: "St. Paul's University Performance", channel: 'PBAG RAW', section: 'pbag', mood: ['standup'] },
+  { id: 'fIMmwWX2KWQ', title: 'Mtaachana Tu! Dating Show', channel: 'PBAG RAW', section: 'pbag', mood: ['silly', 'everyday'] },
+  { id: 'BR6nFBrJqVo', title: 'Boychild Disappointments', channel: 'PBAG RAW', section: 'pbag', mood: ['everyday', 'silly'] },
+  { id: '7poYqmWzjIU', title: 'List of Men Sent Away During Men Conference 2021', channel: 'PBAG', section: 'pbag', mood: ['silly'] },
+  { id: 'WcAIVOE72e0', title: 'Tricky Campus Life', channel: 'PBAG', section: 'pbag', mood: ['everyday', 'silly'] },
+  { id: 'lSJ19L8C708', title: 'Fake Pastor Busted', channel: 'PBAG', section: 'pbag', mood: ['silly', 'everyday'] },
+  { id: 'QvjzdNlED-E', title: 'Daylight Thieves Caught on Camera', channel: 'PBAG', section: 'pbag', mood: ['silly', 'everyday'] },
+  { id: 'DlXrCgWk9SQ', title: 'Infidelity in Nairobi', channel: 'PBAG', section: 'pbag', mood: ['everyday', 'story'] },
+  { id: 'KwO4RDszzBU', title: 'PBAG Generation — Liz Poet', channel: 'PBAG Generation', section: 'pbag', mood: ['story'] },
+  { id: 'TaNtjGUu5GU', title: 'PBAG Generation — Squishy Poet', channel: 'PBAG Generation', section: 'pbag', mood: ['story'] },
+  { id: 'zJ0plVzLMYM', title: 'Mugithi Session by Prince Dave', channel: 'PBAG', section: 'pbag', mood: ['classic'] },
+  { id: 'x0-oX4ukd38', title: 'Simple Band 115 — Live at PBAG RAW', channel: 'PBAG RAW', section: 'pbag', mood: ['classic'] },
+  { id: 'm305h6TVkL4', title: 'NARIGP Project (Kikuyu version)', channel: 'PBAG · Theatre for Development', section: 'pbag', mood: ['story'] },
+  { id: 'z9nkA0JcdyY', title: 'Heart Breaking News', channel: 'PBAG', section: 'pbag', mood: ['silly'] },
+  // Kenyan comedy greats — official / creator channels only.
+  { id: 'REb1ozejEyw', title: 'Churchill Show — Mombasa (Part 1)', channel: 'Churchill Television', section: 'kenya', mood: ['standup', 'classic'] },
+  { id: 'hxWbkKkRztM', title: 'Best of Mammito', channel: 'Churchill Television', section: 'kenya', mood: ['standup'] },
+  { id: 'qeGybHOBuVg', title: 'Eric Omondi — Walevi Wakiona Bill', channel: 'Churchill Television', section: 'kenya', mood: ['standup', 'silly'] },
+  { id: '1kbmeJ7YYJU', title: 'The Best of Prof Hamo', channel: 'Churchill Television', section: 'kenya', mood: ['standup', 'classic'] },
+  { id: 'KB-05MVYDHk', title: 'Obinna — Not All Men Are "Dogs"', channel: 'Churchill Television', section: 'kenya', mood: ['standup', 'everyday'] },
+  { id: 'aWPWFBrcGZk', title: 'Njugush Ame Nduthika', channel: 'Njugush', section: 'kenya', mood: ['silly', 'everyday'] },
+  { id: 'nml3nN1fbjM', title: 'The Calls That Changed My Life Financially', channel: 'Njugush', section: 'kenya', mood: ['story', 'everyday'] },
+  { id: '7RiKaAmYXYo', title: 'Usicheze na Conductor wa Mat za Mwihoko', channel: 'Henry Desagu', section: 'kenya', mood: ['silly', 'everyday'] },
+  { id: 'w3X6LVnKczo', title: 'Ethic, Sailors, Boondocks, Delo & Zzero in One Class', channel: 'Crazy Kennar', section: 'kenya', mood: ['silly', 'everyday'] },
+  { id: 'LmEnVqWKgY0', title: 'Falling For A Sharp Boy — Young & Stupid', channel: 'Abel Mutua', section: 'kenya', mood: ['story'] },
+  { id: 'W7YuQmkGIdA', title: 'Wash Wash Biashara — Part 1', channel: 'Terence Creative', section: 'kenya', mood: ['silly', 'everyday'] },
+  { id: 'ozCLbQXGpq0', title: 'African Drama: The News Reporter', channel: 'Flaqo Raz', section: 'kenya', mood: ['story', 'silly'] },
+  { id: '1RLZiCHOmGw', title: "Vioja Mahakamani — Harusi ya Valentine's", channel: 'KBC Channel 1', section: 'kenya', mood: ['classic', 'silly'] },
+  { id: 'woSyco8DLm8', title: 'Churchill Show — All Star Edition', channel: 'Churchill Show', section: 'kenya', mood: ['standup', 'classic'] },
+  { id: '4KpaPg0kox8', title: '10 Years in Comedy — In Conversation', channel: 'Njugush', section: 'kenya', mood: ['story', 'classic'] },
 ];
+// Retired: lp1SEc7pWCQ (no longer available on YouTube).
+export const RETIRED_VIDEOS = ['lp1SEc7pWCQ'];
+// Heritage clip used on the Ithaka story page (local station, Ndeiya).
+export const HERITAGE_VIDEOS = [{ id: 'LESvP3qsofM', title: 'Ihiga ria Guoya, Ndeiya', channel: 'Kamity · Ndeiya FM' }];
 
 export const BOOKING_SERVICES = [
   { id: 'performance', name: 'Book a PBAG performance', icon: 'drama', duration: 'Half / full day', slots: ['Morning', 'Afternoon', 'Evening'], note: 'Corporate events, launches, festivals, schools.' },
   { id: 'tfd', name: 'Theatre for Development workshop', icon: 'megaphone', duration: 'Half day', slots: ['Morning', 'Afternoon'], note: 'Forum theatre on health, governance, environment, GBV and more.' },
   { id: 'comedy', name: 'Comedians / MC (Peatice)', icon: 'mic-vocal', duration: 'Per event', slots: ['Afternoon', 'Evening'], note: 'Stand-up sets, MCs and sketch acts.' },
   { id: 'production', name: 'Content & production services', icon: 'clapperboard', duration: 'Per project', slots: ['Morning', 'Afternoon'], note: 'Short-form content, event filming, creative direction.' },
+  { id: 'events', name: 'Corporate event management', icon: 'calendar-check', duration: 'Per event', slots: ['Morning', 'Afternoon', 'Evening'], note: 'Launches, galas, festivals, conferences, team-building — planned and run end to end.' },
+  { id: 'digital', name: 'PR, digital content & publications', icon: 'megaphone', duration: 'Per project', slots: ['Morning', 'Afternoon'], note: 'PR campaigns, social content, livestreams, programmes, magazines and reports.' },
   { id: 'ai', name: 'Generative AI consultation', icon: 'sparkles', duration: '60 min', slots: ['10:00', '11:30', '14:00', '15:30'], note: 'Free discovery call for creatives, NGOs and businesses.' },
 ];
 

@@ -27,7 +27,7 @@ app.use(helmet({
       scriptSrc: ["'self'"],
       styleSrc: ["'self'", "'unsafe-inline'"],
       fontSrc: ["'self'"],
-      imgSrc: ["'self'", 'data:', 'blob:', 'https://i.ytimg.com'],
+      imgSrc: ["'self'", 'data:', 'blob:', 'https://i.ytimg.com', 'https://commons.wikimedia.org', 'https://upload.wikimedia.org', 'https://tile.openstreetmap.org', 'https://server.arcgisonline.com', 'https://*.tile.opentopomap.org'],
       frameSrc: ['https://www.youtube-nocookie.com', 'https://www.youtube.com', 'https://www.google.com'],
       connectSrc: ["'self'"],
       mediaSrc: ["'self'", 'blob:'],
@@ -79,7 +79,7 @@ app.get('/api/events/:slug', wrap(async (req, res) => {
 
 app.get('/api/videos', wrap(async (_req, res) => {
   res.set('Cache-Control', 'public, max-age=120');
-  res.json({ channelPlaylist: ORG.youtubeUploads, videos: (await db.list('videos')).sort((a, b) => a.order - b.order) });
+  res.json({ channelPlaylist: ORG.youtubeUploads, videos: (await db.list('videos')).filter((v) => !v.retired).sort((a, b) => (a.section === 'pbag' ? 0 : 1) - (b.section === 'pbag' ? 0 : 1) || a.order - b.order) });
 }));
 
 const publicOrder = (o, tickets) => ({
@@ -187,7 +187,7 @@ app.post('/api/staff/videos', staffOnly, wrap(async (req, res) => {
   const m = String(req.body.url || '').match(/(?:v=|youtu\.be\/|embed\/|shorts\/)([\w-]{11})/) || String(req.body.url || '').match(/^([\w-]{11})$/);
   if (!m) return res.status(400).json({ error: 'Paste a YouTube link' });
   const vids = await db.list('videos');
-  const v = { id: m[1], title: String(req.body.title || 'Untitled').slice(0, 120), channel: String(req.body.channel || '').slice(0, 60), mood: String(req.body.mood || '').split(',').map((s) => s.trim()).filter(Boolean), order: vids.length, addedAt: new Date().toISOString() };
+  const v = { id: m[1], section: req.body.section === 'pbag' ? 'pbag' : 'kenya', title: String(req.body.title || 'Untitled').slice(0, 120), channel: String(req.body.channel || '').slice(0, 60), mood: String(req.body.mood || '').split(',').map((s) => s.trim()).filter(Boolean), order: vids.length, addedAt: new Date().toISOString() };
   await db.set('videos', v.id, v);
   res.status(201).json(v);
 }));

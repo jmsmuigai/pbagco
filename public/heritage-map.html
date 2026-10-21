@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>PBAG Heritage Atlas — GIS Map of Historic Sites in Limuru, Lari & Kiambu County</title>
+<meta name="description" content="Interactive GIS map of historic sites in Kamĩrĩĩthũ, Limuru and Lari, Kiambu County: Lari Massacre site, Tigoni removals, Kereita and Kinale forests, indicative Mau Mau routes, colonial landmarks and the Kamĩrĩĩthũ theatre — on street, hybrid satellite and colonial-survey basemaps.">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#0a0912">
+<meta name="author" content="PBAG Consortium">
+<meta property="og:locale" content="en_KE">
+<meta name="geo.region" content="KE-13">
+<meta name="geo.placename" content="Limuru, Kiambu County">
+<link rel="canonical" href="https://pbagco.com/heritage-map">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="PBAG Consortium">
+<meta property="og:title" content="PBAG Heritage Atlas — GIS Map of Historic Sites in Limuru, Lari & Kiambu County">
+<meta property="og:description" content="Interactive GIS map of historic sites in Kamĩrĩĩthũ, Limuru and Lari, Kiambu County: Lari Massacre site, Tigoni removals, Kereita and Kinale forests, indicative Mau Mau routes, colonial landmarks and the Kamĩrĩĩthũ theatre — on street, hybrid satellite and colonial-survey basemaps.">
+<meta property="og:url" content="https://pbagco.com/heritage-map">
+<meta property="og:image" content="https://pbagco.com/assets/img/og-image.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/assets/img/favicon.png" type="image/png">
+<link rel="apple-touch-icon" href="/assets/img/icon-192.png">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="preload" href="/assets/fonts/big-shoulders-display-latin-900-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/dm-sans-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/assets/css/site.css?v=mvhpv90w">
+<link rel="preload" href="/assets/img/icons.svg" as="image" type="image/svg+xml">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"PerformingGroup","name":"PBAG Consortium","alternateName":"Peers Best Art Group","url":"https://pbagco.com","logo":"https://pbagco.com/assets/img/pbag-logo.png","foundingDate":"2011-08-23","foundingLocation":"Limuru, Kenya","email":"theatre@pbagco.com","telephone":"+254720960180","address":{"@type":"PostalAddress","addressLocality":"Limuru","addressRegion":"Kiambu County","addressCountry":"KE"},"sameAs":["https://web.facebook.com/Pbagconsortium","https://www.youtube.com/channel/UCFV2mTNumJFcQG6-s-xg_Ew"]}</script>
+
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://pbagco.com/"},{"@type":"ListItem","position":2,"name":"PBAG Heritage Atlas","item":"https://pbagco.com/heritage-map"}]}</script>
+</head>
+<body class="page-map">
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="site-header" id="top">
+  <div class="wrap">
+    <a class="brand" href="/" aria-label="PBAG Consortium home">
+      <img src="/assets/img/pbag-logo-light.webp" alt="PBAG" width="120" height="68">
+      <small>Peers Best<br>Art Group</small>
+    </a>
+    <nav class="nav" aria-label="Main">
+      <a href="/about" data-nav="about">About</a>
+      <div class="dd">
+        <button type="button" aria-haspopup="true" aria-expanded="false" data-nav="subsidiaries">Subsidiaries <svg class="i" aria-hidden="true"><use href="/assets/img/icons.svg#i-chevron-down"/></svg></button>
+        <div class="dd-menu" role="menu">
+          <a href="/subsidiaries#pbag-theatre" role="menuitem" style="--c:#8B3FD9"><i class="dot"><svg class="i" aria-hidden="true"><use href="/assets/img/icons.svg#i-drama"/></svg></i><strong>PBAG Theatre</strong><span>Theatre &amp; Theatre for Development</span></a>
+          <a href="/subsidiaries#peatice-productions" role="menuitem" style="--c:#2F6FD6"><i class="dot"><svg class="i" aria-hidden="true"><use href="/assets/img/icons.svg#i-clapperboard"/></svg></i><strong>Peatice Productions</strong><span>Comedy, screen &amp; content</span></a>
+          <a href="/subsidiaries#peers-got-talanta" role="menuitem" style="--c:#E39A0E"><i class="dot"><svg class="i" aria-hidden="true"><use href="/assets/img/icons.svg#i-trophy"/></svg></i><strong>Peers Got Talanta (PGT)</strong><span>Talent, youth &amp; community</span></a>
+          <a href="/subsidiaries#pbag-bunge" role="menuitem" style="--c:#3a3a52"><i class="dot"><svg class="i" aria-hidden="true"><use href="/assets/img/icons.svg#i-landmark"/></svg></i><strong>PBAG Bunge · Lead</strong><span>Leadership &amp; civic engagement</span></a>
+        </div>
+      </div>
+      <div class="dd">
+        <button type="button" aria-haspopup="true" aria-expanded="false" data-nav="shows">Shows <svg class="i" aria-hidden="true"><use href="/assets/img/icons.svg#i-chevron-down"/></svg></button>
+        <div class="dd-menu" role="menu">
+          <a href="/ithaka" role="menuitem" style="--c:#b0463a" data-nav="ithaka"><i class="dot"><svg class="i" aria-hidden="true"><use href="/assets/img/icons.svg#i-theater"/></svg></i><strong>Ithaka cia Kamĩrĩĩthũ</strong><span>The story behind our new play</span></a>
+          <a href="/theatre" role="menuitem" style="--c:#8B3FD9" data-nav="theatre"><i class="dot"><svg class="i" aria-hidden="true"><use href="/assets/img/icons.svg#i-popcorn"/></svg></i><strong>Virtual Theatre</strong><span>PBAG originals &amp; Kenyan comedy</span></a>
+          <a href="/tickets" role="menuitem" style="--c:#c99a12" data-nav="tickets"><i class="dot"><svg class="i" aria-hidden="true"><use href="/assets/img/icons.svg#i-ticket"/></svg></i><strong>Tickets &amp; calendar</strong><span>Book with M-Pesa, QR tickets</span></a>
+        </div>
+      </div>
+      <a href="/heritage-map" data-nav="heritage" aria-current="page">Heritage Map</a>
+      <div class="dd">
+        <button type="button" aria-haspopup="true" aria-expanded="false" data-nav="services">Services <svg class="i" aria-hidden="true"><use href="/assets/img/icons.svg#i-chevron-down"/></svg></button>
+        <div class="dd-menu" role="menu">
+          <a href="/events" role="menuitem" style="--c:#e0703c" data-nav="events"><i class="dot"><svg class="i" aria-hidden="true"><use href="/assets/img/icons.svg#i-calendar-check"/></svg></i><strong>PBAG Events</strong><span>Events, PR, content, live shows, publications</span></a>
+          <a href="/ai-film" role="menuitem" style="--c:#8b5cf6" data-nav="aifilm"><i class="dot"><svg class="i" aria-hidden="true"><use href="/assets/img/icons.svg#i-clapperboard"/></svg></i><strong>AI in Theatre &amp; Film</strong><span>Gemini, Nano Banana, Veo, Flow…</span></a>
+          <a href="/consultancy" role="menuitem" style="--c:#2266b0" data-nav="consultancy"><i class="dot"><svg class="i" aria-hidden="true"><use href="/assets/img/icons.svg#i-brain-circuit"/></svg></i><strong>AI Studio consultancy</strong><span>Generative AI for organisations</span></a>
+          <a href="/book" role="menuitem" style="--c:#22a19a" data-nav="book"><i class="dot"><svg class="i" aria-hidden="true"><use href="/assets/img/icons.svg#i-calendar-days"/></svg></i><strong>Book Us</strong><span>Live availability calendar</span></a>
+        </div>
+      </div>
+      <a href="/contact" data-nav="contact">Contact</a>
+    </nav>
+    <a class="btn btn-gold btn-ticket btn-sm header-cta" href="/tickets"><svg class="i" aria-hidden="true"><use href="/assets/img/icons.svg#i-ticket"/></svg> Get tickets</a>
+    <button class="menu-btn" type="button" aria-label="Open menu" aria-controls="drawer" aria-expanded="false"><svg class="i" aria-hidden="true"><use href="/assets/img/icons.svg#i-menu"/></svg></button>
+  </div>
+</header>
+<div class="drawer" id="drawer" aria-hidden="true">
+  <div class="drawer-panel" role="dialog" aria-label="Menu">
+    <div class="row" style="justify-content:space-between;margin-bottom:10px">
+      <img src="/assets/img/pbag-logo-light.webp" alt="PBAG" width="96" height="54" style="height:34px;width:auto">
+      <button class="menu-close btn btn-sm btn-ghost" type="button" aria-label="Close menu"><svg class="i" aria-hidden="true"><use href="/assets/img/icons.svg#i-x"/></svg></button>
+    </div>
+    <a href="/" data-nav="home"><svg class="i" aria-hidden="true"><use href="/assets/img/icons.svg#i-sparkles"/></svg> Home</a>
+    <a href="/about" data-nav="about"><svg class="i" aria-hidden="true"><use href="/assets/img/icons.svg#i-info"/></svg> About PBAG</a>
+    <a href="/subsidiaries" data-nav="subsidiaries"><svg class="i" aria-hidden="true"><use href="/assets/img/icons.svg#i-users"/></svg> Subsidiaries</a>
+    <a class="sub" href="/subsidiaries#pbag-theatre">PBAG Theatre</a>
+    <a class="sub" href="/subsidiaries#peatice-productions">Peatice Productions</a>
+    <a class="sub" href="/subsidiaries#peers-got-talanta">Peers Got Talanta (PGT)</a>
+    <a class="sub" href="/subsidiaries#pbag-bunge">PBAG Bunge</a>
+    <a href="/ithaka" data-nav="ithaka"><svg class="i" aria-hidden="true"><use href="/assets/img/icons.svg#i-theater"/></svg> Ithaka cia Kamĩrĩĩthũ</a>
+    <a href="/theatre" data-nav="theatre"><svg class="i" aria-hidden="true"><use href="/assets/img/icons.svg#i-popcorn"/></svg> Virtual Theatre</a>
+    <a href="/heritage-map" data-nav="heritage" aria-current="page"><svg class="i" aria-hidden="true"><use href="/assets/img/icons.svg#i-map-pin"/></svg> Heritage Map</a>
+    <a href="/events" data-nav="events"><svg class="i" aria-hidden="true"><use href="/assets/img/icons.svg#i-calendar-check"/></svg> Events &amp; corporate</a>
+    <a href="/ai-film" data-nav="aifilm"><svg class="i" aria-hidden="true"><use href="/assets/img/icons.svg#i-clapperboard"/></svg> AI in Theatre &amp; Film</a>
+    <a href="/tickets" data-nav="tickets"><svg class="i" aria-hidden="true"><use href="/assets/img/icons.svg#i-ticket"/></svg> Tickets</a>
+    <a href="/book" data-nav="book"><svg class="i" aria-hidden="true"><use href="/assets/img/icons.svg#i-calendar-days"/></svg> Book Us</a>
+    <a href="/consultancy" data-nav="consultancy"><svg class="i" aria-hidden="true"><use href="/assets/img/icons.svg#i-brain-circuit"/></svg> AI Studio</a>
+    <a href="/contact" data-nav="contact"><svg class="i" aria-hidden="true"><use href="/assets/img/icons.svg#i-phone"/></svg> Contact</a>
+    <a class="btn btn-gold mt" href="/tickets"><svg class="i" aria-hidden="true"><use href="/assets/img/icons.svg#i-ticket"/></svg> Get tickets</a>
+  </div>
+</div>
+
+<main id="main">
+<section class="atlas">
+  <aside class="atlas-panel" id="panel" aria-label="Heritage atlas">
+    <div class="cartouche">
+      <span class="stamp">PBAG Heritage Atlas · Sheet KBU/1</span>
+      <h1 class="display">Ithaka cia <span class="serif">Kamĩrĩĩthũ</span></h1>
+      <p>Historic sites of Limuru, Lari &amp; Kiambu County — compiled for PBAG Theatre's <a href="/ithaka">Ithaka cia Kamĩrĩĩthũ</a>.</p>
+    </div>
+    <div class="row atlas-focus">
+      <button class="chip" data-focus="kiambu">Kiambu County</button><button class="chip" data-focus="limuru">Limuru</button><button class="chip" data-focus="lari">Lari</button><button class="chip on" data-focus="kamiriithu">Kamĩrĩĩthũ</button>
+    </div>
+    <label class="sr-only" for="siteSearch">Search sites</label>
+    <input class="input" id="siteSearch" placeholder="Search sites, e.g. Lari, Tigoni, forest…" autocomplete="off">
+    <div class="atlas-cats" id="cats"></div>
+    <ol class="atlas-list" id="siteList"></ol>
+    <p class="atlas-note"><svg class="i" aria-hidden="true"><use href="/assets/img/icons.svg#i-info"/></svg> Coordinates from OpenStreetMap. Sites marked ◌ are approximate. Mau Mau routes are <b>indicative corridors</b> drawn from historical accounts, not surveyed tracks. Know a site we've missed? <a href="/contact">Tell PBAG</a>.</p>
+    <button class="btn btn-sm atlas-toggle" id="panelToggle" type="button" aria-expanded="true"><svg class="i" aria-hidden="true"><use href="/assets/img/icons.svg#i-list"/></svg> Sites</button>
+  </aside>
+  <div id="map" class="atlas-map" role="application" aria-label="Map of historic sites"></div>
+</section>
+
+</main>
+<div class="ticker" aria-hidden="true"><div class="ticker-track">
+  <span>Nurturing Talent</span><span class="o">Creating Art</span><span>Transforming Communities</span><span class="o">Since 2011 · Limuru</span>
+  <span>Nurturing Talent</span><span class="o">Creating Art</span><span>Transforming Communities</span><span class="o">Since 2011 · Limuru</span>
+</div></div>
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <img src="/assets/img/pbag-logo-light.webp" alt="PBAG Consortium" width="140" height="80" loading="lazy" style="height:52px;width:auto;margin-bottom:14px">
+        <p>Peers Best Art Group — a community-based arts consortium from Limuru, Kenya, nurturing talent and using the arts for social transformation since 2011.</p>
+        <div class="socials">
+          <a href="https://web.facebook.com/Pbagconsortium" target="_blank" rel="noopener" aria-label="PBAG on Facebook"><svg class="i" aria-hidden="true"><use href="/assets/img/icons.svg#i-facebook"/></svg></a>
+          <a href="https://www.youtube.com/channel/UCFV2mTNumJFcQG6-s-xg_Ew" target="_blank" rel="noopener" aria-label="PBAG on YouTube"><svg class="i" aria-hidden="true"><use href="/assets/img/icons.svg#i-youtube"/></svg></a>
+          <a href="https://www.instagram.com/pbagtheatre" target="_blank" rel="noopener" aria-label="PBAG on Instagram"><svg class="i" aria-hidden="true"><use href="/assets/img/icons.svg#i-instagram"/></svg></a>
+          <a href="https://www.tiktok.com/@pbagtheatre" target="_blank" rel="noopener" aria-label="PBAG on TikTok"><svg class="i" aria-hidden="true"><use href="/assets/img/icons.svg#i-tiktok"/></svg></a>
+          <a href="https://wa.me/254720960180" target="_blank" rel="noopener" aria-label="WhatsApp PBAG"><svg class="i" aria-hidden="true"><use href="/assets/img/icons.svg#i-whatsapp"/></svg></a>
+        </div>
+      </div>
+      <div><h4>Explore</h4><ul>
+        <li><a href="/about">About PBAG</a></li><li><a href="/subsidiaries">Subsidiaries</a></li><li><a href="/ithaka">Ithaka cia Kamĩrĩĩthũ</a></li><li><a href="/heritage-map">Heritage Map</a></li><li><a href="/theatre">Virtual Theatre</a></li></ul></div>
+      <div><h4>Services</h4><ul>
+        <li><a href="/events">Events &amp; corporate</a></li><li><a href="/ai-film">AI in Theatre &amp; Film</a></li><li><a href="/consultancy">AI Studio</a></li><li><a href="/book">Book Us</a></li></ul></div>
+      <div><h4>Box office</h4><ul>
+        <li><a href="/tickets">Buy tickets</a></li><li><a href="/tickets#my-tickets">My tickets</a></li><li><a href="/book">Book PBAG</a></li><li><a href="/tickets#sell">Sell tickets &amp; earn</a></li></ul></div>
+      <div><h4>Say hello</h4><ul>
+        <li><a href="tel:+254720960180"><svg class="i" aria-hidden="true"><use href="/assets/img/icons.svg#i-phone"/></svg> 0720 960 180</a></li>
+        <li><a href="mailto:theatre@pbagco.com"><svg class="i" aria-hidden="true"><use href="/assets/img/icons.svg#i-mail"/></svg> theatre@pbagco.com</a></li>
+        <li><svg class="i" aria-hidden="true"><use href="/assets/img/icons.svg#i-map-pin"/></svg> Limuru, Kiambu County, Kenya</li></ul></div>
+    </div>
+    <a class="tovu" href="https://tovutech.com" target="_blank" rel="noopener">
+      <span class="tovu-mark"><svg class="i" aria-hidden="true"><use href="/assets/img/icons.svg#i-bot"/></svg></span>
+      <span><b>This agentic website is powered by TovuTech.com</b><small>AI · GIS · agentic websites, Gemini smart bots &amp; Google Cloud hosting — tovutech.com · intelligence@tovutech.com</small></span>
+      <span class="tovu-go">Visit <svg class="i" aria-hidden="true"><use href="/assets/img/icons.svg#i-arrow-up-right"/></svg></span>
+    </a>
+    <div class="foot-bottom">
+      <span>© <span data-year>2026</span> PBAG Consortium · Peers Best Art Group</span>
+      <span><a href="/staff" rel="nofollow">Staff</a> · Built &amp; hosted by <a href="https://tovutech.com" target="_blank" rel="noopener">TovuTech Limited</a> · <a href="mailto:intelligence@tovutech.com">intelligence@tovutech.com</a></span>
+    </div>
+  </div>
+</footer>
+<button class="cue-fab" type="button" aria-controls="cue" aria-expanded="false"><i class="orb"><svg class="i" aria-hidden="true"><use href="/assets/img/icons.svg#i-sparkles"/></svg></i><span>Ask Cue<small>AI usher · Gemini</small></span></button>
+<section class="cue" id="cue" aria-label="Cue, the PBAG AI usher" role="dialog">
+  <div class="cue-head"><i class="orb"><svg class="i" aria-hidden="true"><use href="/assets/img/icons.svg#i-sparkles"/></svg></i><div><b>Cue · AI usher</b><small>Powered by Google Gemini</small></div><button type="button" class="cue-close" aria-label="Close chat"><svg class="i" aria-hidden="true"><use href="/assets/img/icons.svg#i-x"/></svg></button></div>
+  <div class="cue-log" aria-live="polite"></div>
+  <div class="cue-sugg"></div>
+  <form class="cue-form"><label class="sr-only" for="cueInput">Message Cue</label><input id="cueInput" autocomplete="off" placeholder="Ask about shows, tickets, hiring PBAG…" maxlength="500"><button aria-label="Send"><svg class="i" aria-hidden="true"><use href="/assets/img/icons.svg#i-send"/></svg></button></form>
+  <div class="cue-note">AI can make mistakes — confirm important details with the PBAG team.</div>
+</section>
+
+<script type="module" src="/assets/js/heritage.js"></script>
+</body>
+</html>

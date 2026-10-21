@@ -13,7 +13,7 @@
 
 import fs from 'node:fs';
 import path from 'node:path';
-import { SEED_EVENTS, SEED_VIDEOS } from './content.js';
+import { SEED_EVENTS, SEED_VIDEOS, RETIRED_VIDEOS } from './content.js';
 
 const DATA_FILE = path.resolve('data/dev-db.json');
 
@@ -108,8 +108,11 @@ async function seed(store) {
     if (!(await store.get('events', e.id))) await store.set('events', e.id, { ...e, createdAt: new Date().toISOString() });
   }
   for (const [i, v] of SEED_VIDEOS.entries()) {
-    if (!(await store.get('videos', v.id))) await store.set('videos', v.id, { ...v, order: i, addedAt: new Date().toISOString() });
+    const cur = await store.get('videos', v.id);
+    if (!cur) await store.set('videos', v.id, { ...v, order: i, addedAt: new Date().toISOString() });
+    else if (!cur.section) await store.update('videos', v.id, { section: v.section, order: i }); // migrate older seeds
   }
+  for (const id of RETIRED_VIDEOS) if (await store.get('videos', id)) await store.update('videos', id, { retired: true });
   if (!(await store.get('sellers', 'PBAG10'))) {
     await store.set('sellers', 'PBAG10', { code: 'PBAG10', name: 'PBAG Promoters Desk', phone: '', commissionRate: null, active: true, createdAt: new Date().toISOString() });
   }

@@ -34,8 +34,9 @@ window.fetch = async (url, opts = {}) => {
   if (!p.startsWith('/api/') && !p.startsWith('/data/')) return real(url, opts);
   const m = (opts.method || 'GET').toUpperCase(), body = opts.body ? JSON.parse(opts.body) : {};
   await new Promise((r) => setTimeout(r, 150));
-  if (p === '/data/gallery.json') return window.__GALLERY__ ? ok(window.__GALLERY__) : real(url, opts);
+  if (p.startsWith('/data/')) return p === '/data/gallery.json' && window.__GALLERY__ ? ok(window.__GALLERY__) : real(url, opts);
   if (p === '/api/events') return ok(events.map(pub));
+  let em; if ((em = p.match(/^\/api\/events\/([\w-]+)$/))) { const e = events.find((x) => x.slug === em[1] || x.id === em[1]); return e ? ok(pub(e)) : err('Event not found', 404); }
   if (p === '/api/videos') return ok({ channelPlaylist: ORG.youtubeUploads, videos: SEED_VIDEOS });
   if (p === '/api/site') return ok({ org: ORG, subsidiaries: SUBSIDIARIES, bookingServices: BOOKING_SERVICES, aiServices: AI_SERVICES, faq: FAQ, payments: { mode: 'mock', mpesa: true, card: true, paypal: true } });
   if (p === '/api/bookings/busy') return ok(events.flatMap((e) => e.performances.map((x) => x.startsAt.slice(0, 10))));

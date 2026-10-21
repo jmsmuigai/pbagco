@@ -3,7 +3,7 @@
 Theatre-and-film themed website for **PBAG Consortium (Peers Best Art Group)** with a full ticketing platform, booking calendar, Virtual Theatre, Gemini-powered AI usher ("Cue"), Generative-AI consultancy page and an MCP server for AI agents. Built by TovuTech for Google Cloud.
 
 ## Live preview (GitHub Pages)
-https://jmsmuigai.github.io/pbaginternational/ — rebuilt automatically on every push to `master` (`.github/workflows/pages.yml`).
+https://jmsmuigai.github.io/pbagco/ — rebuilt automatically on every push to `master` (`.github/workflows/pages.yml`).
 This is a **static preview**: the API runs in the browser, payments are simulated and tickets are watermarked *PREVIEW · NOT VALID*. The production site (real M-Pesa, Firestore, live Gemini, staff console) runs on Google Cloud Run — see `docs/DEPLOYMENT.md`.
 The previous Next.js version is kept on the `legacy-nextjs` branch.
 
@@ -17,7 +17,7 @@ Staff console: http://localhost:8080/staff — default dev PIN `2468`.
 Add `GEMINI_API_KEY=...` before `npm start` to switch Cue and AI Spark to live Gemini.
 
 Editing pages: change files in `src/pages/` or `src/partials/`, then `npm run build` (writes `public/*.html`).
-Other builds: `BASE=/pbaginternational/ npm run build:pages` (static site in `_site/`), `npm run build:preview` (whole site in one offline file, `dist/pbagco-preview.html`).
+Other builds: `BASE=/pbagco/ npm run build:pages` (static site in `_site/`), `npm run build:preview` (whole site in one offline file, `dist/pbagco-preview.html`).
 
 ## What's inside
 | Page | Highlights |

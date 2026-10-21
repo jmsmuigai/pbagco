@@ -1,126 +1,24 @@
-# Deployment Guide
+# Deploying pbagco.com on Google Cloud
 
-Your frontend is currently deployed on **Vercel** (`pbaginternational-web.vercel.app`), which is the recommended host for Next.js. This guide covers how to deploy your backend to **Google Cloud Run** (or Render), activating Firebase, and going live on M-Pesa Daraja.
+Architecture: **Cloud Run** (one container: site + API + Gemini bot + MCP) · **Firestore** · **Secret Manager** (`GEMINI_API_KEY`, `TICKET_SECRET`, `STAFF_PIN`, later M-Pesa keys) · optional **Firebase Hosting** in front for CDN + custom domain.
 
-## 1. Push this code to GitHub
-
-This project could not create the GitHub repo or push directly — there was
-no GitHub account connected to the session that built it. The repo has
-already been initialized locally with git and an initial commit. From your
-machine:
-
+## 1. Deploy
 ```bash
-cd pbaginternational-website
-gh repo create pbaginternational-website --private --source=. --remote=origin
-# or, without the GitHub CLI:
-#   1. Create an empty private repo named pbaginternational-website on github.com
-#   2. git remote add origin https://github.com/<your-username>/pbaginternational-website.git
-git push -u origin main
+gcloud auth login
+PROJECT=<your-project-id> ./deploy.sh        # region defaults to africa-south1 (Johannesburg)
 ```
+The script enables APIs, creates Firestore, creates `TICKET_SECRET` + `STAFF_PIN` secrets, grants access to the existing `GEMINI_API_KEY` secret, and deploys with `PAYMENTS_MODE=mock` (safe demo).
 
-Keep it **private** until PBAG has approved the site publicly — the repo
-currently contains placeholder copy and no real secrets (`.env` files are
-gitignored), but there's no reason to make an unapproved site public.
+## 2. Domain pbagco.com
+Option A — Cloud Run domain mapping: `gcloud beta run domain-mappings create --service pbagco-web --domain pbagco.com --region africa-south1`, then add the DNS records it prints at the domain's DNS host (e.g. Cloudflare — set records to *DNS only* until the certificate is issued). Repeat for `www.pbagco.com`.
+Option B — Firebase Hosting in front (CDN, instant SSL): `cd firebase && firebase deploy --only hosting,firestore` then *Add custom domain* in the Firebase console. (If Firebase rewrites don't support your Cloud Run region, deploy the service to `europe-west1`.)
 
-## 2. Activate Firebase (production database)
+## 3. Go live with M-Pesa
+1. Get Daraja production credentials (Paybill or Till) for PBAG's central account.
+2. Store `MPESA_CONSUMER_KEY`, `MPESA_CONSUMER_SECRET`, `MPESA_PASSKEY` in Secret Manager; set env `MPESA_SHORTCODE`, `MPESA_TYPE` (`CustomerPayBillOnline` or `CustomerBuyGoodsOnline`).
+3. Test with `PAYMENTS_MODE=sandbox`, then switch to `live`. Callback URL: `https://pbagco.com/api/pay/mpesa/callback`.
+Card (e.g. Pesapal) and PayPal are wired as payment methods; they show "Coming soon" until their keys are added and the provider call is filled in `server/payments.js`.
 
-1. Go to https://console.firebase.google.com → **Add project** → name it
-   (e.g. `pbaginternational-prod`).
-2. **Build → Firestore Database → Create database** → start in production
-   mode → pick a region close to your users (e.g. `europe-west1` or
-   `asia-south1` — check current Firestore region options for the lowest
-   latency to Kenya).
-3. Deploy the security rules already in this repo:
-   ```bash
-   npm install -g firebase-tools
-   firebase login
-   firebase use --add            # select your new project
-   cd firebase && firebase deploy --only firestore:rules,firestore:indexes
-   ```
-4. **Project settings → Service accounts → Generate new private key** —
-   downloads a JSON file. Do **not** commit it.
-5. In `apps/api/.env` (production environment / secret manager), set either:
-   - `FIREBASE_SERVICE_ACCOUNT_JSON` = the full JSON contents (single line), or
-   - `GOOGLE_APPLICATION_CREDENTIALS` = path to the JSON file (or rely on
-     Application Default Credentials automatically when running on Cloud Run
-     in the same GCP project — no key file needed there).
-6. Set `DB_DRIVER=firestore` and `FIREBASE_PROJECT_ID=<your-project-id>`.
-7. Re-run `npm run seed --workspace=apps/api` once against production to
-   load starter events (or create them via the producer flow instead).
-
-## 3. Go live on M-Pesa Daraja
-
-1. Register at https://developer.safaricom.co.ke and create an app to get
-   **sandbox** consumer key/secret immediately.
-2. Test against sandbox first: set `MPESA_MODE=sandbox`,
-   `MPESA_CONSUMER_KEY`, `MPESA_CONSUMER_SECRET` from your Daraja app, and
-   deploy the API somewhere with a public HTTPS URL (Daraja cannot call back
-   to `localhost`) — set `MPESA_CALLBACK_URL` to
-   `https://<your-api-domain>/api/mpesa/callback`. For local sandbox testing
-   before deploying, tunnel with `ngrok http 4000` and use the ngrok URL.
-3. For **production** payments: apply for Daraja go-live with your real
-   Paybill/Till number (Safaricom reviews this — budget a few business
-   days), then set `MPESA_MODE=live`, your production
-   `MPESA_SHORTCODE`/`MPESA_PASSKEY`, and point `MPESA_CALLBACK_URL` at your
-   production API.
-4. Nothing else changes — the same `stkPush()` code path is used in all
-   three modes (see `docs/ARCHITECTURE.md`).
-
-## 4. Deploy to Google Cloud
-
-Two services to deploy: `apps/api` (Express) and `apps/web` (Next.js).
-
-### API → Cloud Run
-
-```bash
-cd apps/api
-npm run build
-gcloud run deploy pbag-api \
-  --source . \
-  --region <your-region> \
-  --allow-unauthenticated \
-  --set-env-vars DB_DRIVER=firestore,MPESA_MODE=sandbox,FIREBASE_PROJECT_ID=<project-id>,CORS_ORIGIN=https://pbag.com,https://pbaginternational-web.vercel.app
-```
-
-Add the M-Pesa and (if not using Application Default Credentials) Firebase
-secrets via `gcloud run services update pbag-api --set-secrets=...` backed
-by **Secret Manager** — don't pass real secrets as plain `--set-env-vars` in
-production. Note the resulting `https://pbag-api-xxxxx.run.app` URL.
-
-### Web → Vercel
-
-Your frontend is already deployed to Vercel via GitHub integration.
-
-To point your Vercel frontend to your deployed API:
-1. Go to your Vercel project dashboard → Settings → Environment Variables.
-2. Add `NEXT_PUBLIC_API_URL` and set its value to your API URL (e.g., `https://pbag-api-xxxxx.run.app/api` or your Render URL).
-3. Trigger a redeploy in Vercel to apply the new environment variable.
-
-If you add a custom domain later:
-1. **Vercel → Settings → Domains** → add `pbag.com`, and update your DNS (A/AAAA or CNAME per Vercel's instructions) at your domain registrar.
-2. Ensure you update `CORS_ORIGIN` in your backend API environment variables to include the new domain.
-
-### CI
-
-`.github/workflows/ci.yml` installs dependencies, builds both apps, and runs
-`npm run simulate:ticket-flow` on every push — treat a red CI run as a
-signal not to deploy that commit.
-
-## 5. Before this touches real users
-
-- [ ] Replace every `[PLACEHOLDER]` / `TODO(PBAG)` string (search the repo)
-      with real copy, contact details, and social handles.
-- [ ] Replace generated images with real event photography / motion
-      graphics — see `docs/GEMINI_ANTIGRAVITY_TASKS.md`.
-- [ ] Read `docs/SECURITY.md` and patch the flagged dependencies.
-- [ ] Switch `MPESA_MODE` to `sandbox` then `live` only after testing real
-      payments end-to-end on sandbox.
-- [ ] Wire a real email provider (`SENDGRID_API_KEY`) so ticket
-      confirmations actually reach buyers' inboxes, not just the in-app
-      QR display.
-- [ ] Decide on real card/PayPal processors (Stripe keys are stubbed in
-      `.env.example`) — the checkout UI already offers these methods, but
-      `apps/api/src/routes/orders.ts` settles them immediately as a demo
-      placeholder rather than redirecting to a real hosted checkout.
-- [ ] Load-test around your actual on-sale traffic expectations (Section
-      6.9 calls out traffic spikes specifically).
+## 4. After launch
+- Staff console: `https://pbagco.com/staff` (PIN from Secret Manager). Install it on gate phones via "Add to Home screen".
+- Edit events in Firestore console (`events` collection) or ask TovuTech to add an event editor.

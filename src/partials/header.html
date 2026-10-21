@@ -1,0 +1,48 @@
+<header class="site-header" id="top">
+  <div class="wrap">
+    <a class="brand" href="/" aria-label="PBAG Consortium home">
+      <img src="/assets/img/pbag-logo-light.webp" alt="PBAG" width="120" height="68">
+      <small>Peers Best<br>Art Group</small>
+    </a>
+    <nav class="nav" aria-label="Main">
+      <a href="/about" data-nav="about">About</a>
+      <div class="dd">
+        <button type="button" aria-haspopup="true" aria-expanded="false" data-nav="subsidiaries">Subsidiaries {{i:chevron-down}}</button>
+        <div class="dd-menu" role="menu">
+          <a href="/subsidiaries#pbag-theatre" role="menuitem" style="--c:#8B3FD9"><i class="dot">{{i:drama}}</i><strong>PBAG Theatre</strong><span>Theatre &amp; Theatre for Development</span></a>
+          <a href="/subsidiaries#peatice-productions" role="menuitem" style="--c:#2F6FD6"><i class="dot">{{i:clapperboard}}</i><strong>Peatice Productions</strong><span>Comedy, screen &amp; content</span></a>
+          <a href="/subsidiaries#peers-got-talanta" role="menuitem" style="--c:#E39A0E"><i class="dot">{{i:trophy}}</i><strong>Peers Got Talanta (PGT)</strong><span>Talent, youth &amp; community</span></a>
+          <a href="/subsidiaries#pbag-bunge" role="menuitem" style="--c:#3a3a52"><i class="dot">{{i:landmark}}</i><strong>PBAG Bunge · Lead</strong><span>Leadership &amp; civic engagement</span></a>
+        </div>
+      </div>
+      <a href="/theatre" data-nav="theatre">Virtual Theatre</a>
+      <a href="/tickets" data-nav="tickets">Tickets</a>
+      <a href="/book" data-nav="book">Book Us</a>
+      <a href="/consultancy" data-nav="consultancy">AI Studio</a>
+      <a href="/contact" data-nav="contact">Contact</a>
+    </nav>
+    <a class="btn btn-gold btn-ticket btn-sm header-cta" href="/tickets">{{i:ticket}} Get tickets</a>
+    <button class="menu-btn" type="button" aria-label="Open menu" aria-controls="drawer" aria-expanded="false">{{i:menu}}</button>
+  </div>
+</header>
+<div class="drawer" id="drawer" aria-hidden="true">
+  <div class="drawer-panel" role="dialog" aria-label="Menu">
+    <div class="row" style="justify-content:space-between;margin-bottom:10px">
+      <img src="/assets/img/pbag-logo-light.webp" alt="PBAG" width="96" height="54" style="height:34px;width:auto">
+      <button class="menu-close btn btn-sm btn-ghost" type="button" aria-label="Close menu">{{i:x}}</button>
+    </div>
+    <a href="/" data-nav="home">{{i:sparkles}} Home</a>
+    <a href="/about" data-nav="about">{{i:info}} About PBAG</a>
+    <a href="/subsidiaries" data-nav="subsidiaries">{{i:users}} Subsidiaries</a>
+    <a class="sub" href="/subsidiaries#pbag-theatre">PBAG Theatre</a>
+    <a class="sub" href="/subsidiaries#peatice-productions">Peatice Productions</a>
+    <a class="sub" href="/subsidiaries#peers-got-talanta">Peers Got Talanta (PGT)</a>
+    <a class="sub" href="/subsidiaries#pbag-bunge">PBAG Bunge</a>
+    <a href="/theatre" data-nav="theatre">{{i:popcorn}} Virtual Theatre</a>
+    <a href="/tickets" data-nav="tickets">{{i:ticket}} Tickets</a>
+    <a href="/book" data-nav="book">{{i:calendar-days}} Book Us</a>
+    <a href="/consultancy" data-nav="consultancy">{{i:brain-circuit}} AI Studio</a>
+    <a href="/contact" data-nav="contact">{{i:phone}} Contact</a>
+    <a class="btn btn-gold mt" href="/tickets">{{i:ticket}} Get tickets</a>
+  </div>
+</div>

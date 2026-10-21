@@ -1,0 +1,52 @@
+<!--{"title":"Virtual Theatre — Watch Kenyan Comedy & PBAG Shows Online","desc":"PBAG's Virtual Theatre: stream PBAG's own YouTube channel and a curated programme of the best Kenyan comedy — Njugush, Churchill Show, Eric Omondi, Henry Desagu and more — with hover previews and a mood picker.","nav":"theatre","js":"theatre"}-->
+<section class="stage-wrap">
+  <div class="wrap" style="text-align:center;margin-bottom:6px">
+    <span class="kicker">PBAG Virtual Theatre</span>
+    <h1 class="display" style="font-size:clamp(2.2rem,6vw,4.4rem);margin:10px 0 4px">House lights <span class="serif gold">down</span></h1>
+  </div>
+  <div class="proscenium">
+    <i class="side-curtain l"></i><i class="side-curtain r"></i>
+    <div class="screen" id="screen" aria-live="polite"></div>
+    <div class="stage-floor"></div>
+  </div>
+  <svg class="seats" viewBox="0 0 1200 90" preserveAspectRatio="none" aria-hidden="true"><g fill="currentColor"><path d="M0 90V54c40-22 80-22 120 0 40-22 80-22 120 0 40-22 80-22 120 0 40-22 80-22 120 0 40-22 80-22 120 0 40-22 80-22 120 0 40-22 80-22 120 0 40-22 80-22 120 0 40-22 80-22 120 0 40-22 80-22 120 0V90z" opacity=".7"/><path d="M-60 90V70c40-22 80-22 120 0 40-22 80-22 120 0 40-22 80-22 120 0 40-22 80-22 120 0 40-22 80-22 120 0 40-22 80-22 120 0 40-22 80-22 120 0 40-22 80-22 120 0 40-22 80-22 120 0 40-22 80-22 120 0 40-22 80-22 120 0V90z"/></g></svg>
+</section>
+<div class="theatre-bar">
+  <div class="tabs" role="tablist" aria-label="Programme">
+    <button role="tab" aria-selected="true" data-tab="programme">{{i:popcorn}} Tonight’s programme</button>
+    <button role="tab" aria-selected="false" data-tab="channel">{{i:youtube}} PBAG Channel</button>
+  </div>
+  <div class="row">
+    <button class="btn btn-sm" type="button" id="lights" aria-pressed="false">{{i:lightbulb-off}} House lights</button>
+    <button class="btn btn-sm" type="button" id="share">{{i:share-2}} Share</button>
+  </div>
+</div>
+<section class="section" style="padding-top:20px">
+  <div class="wrap">
+    <div class="row" style="justify-content:space-between;margin-bottom:20px">
+      <div>
+        <span class="scene-no">AI mood picker</span>
+        <h2 class="h3" style="margin-top:6px">What’s the mood tonight?</h2>
+      </div>
+      <div class="mood-bar" id="moods">
+        <button class="chip on" data-mood="">All</button>
+        <button class="chip" data-mood="silly">😂 Silly</button>
+        <button class="chip" data-mood="story">📖 Storytime</button>
+        <button class="chip" data-mood="standup">🎤 Stand-up</button>
+        <button class="chip" data-mood="everyday">🛺 Everyday life</button>
+        <button class="chip" data-mood="classic">⭐ Classics</button>
+        <button class="chip" data-ask="Recommend a Kenyan comedy from the Virtual Theatre for my mood tonight">{{i:sparkles}} Ask Cue</button>
+      </div>
+    </div>
+    <div class="programme" id="programme"></div>
+    <p class="muted mt" style="font-size:.85rem">{{i:info}} Hover (or long-press) a thumbnail for a quick preview. Videos stream from their creators’ official YouTube channels — subscribe to support Kenyan comedy. PBAG curates; all rights remain with the creators.</p>
+  </div>
+</section>
+<section class="section" style="padding-top:0">
+  <div class="wrap"><div class="band reveal">
+    <div class="grid g2" style="align-items:center">
+      <div><span class="kicker">Live, not just online</span><h2 class="display h2" style="margin:12px 0">See it <span class="serif gold">in the room</span></h2><p class="lead">Nothing beats the laugh of a full house. Grab a seat for PBAG’s next live show.</p></div>
+      <div class="row" style="justify-content:flex-end"><a class="btn btn-gold btn-ticket" href="/tickets">{{i:ticket}} Upcoming shows</a></div>
+    </div>
+  </div></div>
+</section>

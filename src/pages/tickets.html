@@ -1,0 +1,71 @@
+<!--{"title":"Tickets — PBAG Box Office | Pay with M-Pesa, get a QR ticket","desc":"Buy tickets to PBAG theatre, comedy, PGT Festival and Bunge events. Pick a date on the calendar, pay with M-Pesa, card or PayPal and download your QR ticket instantly.","nav":"tickets","js":"tickets"}-->
+<section class="page-hero" style="padding-bottom:28px;--hc:var(--gold)">
+  <div class="wrap row" style="justify-content:space-between;align-items:end">
+    <div>
+      <span class="kicker">Box office</span>
+      <h1 class="display h1" style="font-size:clamp(2.6rem,7vw,5rem)">Your seat is <span class="serif gold">waiting</span></h1>
+      <p class="lead" style="margin:0">Pick a date, choose your tickets, pay with M-Pesa — your QR ticket appears instantly.</p>
+    </div>
+    <a class="btn" href="#my-tickets">{{i:qr-code}} Find my tickets</a>
+  </div>
+</section>
+
+<section class="wrap" style="padding-bottom:80px">
+  <div class="boxoffice">
+    <aside class="stack">
+      <div id="cal"></div>
+      <div class="row" style="justify-content:space-between"><h2 class="h3" id="listTitle" style="font-size:1.15rem">All upcoming shows</h2><button class="btn btn-sm btn-ghost" id="clearDate" hidden>Show all</button></div>
+      <div class="show-list" id="showList" aria-live="polite"><div class="spinner"></div></div>
+    </aside>
+
+    <div class="card" id="checkout" style="padding:clamp(18px,3vw,28px)">
+      <div class="grid" style="grid-template-columns:minmax(0,150px) 1fr;gap:18px;align-items:center;margin-bottom:20px" id="coHead">
+        <div style="aspect-ratio:4/5;border-radius:12px;overflow:hidden" id="coPoster"></div>
+        <div><span class="badge" id="coCat">Select a show</span><h2 class="display" style="font-size:clamp(1.8rem,4vw,2.6rem);margin:8px 0" id="coTitle">Choose a show to begin</h2><p class="muted" id="coDesc" style="margin:0;font-size:.95rem">Tap a date on the calendar or any show in the list.</p></div>
+      </div>
+      <ol class="steps" id="steps"><li data-s="1"><b>1</b>Date</li><li data-s="2"><b>2</b>Tickets</li><li data-s="3"><b>3</b>Details</li><li data-s="4"><b>4</b>Pay</li><li data-s="5"><b>5</b>Tickets</li></ol>
+      <div id="stepBody"></div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="my-tickets" style="padding-top:0">
+  <div class="wrap grid g2" style="align-items:start">
+    <div>
+      <span class="scene-no">Ticket wallet</span>
+      <h2 class="display h2" style="margin:10px 0 14px">My <span class="serif gold">tickets</span></h2>
+      <p class="muted">Lost your ticket or changed phones? Enter your order number (it starts with <b style="color:#fff">PB</b>) and the phone number or email you used.</p>
+      <form class="stack" id="lookup" style="max-width:460px">
+        <div class="field"><label for="lkOrder">Order number</label><input class="input" id="lkOrder" required placeholder="PBXXXXXXXX" autocomplete="off" style="text-transform:uppercase"></div>
+        <div class="field"><label for="lkContact">Phone or email</label><input class="input" id="lkContact" required placeholder="0712 345 678 or you@email.com"></div>
+        <button class="btn btn-gold">{{i:search}} Find tickets</button>
+        <p class="form-msg" id="lkMsg" role="status"></p>
+      </form>
+    </div>
+    <div id="lkResult" class="stack"></div>
+  </div>
+</section>
+
+<section class="section" id="verify" hidden style="padding-top:0">
+  <div class="wrap"><div class="card" id="verifyBox"></div></div>
+</section>
+
+<section class="section" id="sell" style="padding-top:0">
+  <div class="wrap">
+    <div class="band">
+      <div class="grid g2" style="align-items:center">
+        <div>
+          <span class="kicker">Sellers &amp; influencers</span>
+          <h2 class="display h2" style="margin:14px 0">Sell tickets. <span class="serif gold">Earn</span> commission.</h2>
+          <p class="lead">Get your own referral code, trackable link and QR code for posters and flyers. Every sale is attributed to you automatically and your commission is calculated on the spot.</p>
+        </div>
+        <ul class="stack" style="list-style:none;padding:0;margin:0">
+          <li class="role"><span class="n">{{i:ticket}}</span><div><b>Code</b><p>Buyers type your code (e.g. JANE10) at checkout.</p></div></li>
+          <li class="role"><span class="n">{{i:external-link}}</span><div><b>Link</b><p>pbagco.com/tickets?ref=JANE10 — remembered for 30 days.</p></div></li>
+          <li class="role"><span class="n">{{i:qr-code}}</span><div><b>QR</b><p>Print it on flyers; scans are tracked separately.</p></div></li>
+          <li><a class="btn btn-gold" href="https://wa.me/254720960180?text=Hi%20PBAG%2C%20I%27d%20like%20to%20become%20a%20ticket%20seller" target="_blank" rel="noopener">{{i:whatsapp}} Become a seller</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>

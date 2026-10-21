@@ -1,6 +1,8 @@
 {
-  "firestore": {
-    "rules": "firestore.rules",
-    "indexes": "firestore.indexes.json"
+  "firestore": { "rules": "firestore.rules", "indexes": "firestore.indexes.json" },
+  "hosting": {
+    "public": "../public",
+    "ignore": ["**/.*"],
+    "rewrites": [{ "source": "**", "run": { "serviceId": "pbagco-web", "region": "africa-south1" } }]
   }
 }

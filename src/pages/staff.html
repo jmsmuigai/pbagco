@@ -1,0 +1,49 @@
+<!--{"title":"PBAG Staff — Gate, Box Office & Dashboard","noindex":true,"js":"staff"}-->
+<section class="page-hero" style="padding-bottom:20px">
+  <div class="wrap row" style="justify-content:space-between;align-items:end">
+    <div><span class="kicker">Staff only</span><h1 class="display" style="font-size:clamp(2.4rem,6vw,4rem);margin-top:10px">Backstage <span class="serif gold">console</span></h1></div>
+    <button class="btn btn-sm" id="logout" hidden>{{i:log-out}} Sign out</button>
+  </div>
+</section>
+<section class="wrap" style="padding-bottom:90px">
+  <form class="card stack" id="login" style="max-width:420px">
+    <h2 class="h3">Sign in</h2>
+    <div class="field"><label for="sName">Your name</label><input class="input" id="sName" required autocomplete="name"></div>
+    <div class="field"><label for="sPin">Staff PIN</label><input class="input" id="sPin" type="password" inputmode="numeric" required autocomplete="current-password"></div>
+    <p class="form-msg err" id="loginMsg" role="alert"></p>
+    <button class="btn btn-gold">{{i:shield-check}} Enter</button>
+  </form>
+  <div id="console" hidden>
+    <div class="tabs" role="tablist" style="flex-wrap:wrap;margin-bottom:22px">
+      <button role="tab" data-tab="dash" aria-selected="true">{{i:bar-chart-3}} Dashboard</button>
+      <button role="tab" data-tab="scan" aria-selected="false">{{i:scan-line}} Gate scan</button>
+      <button role="tab" data-tab="pos" aria-selected="false">{{i:wallet}} Door sales</button>
+      <button role="tab" data-tab="bookings" aria-selected="false">{{i:calendar-days}} Bookings</button>
+      <button role="tab" data-tab="programme" aria-selected="false">{{i:tv}} Programme</button>
+      <button role="tab" data-tab="sellers" aria-selected="false">{{i:users}} Sellers</button>
+    </div>
+    <div data-panel="dash"></div>
+    <div data-panel="scan" hidden>
+      <div class="grid g2" style="align-items:start">
+        <div class="stack"><video id="scanVideo" playsinline muted></video><div class="row"><button class="btn btn-gold" id="camBtn">{{i:camera}} Start camera</button><span class="muted" style="font-size:.85rem">Works offline-tolerant: each scan is one quick request.</span></div></div>
+        <div class="stack">
+          <form class="row" id="manual"><input class="input" id="manualCode" placeholder="Type or paste ticket code" style="flex:1" autocomplete="off"><button class="btn">{{i:keyboard}} Check</button></form>
+          <div id="scanResult" class="scan-result" style="background:var(--ink-2);color:var(--muted)">Ready<small>Point the camera at a ticket QR</small></div>
+          <div id="scanLog" class="stack" style="font-size:.85rem"></div>
+        </div>
+      </div>
+    </div>
+    <div data-panel="pos" hidden></div>
+    <div data-panel="bookings" hidden></div>
+    <div data-panel="programme" hidden>
+      <form class="card stack" id="addVideo" style="max-width:640px">
+        <h3>Add a video to the Virtual Theatre</h3>
+        <div class="field"><label for="vUrl">YouTube link</label><input class="input" id="vUrl" required placeholder="https://www.youtube.com/watch?v=…"></div>
+        <div class="grid g2" style="gap:12px"><div class="field"><label for="vTitle">Title</label><input class="input" id="vTitle" required></div><div class="field"><label for="vChannel">Creator / channel</label><input class="input" id="vChannel"></div></div>
+        <div class="field"><label for="vMood">Moods (comma separated: silly, story, standup, everyday, classic)</label><input class="input" id="vMood" placeholder="silly, everyday"></div>
+        <p class="form-msg" id="vMsg"></p><button class="btn btn-gold">{{i:plus}} Add to programme</button>
+      </form>
+    </div>
+    <div data-panel="sellers" hidden></div>
+  </div>
+</section>

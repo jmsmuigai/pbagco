@@ -1,0 +1,7 @@
+{
+  "_note": "Per-subsidiary gallery. Add photos to /assets/img/gallery/<subsidiary>/ (or paste public Google Drive image links) and list them here — each subsidiary is independent. Videos: YouTube IDs.",
+  "pbag-theatre": { "photos": [], "videos": [] },
+  "peatice-productions": { "photos": [], "videos": [] },
+  "peers-got-talanta": { "photos": [{ "src": "/assets/img/pgt-balloons-1100.webp", "alt": "Blue and white balloon garland set up for a PGT event" }], "videos": [] },
+  "pbag-bunge": { "photos": [{ "src": "/assets/img/team-1100.webp", "alt": "PBAG management team", "pos": "center top" }], "videos": [] }
+}

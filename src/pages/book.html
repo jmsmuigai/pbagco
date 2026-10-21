@@ -1,0 +1,35 @@
+<!--{"title":"Book PBAG — Performances, Theatre for Development, Comedians & AI Consultations","desc":"Hire PBAG for a performance, Theatre for Development workshop, comedians or MC, content production, or book a Generative AI consultation. Check live availability and request a date.","nav":"book","js":"book"}-->
+<section class="page-hero" style="padding-bottom:28px;--hc:var(--magenta)">
+  <div class="wrap">
+    <span class="kicker">Book Us</span>
+    <h1 class="display h1" style="font-size:clamp(2.6rem,7vw,5rem)">Bring PBAG to <span class="serif gold">your</span> stage</h1>
+    <p class="lead">Pick what you need, choose a free date on the live calendar and send your request — the team confirms by phone or email, usually within one working day.</p>
+  </div>
+</section>
+<section class="wrap" style="padding-bottom:90px">
+  <h2 class="h3" style="margin-bottom:14px"><span class="gold">1.</span> What would you like to book?</h2>
+  <div class="service-pick" id="services"></div>
+  <div class="grid g2 mt" style="align-items:start">
+    <div class="stack">
+      <h2 class="h3"><span class="gold">2.</span> Choose a date</h2>
+      <div id="bcal"></div>
+      <div id="slotWrap" hidden><p class="field" style="margin:6px 0"><label>Preferred time</label></p><div class="slots" id="slots"></div></div>
+    </div>
+    <form class="card stack" id="bookForm" novalidate>
+      <h2 class="h3"><span class="gold">3.</span> Your details</h2>
+      <div class="summary" id="bSummary"><div><span>Service</span><b id="sumSvc">—</b></div><div><span>Date</span><b id="sumDate">Pick a date</b></div><div><span>Time</span><b id="sumSlot">—</b></div></div>
+      <div class="grid g2" style="gap:12px">
+        <div class="field"><label for="fName">Your name</label><input class="input" id="fName" required autocomplete="name"></div>
+        <div class="field"><label for="fOrg">Organisation (optional)</label><input class="input" id="fOrg" autocomplete="organization"></div>
+        <div class="field"><label for="fPhone">Phone / WhatsApp</label><input class="input" id="fPhone" inputmode="tel" autocomplete="tel" placeholder="0712 345 678"></div>
+        <div class="field"><label for="fEmail">Email</label><input class="input" id="fEmail" type="email" autocomplete="email"></div>
+        <div class="field"><label for="fLoc">Location / venue</label><input class="input" id="fLoc" placeholder="e.g. Limuru, online"></div>
+        <div class="field"><label for="fAud">Expected audience</label><select class="input" id="fAud"><option value="">Select…</option><option>Under 50</option><option>50–200</option><option>200–500</option><option>500+</option><option>Online</option></select></div>
+      </div>
+      <div class="field"><label for="fNotes">Tell us about it</label><textarea class="input" id="fNotes" placeholder="Occasion, theme, language, budget range…"></textarea></div>
+      <input class="hp" id="fWeb" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <p class="form-msg" id="bMsg" role="status"></p>
+      <button class="btn btn-gold" id="bSubmit">{{i:send}} Send booking request</button>
+    </form>
+  </div>
+</section>

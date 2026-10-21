@@ -1,0 +1,10 @@
+import './mock.js';
+import '../../public/assets/js/app.js';
+import '../../public/assets/js/home.js';
+import '../../public/assets/js/subsidiaries.js';
+import '../../public/assets/js/theatre.js';
+import '../../public/assets/js/tickets.js';
+import '../../public/assets/js/book.js';
+import '../../public/assets/js/ai.js';
+import '../../public/assets/js/contact.js';
+import './router.js';

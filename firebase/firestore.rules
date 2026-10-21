@@ -1,41 +1,9 @@
 rules_version = '2';
-
-// PBAG International — Firestore security rules.
-//
-// The Express API (apps/api) talks to Firestore exclusively through the
-// Firebase Admin SDK, which runs with service-account privileges and
-// BYPASSES these rules entirely. That is the intended, secure design:
-// all writes (orders, tickets, commissions) go through server-side
-// validation in apps/api/src/routes, never directly from the browser.
-//
-// These rules exist as defense-in-depth in case a client Firebase SDK is
-// ever added to the frontend: by default, everything is locked down
-// except public read access to published events. Tighten further (e.g.
-// scope ticket reads to an authenticated buyer's own orders) if you do
-// add client-side Firestore reads.
+// All reads/writes go through the Cloud Run API (service account via IAM),
+// which bypasses these rules. Browsers never talk to Firestore directly.
 service cloud.firestore {
   match /databases/{database}/documents {
-
-    // Events are public marketing content — safe to read directly.
-    match /events/{eventId} {
-      allow read: if true;
-      allow write: if false; // producers/admins write via the API only
-    }
-
-    // Everything else (orders, tickets, sellers, commissions) contains
-    // buyer PII, payment references, and financial data — no direct
-    // client access. All reads/writes go through apps/api, which applies
-    // its own authorization logic.
-    match /orders/{orderId} {
-      allow read, write: if false;
-    }
-    match /tickets/{ticketId} {
-      allow read, write: if false;
-    }
-    match /sellers/{sellerId} {
-      allow read, write: if false;
-    }
-    match /commissions/{commissionId} {
+    match /{document=**} {
       allow read, write: if false;
     }
   }

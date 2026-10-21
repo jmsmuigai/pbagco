@@ -1,5 +1,6 @@
 // In-browser stand-in for the PBAG API so the preview runs as one file, offline.
-import { SEED_EVENTS, SEED_VIDEOS, ORG, SUBSIDIARIES, BOOKING_SERVICES, AI_SERVICES, FAQ } from '../../server/content.js';
+import { offlineAnswer } from '../../server/offline.js';
+import { SEED_EVENTS, SEED_VIDEOS, ORG, SUBSIDIARIES, BOOKING_SERVICES, AI_SERVICES, FAQ, PAYMENT_DETAILS, SEED_AUDITIONS } from '../../server/content.js';
 
 try { const rs = history.replaceState.bind(history); history.replaceState = (...a) => { try { rs(...a); } catch {} }; } catch {}
 
@@ -8,9 +9,9 @@ const CFG = window.PBAG_STATIC || {}, BASE = (CFG.base || '/').replace(/\/?$/, '
 const KEY = 'pbag-static-db';
 let saved = null; try { saved = CFG.persist && JSON.parse(localStorage.getItem(KEY)); } catch {}
 const events = structuredClone(SEED_EVENTS);
-const orders = saved?.orders || {}, tickets = saved?.tickets || {}, bookings = [];
+const orders = saved?.orders || {}, tickets = saved?.tickets || {}, apps = saved?.apps || {}, bookings = [];
 if (saved?.sold) events.forEach((e) => e.tiers.forEach((t) => { t.sold = saved.sold[e.id + '/' + t.id] || 0; }));
-const save = () => { if (!CFG.persist) return; try { const sold = {}; events.forEach((e) => e.tiers.forEach((t) => (sold[e.id + '/' + t.id] = t.sold || 0))); localStorage.setItem(KEY, JSON.stringify({ orders, tickets, sold })); } catch {} };
+const save = () => { if (!CFG.persist) return; try { const sold = {}; events.forEach((e) => e.tiers.forEach((t) => (sold[e.id + '/' + t.id] = t.sold || 0))); localStorage.setItem(KEY, JSON.stringify({ orders, tickets, apps, sold })); } catch {} };
 const B32 = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
 const rid = (n) => Array.from(crypto.getRandomValues(new Uint8Array(n)), (x) => B32[x % 32]).join('');
 const subName = (s) => SUBSIDIARIES.find((x) => x.slug === s)?.name;
@@ -38,11 +39,17 @@ window.fetch = async (url, opts = {}) => {
   if (p === '/api/events') return ok(events.map(pub));
   let em; if ((em = p.match(/^\/api\/events\/([\w-]+)$/))) { const e = events.find((x) => x.slug === em[1] || x.id === em[1]); return e ? ok(pub(e)) : err('Event not found', 404); }
   if (p === '/api/videos') return ok({ channelPlaylist: ORG.youtubeUploads, videos: SEED_VIDEOS });
-  if (p === '/api/site') return ok({ org: ORG, subsidiaries: SUBSIDIARIES, bookingServices: BOOKING_SERVICES, aiServices: AI_SERVICES, faq: FAQ, payments: { mode: 'mock', mpesa: true, card: true, paypal: true } });
+  if (p === '/api/site') return ok({ org: ORG, subsidiaries: SUBSIDIARIES, bookingServices: BOOKING_SERVICES, aiServices: AI_SERVICES, faq: FAQ, payments: { mode: 'mock', mpesa: true, card: false, paypal: false, paybill: true, bank: true }, paymentDetails: PAYMENT_DETAILS });
   if (p === '/api/bookings/busy') return ok(events.flatMap((e) => e.performances.map((x) => x.startsAt.slice(0, 10))));
   if (p === '/api/bookings') { if (!body.name || !body.date) return err('Missing details'); const b = { ...body, id: 'BK' + rid(6) }; bookings.push(b); return ok(b, 201); }
   if (p === '/api/contact') return ok({ ok: true }, 201);
-  if (p === '/api/chat') return ok({ text: faq(body.messages.at(-1).text).replaceAll('](/', `](${BASE}`), offline: true });
+  if (p === '/api/escalate') return body.question ? ok({ id: 'ES' + rid(6) }, 201) : err('Please share your question and a phone number or email');
+  if (p === '/api/auditions') return ok(SEED_AUDITIONS);
+  if (p === '/api/auditions/subscribe') return ok({ ok: true });
+  if (p === '/api/auditions/apply') { const a = SEED_AUDITIONS.find((x) => x.id === body.auditionId); if (!a || !body.name || !body.phone || !body.consent) return err('Name, phone and consent are required'); const id = 'AU' + rid(6); apps[id] = { id, name: body.name, phone: norm(body.phone), auditionTitle: a.title, status: 'submitted', slot: null, venue: a.venue, date: a.date }; save(); return ok({ id, status: 'submitted', auditionTitle: a.title, date: a.date }, 201); }
+  if (p === '/api/auditions/status') { const a = apps[String(body.ref).toUpperCase().trim()]; return a && a.phone === norm(body.contact) ? ok(a) : err('No application matches that reference and contact', 404); }
+  if (p === '/api/translate') return ok({ texts: body.texts, translated: 0, engine: 'none' });
+  if (p === '/api/chat') { const a = offlineAnswer(body.messages.at(-1).text); return ok({ ...a, offline: true }); }
   if (p === '/api/ai/spark') { const t = body.topic || 'youth'; return ok({ offline: true, text: { tagline: `1. ${t} — live on stage, straight from Limuru.\n2. Come for the laughs, stay for the truth.\n3. Hii si story — it's theatre.`, scene: `WANJIRU: Three hours in this queue, and for what?\nOTIENO: They say change is coming... "soon".\nWANJIRU: Soon has been coming since my first-born was in class one.\nOTIENO: So — do we wait, or speak up?\n(Both turn to the audience.) What would YOU do about ${t}?`, caption: `1. The stage is set! PBAG brings "${t}" to life — grab your seat on pbagco.com 🎭 #PBAG #KenyanTheatre\n2. Laugh, think, talk about it. "${t}" — live with PBAG. #Limuru` }[body.kind] }); }
   if (p === '/api/orders' && m === 'POST') {
     const e = events.find((x) => x.id === body.eventId), t = e?.tiers.find((x) => x.id === body.tierId), perf = e?.performances.find((x) => x.id === body.performanceId);
@@ -53,8 +60,19 @@ window.fetch = async (url, opts = {}) => {
     orders[o.id] = o; save(); return ok(pubOrder(o), 201);
   }
   let mm;
+  if ((mm = p.match(/^\/api\/orders\/(\w+)\/code$/))) {
+    const o = orders[mm[1]]; if (!o) return err('Order not found', 404);
+    const code = String(body.code || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
+    if (body.method !== 'bank' && !/^(?=.*[A-Z])(?=.*\d)[A-Z0-9]{10}$/.test(code)) return err('That doesn\'t look like an M-Pesa code — it is 10 letters and numbers, e.g. SJK3H5X8QP');
+    if (Object.values(orders).some((x) => x.id !== o.id && x.payment?.ref === code)) return err('This payment code has already been used. Each code can generate tickets only once.', 409);
+    const e = events.find((x) => x.id === o.eventId); e.tiers.find((x) => x.id === o.tierId).sold += o.qty;
+    o.ticketIds = Array.from({ length: o.qty }, (_, i) => { const id = rid(10); tickets[id] = { id, code: `${id}.${rid(10)}`, holder: o.buyer.name, tierName: o.tierName, seat: `${i + 1} of ${o.qty}`, status: 'valid', startsAt: o.startsAt, venue: o.venue, eventTitle: o.eventTitle }; return id; });
+    o.status = 'paid'; o.payment = { method: body.method || 'paybill', ref: code, simulated: true }; save();
+    return ok({ status: 'paid', simulated: true });
+  }
   if ((mm = p.match(/^\/api\/orders\/(\w+)\/pay$/))) {
     const o = orders[mm[1]]; if (!o) return err('Order not found', 404);
+    if (body.method === 'paybill' || body.method === 'bank') return ok({ status: 'awaiting_code', details: PAYMENT_DETAILS[body.method], account: o.id, amount: o.total });
     setTimeout(() => { const e = events.find((x) => x.id === o.eventId); e.tiers.find((x) => x.id === o.tierId).sold += o.qty;
       o.ticketIds = Array.from({ length: o.qty }, (_, i) => { const id = rid(10); tickets[id] = { id, code: `${id}.${rid(10)}`, holder: o.buyer.name, tierName: o.tierName, seat: `${i + 1} of ${o.qty}`, status: 'valid', startsAt: o.startsAt, venue: o.venue, eventTitle: o.eventTitle }; return id; });
       o.status = 'paid'; o.payment = { method: body.method, ref: 'SIM' + rid(8), simulated: true }; save(); }, body.method === 'mpesa' ? 4000 : 2200);

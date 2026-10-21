@@ -1,7 +1,8 @@
 // Reusable month calendar. mode 'events': highlight days with shows (coloured dots).
 // mode 'availability': every future day selectable except `busy` dates.
-import { icon, fmt } from './app.js';
-const DOW = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+import { icon, fmt, t } from './app.js';
+const LOC = document.documentElement.lang === 'sw' ? 'sw-KE' : 'en-KE';
+const DOW = LOC === 'sw-KE' ? ['Jtt', 'Jnn', 'Jtn', 'Alh', 'Iju', 'Jms', 'Jpl'] : ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 const ymd = (d) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
 
 export function Calendar(el, opts) {
@@ -28,13 +29,13 @@ export function Calendar(el, opts) {
       if (o.mode === 'availability' && !past) cls.push(o.busy.has(key) ? 'busy' : 'free');
       if (selected === key) cls.push('sel');
       const clickable = !past && ((o.mode === 'events' && marks.length) || (o.mode === 'availability' && !o.busy.has(key)));
-      const label = date.toLocaleDateString('en-KE', { weekday: 'long', day: 'numeric', month: 'long' }) + (marks.length ? ` — ${marks.map((x) => x.label).join(', ')}` : '') + (o.busy.has(key) ? ' — unavailable' : '');
+      const label = date.toLocaleDateString(LOC, { weekday: 'long', day: 'numeric', month: 'long' }) + (marks.length ? ` — ${marks.map((x) => x.label).join(', ')}` : '') + (o.busy.has(key) ? ' — ' + t('unavailable') : '');
       cells += `<${clickable ? 'button type="button"' : 'span'} class="${cls.join(' ')}" data-d="${key}" aria-label="${label}" ${selected === key ? 'aria-pressed="true"' : ''}>${d}${marks.length ? `<span class="dots">${marks.slice(0, 3).map((x) => `<i style="--dc:${x.color}"></i>`).join('')}</span>` : ''}</${clickable ? 'button' : 'span'}>`;
     }
     const canPrev = new Date(y, m, 1) > new Date(today.getFullYear(), today.getMonth(), 1);
     el.innerHTML = `<div class="cal">
-      <div class="cal-head"><h3>${view.toLocaleDateString('en-KE', { month: 'long', year: 'numeric' })}</h3>
-        <div class="row"><button type="button" data-nav="-1" aria-label="Previous month" ${canPrev ? '' : 'disabled style="opacity:.3"'}>${icon('chevron-left')}</button><button type="button" data-nav="1" aria-label="Next month">${icon('chevron-right')}</button></div></div>
+      <div class="cal-head"><h3>${view.toLocaleDateString(LOC, { month: 'long', year: 'numeric' })}</h3>
+        <div class="row"><button type="button" data-nav="-1" aria-label="${t('Previous month')}" ${canPrev ? '' : 'disabled style="opacity:.3"'}>${icon('chevron-left')}</button><button type="button" data-nav="1" aria-label="${t('Next month')}">${icon('chevron-right')}</button></div></div>
       <div class="cal-grid">${DOW.map((d) => `<span class="cal-dow">${d}</span>`).join('')}${cells}</div>
       ${o.legend.length ? `<div class="cal-legend">${o.legend.map((l) => `<span><i style="--dc:${l.color}"></i>${l.label}</span>`).join('')}</div>` : ''}
     </div>`;

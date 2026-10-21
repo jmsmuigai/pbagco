@@ -5,7 +5,7 @@
       <span class="kicker">PBAG AI · Theatre &amp; Film</span>
       <h1 class="display h1" style="font-size:clamp(2.8rem,7.5vw,5.6rem)">From village stage to <span class="serif gold">screen</span>, with Google AI</h1>
       <p class="lead">PBAG pairs a decade of Limuru storytelling with the Google AI ecosystem — research, scripts, storyboards, previz, posters and the apps that sell the tickets. Artists direct; AI accelerates.</p>
-      <div class="row mt"><a class="btn btn-gold" href="#simulator">{{i:play}} Run the studio simulator</a><a class="btn" href="/book?service=ai">{{i:graduation-cap}} Training &amp; consultancy</a></div>
+      <div class="row mt"><a class="btn btn-gold" href="#simulator">{{i:play}} Run the studio simulator</a><a class="btn" href="#manager">{{i:bar-chart-3}} Film manager</a><a class="btn" href="/book?service=ai">{{i:graduation-cap}} Training &amp; consultancy</a></div>
     </div>
     <div class="orbit" aria-hidden="true">
       <div class="orbit-core">{{i:clapperboard}}<b>PBAG Studio</b></div>
@@ -49,6 +49,25 @@
         <div class="sim-board" id="simBoard" aria-label="Simulated storyboard"></div>
       </div>
     </div>
+  </div>
+</section>
+
+<section class="section" id="manager" style="padding-top:0">
+  <div class="wrap">
+    <div class="section-head"><span class="scene-no">Simulation · film management</span><h2 class="display h2">Run a whole <span class="serif gold">film</span> with AI agents</h2><p class="lead">A short film, from script to screening, managed on one board. Press <b>Auto-plan</b> and watch AI agents (Gemini, AI Studio, Nano Banana, Veo/Flow, Antigravity) break down the script, cast from PBAG auditions, schedule, budget, generate previz, subtitle in Kiswahili and Gĩkũyũ, and plan the release — with a producer approving every step.</p></div>
+    <div class="fm">
+      <div class="fm-top">
+        <div><b class="display" style="font-size:1.6rem">Short film · "The Stone of Fear"</b><small class="muted" style="display:block">An illustrative project inspired by Ihiga rĩa Gũoya</small></div>
+        <div class="fm-kpis"><span><small>Progress</small><b id="fmProg">0%</b></span><span><small>Budget planned</small><b id="fmBudget">KES 0</b></span><span><small>Shoot days</small><b id="fmDays">—</b></span><span><small>Approvals</small><b id="fmAppr">0</b></span></div>
+        <button class="btn btn-gold" id="fmRun">{{i:sparkles}} Auto-plan with AI</button>
+      </div>
+      <div class="fm-board" id="fmBoard"></div>
+      <div class="fm-bottom">
+        <div class="fm-gantt" id="fmGantt" aria-label="Schedule"></div>
+        <div class="fm-log" id="fmLog" aria-live="polite"><p class="muted">Agent activity will appear here.</p></div>
+      </div>
+    </div>
+    <p class="muted mt" style="font-size:.82rem">Simulation with illustrative figures. Real productions keep a human producer in charge; for training or a pilot on your own film, <a class="gold" href="/book?service=ai">contact PBAG</a>.</p>
   </div>
 </section>
 

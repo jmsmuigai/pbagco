@@ -13,7 +13,7 @@
 
 import fs from 'node:fs';
 import path from 'node:path';
-import { SEED_EVENTS, SEED_VIDEOS, RETIRED_VIDEOS } from './content.js';
+import { SEED_EVENTS, SEED_VIDEOS, RETIRED_VIDEOS, SEED_AUDITIONS } from './content.js';
 
 const DATA_FILE = path.resolve('data/dev-db.json');
 
@@ -113,6 +113,7 @@ async function seed(store) {
     else if (!cur.section) await store.update('videos', v.id, { section: v.section, order: i }); // migrate older seeds
   }
   for (const id of RETIRED_VIDEOS) if (await store.get('videos', id)) await store.update('videos', id, { retired: true });
+  for (const a of SEED_AUDITIONS) if (!(await store.get('auditions', a.id))) await store.set('auditions', a.id, { ...a, createdAt: new Date().toISOString() });
   if (!(await store.get('sellers', 'PBAG10'))) {
     await store.set('sellers', 'PBAG10', { code: 'PBAG10', name: 'PBAG Promoters Desk', phone: '', commissionRate: null, active: true, createdAt: new Date().toISOString() });
   }

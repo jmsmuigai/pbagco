@@ -174,14 +174,14 @@
    "id": "kereita",
    "name": "Kereita Forest",
    "cat": "forest",
-   "lat": -0.955,
-   "lon": 36.665,
-   "approx": true,
+   "lat": -0.9039,
+   "lon": 36.7084,
+   "approx": false,
    "radius": 3500,
    "period": "1950s – today",
    "used": "Mau Mau hideout with caves; burial ground for many killed after Lari.",
    "desc": "At the southern tip of the Aberdares — caves, the Gatamaiyu waterfall and an Important Bird Area, now managed with KENVO.",
-   "src": "Wikipedia: Kereita; Wikipedia: Lari Constituency"
+   "src": "OpenStreetMap; Wikipedia: Kereita; Wikipedia: Lari Constituency"
   },
   {
    "id": "kinale",
@@ -290,6 +290,97 @@
    "used": "Main forest base of the Kenya Land and Freedom Army.",
    "desc": "The destination of fighters leaving Kiambu through Lari's forests.",
    "src": "General histories of the Emergency"
+  },
+  {
+   "id": "riftview",
+   "name": "Rift Valley viewpoint",
+   "cat": "physical",
+   "lat": -1.056,
+   "lon": 36.6027,
+   "period": "Natural landmark",
+   "used": "Lookout over the Great Rift Valley floor on the Limuru–Mai Mahiu road.",
+   "desc": "Where the Kikuyu highlands break into the Rift; Mount Longonot's crater is visible to the north-west.",
+   "src": "OpenStreetMap"
+  },
+  {
+   "id": "longonot",
+   "name": "Mount Longonot (on the horizon)",
+   "cat": "physical",
+   "lat": -0.9162,
+   "lon": 36.4473,
+   "period": "Volcano",
+   "used": "Dormant stratovolcano on the Rift floor, seen from Limuru's escarpment.",
+   "desc": "Outside Kiambu, but part of every view west from the Limuru ridge.",
+   "src": "OpenStreetMap"
+  },
+  {
+   "id": "gatamaiyu",
+   "name": "Gatamaiyu Forest",
+   "cat": "forest",
+   "lat": -0.9937,
+   "lon": 36.6732,
+   "radius": 2500,
+   "approx": true,
+   "period": "Forest",
+   "used": "Riverine montane forest along the Gatamaiyu River in Lari.",
+   "desc": "Part of the forest belt that runs from Lari into the Aberdares.",
+   "src": "OpenStreetMap"
+  },
+  {
+   "id": "kereita-caves",
+   "name": "Kereita caves & Gatamaiyu waterfall",
+   "cat": "physical",
+   "lat": -0.908,
+   "lon": 36.704,
+   "approx": true,
+   "period": "1950s – today",
+   "used": "Caves that sheltered Mau Mau fighters; waterfall on the Gatamaiyu River.",
+   "desc": "Reached on guided walks in Kereita Forest (location approximate).",
+   "src": "Wikipedia: Kereita; Wikipedia: Lari Constituency"
+  },
+  {
+   "id": "kiambethu",
+   "name": "Kiambethu tea farm, Tigoni",
+   "cat": "physical",
+   "lat": -1.1165,
+   "lon": 36.6837,
+   "period": "1910 – today",
+   "used": "Historic tea farm; tours and tea tastings.",
+   "desc": "A. B. McDonell, who arrived in Kenya in 1904, bought 350 acres in Tigoni in 1910 — part of Limuru's pioneering tea country.",
+   "src": "Business Daily; OpenStreetMap"
+  },
+  {
+   "id": "ondiri",
+   "name": "Ondiri Swamp — Kenya's quaking bog",
+   "cat": "physical",
+   "lat": -1.2493,
+   "lon": 36.6575,
+   "period": "Natural landmark",
+   "used": "Wetland that sustains the Nairobi River basin and recharges the Kikuyu Springs (≈6,000 m³ of water a day for Nairobi).",
+   "desc": "Kenya's only known quaking bog: a floating mat of vegetation over peat in an old crater lake, 34.5 ha at about 2,000 m. Threatened by encroachment and pollution.",
+   "src": "Daily Nation"
+  },
+  {
+   "id": "redhill-dam",
+   "name": "Redhill dam",
+   "cat": "physical",
+   "lat": -1.1655,
+   "lon": 36.7028,
+   "period": "Farm dam",
+   "used": "One of the small farm dams that water the Tigoni–Redhill farms.",
+   "desc": "Limuru's many small dams store the plentiful highland rain for farms and livestock.",
+   "src": "OpenStreetMap"
+  },
+  {
+   "id": "sasumua",
+   "name": "Sasumua Dam",
+   "cat": "physical",
+   "lat": -0.7603,
+   "lon": 36.6813,
+   "period": "Dam",
+   "used": "Reservoir at the southern Aberdares; the drive to Ragia forest passes it.",
+   "desc": "A landmark on the route from Lari into the Aberdare forests.",
+   "src": "The Star (2021); OpenStreetMap"
   }
  ],
  "routes": [
@@ -310,8 +401,8 @@
      36.6288
     ],
     [
-     -0.955,
-     36.665
+     -0.9039,
+     36.7084
     ],
     [
      -0.8946,

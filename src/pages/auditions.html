@@ -1,0 +1,84 @@
+<!--{"title":"PBAG Auditions — Open Casting Calls in Limuru for Actors, Comedians, Dancers, Poets & Film | PBAG","desc":"Apply online for PBAG auditions in Limuru — theatre, comedy, dance, poetry, music and film. Subscribe for audition alerts, upload a performance link and track your application.","nav":"auditions","js":"auditions"}-->
+<section class="page-hero" style="--hc:var(--magenta)">
+  <div class="wrap grid g2" style="align-items:center">
+    <div>
+      <span class="kicker">Auditions · Casting</span>
+      <h1 class="display h1" style="font-size:clamp(2.8rem,7.5vw,5.6rem)">Your <span class="serif gold">stage</span> is calling</h1>
+      <p class="lead">Actors, comics, dancers, singers, poets, film-makers and techies — apply online in minutes, get alerts for new calls, and follow your application from submission to callback.</p>
+      <div class="row mt"><a class="btn btn-gold" href="#calls">{{i:mic-vocal}} See open calls</a><a class="btn" href="#subscribe">{{i:megaphone}} Get audition alerts</a><a class="btn btn-ghost" href="#track">{{i:search}} Track my application</a></div>
+    </div>
+    <ol class="aud-flow" aria-label="How auditions work">
+      <li><b>1</b><span><strong>Subscribe</strong>Pick your talents; we alert you when a matching call opens.</span></li>
+      <li><b>2</b><span><strong>Apply</strong>Send a link to a short clip and a few lines about you.</span></li>
+      <li><b>3</b><span><strong>Shortlist</strong>PBAG's directors review every application.</span></li>
+      <li><b>4</b><span><strong>Invite</strong>Shortlisted? Your audition slot is assigned automatically.</span></li>
+      <li><b>5</b><span><strong>Callback</strong>Track your status any time with your reference.</span></li>
+    </ol>
+  </div>
+</section>
+
+<section class="section" id="calls" style="padding-top:10px">
+  <div class="wrap">
+    <div class="section-head"><span class="scene-no">Open &amp; upcoming calls</span><h2 class="display h2">Now <span class="serif gold">casting</span></h2></div>
+    <div class="grid g2" id="callGrid" aria-live="polite"><div class="spinner"></div></div>
+  </div>
+</section>
+
+<section class="section" id="apply" style="padding-top:0">
+  <div class="wrap grid g2" style="align-items:start">
+    <form class="card stack" id="applyForm" novalidate>
+      <h2 class="h3">{{i:send}} Apply online</h2>
+      <div class="field"><label for="aCall">Audition</label><select class="input" id="aCall" required></select></div>
+      <div class="grid g2" style="gap:12px">
+        <div class="field"><label for="aName">Full name</label><input class="input" id="aName" required autocomplete="name"></div>
+        <div class="field"><label for="aPhone">Phone / WhatsApp</label><input class="input" id="aPhone" required inputmode="tel" autocomplete="tel" placeholder="0712 345 678"></div>
+        <div class="field"><label for="aEmail">Email (optional)</label><input class="input" id="aEmail" type="email" autocomplete="email"></div>
+        <div class="field"><label for="aAge">Age group</label><select class="input" id="aAge" required><option value="">Select…</option><option value="under18">Under 18</option><option value="18-25">18–25</option><option value="26-35">26–35</option><option value="36+">36+</option></select></div>
+      </div>
+      <div class="field"><label>Talents</label><div class="chips-pick" id="aCats"></div></div>
+      <div class="field"><label for="aRole">Role you're interested in (optional)</label><input class="input" id="aRole" list="roleList"><datalist id="roleList"></datalist></div>
+      <div class="field"><label for="aLink">Link to your performance (YouTube, TikTok, Instagram, Drive)</label><input class="input" id="aLink" type="url" placeholder="https://"></div>
+      <div class="field"><label for="aBio">About you (max 1,200 characters)</label><textarea class="input" id="aBio" maxlength="1200"></textarea></div>
+      <div class="field"><label for="aLoc">Where are you based?</label><input class="input" id="aLoc" placeholder="e.g. Limuru, Ndeiya, Kikuyu"></div>
+      <label class="check" id="guardianWrap" hidden><input type="checkbox" id="aGuardian"> My parent / guardian consents to this application and will accompany me.</label>
+      <label class="check"><input type="checkbox" id="aConsent" required> I agree that PBAG may store my details to process this application (Kenya Data Protection Act, 2019).</label>
+      <label class="check"><input type="checkbox" id="aSub" checked> Alert me about future auditions.</label>
+      <input class="hp" id="aWeb" tabindex="-1" autocomplete="off">
+      <p class="form-msg" id="aMsg" role="status"></p>
+      <button class="btn btn-gold">{{i:send}} Submit application</button>
+    </form>
+    <div class="stack">
+      <form class="card stack" id="subscribe" novalidate>
+        <h2 class="h3">{{i:megaphone}} Audition alerts</h2>
+        <p class="muted" style="margin:0">Be first to know. Choose your talents and how we should reach you.</p>
+        <div class="chips-pick" id="sCats"></div>
+        <div class="grid g2" style="gap:12px">
+          <div class="field"><label for="sName">Name</label><input class="input" id="sName" autocomplete="name"></div>
+          <div class="field"><label for="sContact">Phone or email</label><input class="input" id="sContact" required></div>
+        </div>
+        <div class="row"><label class="chip"><input type="radio" name="sChan" value="whatsapp" checked> WhatsApp</label><label class="chip"><input type="radio" name="sChan" value="sms"> SMS</label><label class="chip"><input type="radio" name="sChan" value="email"> Email</label></div>
+        <input class="hp" id="sWeb" tabindex="-1" autocomplete="off">
+        <p class="form-msg" id="sMsg" role="status"></p>
+        <button class="btn btn-blue">{{i:check}} Subscribe</button>
+      </form>
+      <form class="card stack" id="track" novalidate>
+        <h2 class="h3">{{i:search}} Track my application</h2>
+        <div class="grid g2" style="gap:12px">
+          <div class="field"><label for="tRef">Reference</label><input class="input mono" id="tRef" placeholder="AUXXXXXX" required style="text-transform:uppercase"></div>
+          <div class="field"><label for="tContact">Phone or email</label><input class="input" id="tContact" required></div>
+        </div>
+        <p class="form-msg" id="tMsg" role="status"></p>
+        <button class="btn">{{i:search}} Check status</button>
+        <div id="tOut"></div>
+      </form>
+    </div>
+  </div>
+</section>
+<section class="section" style="padding-top:0">
+  <div class="wrap"><div class="accordion">
+    <details><summary>Is it free to audition?</summary><p>Yes. PBAG never charges audition fees. Be wary of anyone asking you to pay to audition in PBAG's name — report it on 0720 960 180.</p></details>
+    <details><summary>Can under-18s apply?</summary><p>Yes, with a parent's or guardian's consent; a guardian must accompany you on audition day.</p></details>
+    <details><summary>What should my clip show?</summary><p>One to three minutes of your best work — a monologue, a set, a dance, a song or a reel. Phone video is perfectly fine.</p></details>
+    <details><summary>How will I hear back?</summary><p>By WhatsApp/SMS or email. You can also track your status here with your reference number at any time.</p></details>
+  </div></div>
+</section>

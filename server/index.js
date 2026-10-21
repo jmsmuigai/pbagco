@@ -7,10 +7,10 @@ import helmet from 'helmet';
 import crypto from 'node:crypto';
 import path from 'node:path';
 import { createStore } from './db.js';
-import { ORG, SUBSIDIARIES, BOOKING_SERVICES, AI_SERVICES, FAQ } from './content.js';
+import { ORG, SUBSIDIARIES, BOOKING_SERVICES, AI_SERVICES, FAQ, PAYMENT_DETAILS, AUDITION_CATEGORIES } from './content.js';
 import * as S from './services.js';
 import { methods, startPayment, parseMpesaCallback } from './payments.js';
-import { chat, spark } from './gemini.js';
+import { chat, spark, translate } from './gemini.js';
 import { mountMcp } from './mcp.js';
 
 const PORT = process.env.PORT || 8080;
@@ -67,7 +67,7 @@ app.get('/api/health', (_req, res) => res.json({ ok: true, db: db.kind, payments
 
 app.get('/api/site', (_req, res) => {
   res.set('Cache-Control', 'public, max-age=300');
-  res.json({ org: ORG, subsidiaries: SUBSIDIARIES, bookingServices: BOOKING_SERVICES, aiServices: AI_SERVICES, faq: FAQ, payments: methods() });
+  res.json({ org: ORG, subsidiaries: SUBSIDIARIES, bookingServices: BOOKING_SERVICES, aiServices: AI_SERVICES, faq: FAQ, payments: { ...methods(), paybill: true, bank: true }, paymentDetails: PAYMENT_DETAILS, auditionCategories: AUDITION_CATEGORIES });
 });
 
 app.get('/api/events', wrap(async (_req, res) => { res.set('Cache-Control', 'public, max-age=30'); res.json(await S.listEvents(db)); }));
@@ -99,6 +99,11 @@ app.post('/api/orders/:id/pay', limit(10, 60e3), wrap(async (req, res) => {
   const o = await db.get('orders', req.params.id);
   if (!o || o.accessKey !== req.body.key) return res.status(404).json({ error: 'Order not found' });
   if (o.status !== 'pending') return res.status(409).json({ error: `Order is ${o.status}` });
+  if (req.body.method === 'paybill' || req.body.method === 'bank') {
+    // Manual Paybill / bank: extend the seat hold while the buyer pays, then they paste the code.
+    await db.update('orders', o.id, { payMethod: req.body.method, expiresAt: new Date(Date.now() + 60 * 60e3).toISOString() });
+    return res.json({ status: 'awaiting_code', details: PAYMENT_DETAILS[req.body.method], account: o.id, amount: o.total });
+  }
   const method = ['mpesa', 'card', 'paypal'].includes(req.body.method) ? req.body.method : 'mpesa';
   const phone = S.phoneNorm(req.body.phone || o.buyer.phone);
   if (method === 'mpesa' && !/^2547\d{8}$|^2541\d{8}$/.test(phone)) return res.status(400).json({ error: 'Enter a valid Safaricom number, e.g. 0712 345 678' });
@@ -108,6 +113,13 @@ app.post('/api/orders/:id/pay', limit(10, 60e3), wrap(async (req, res) => {
   });
   if (r?.checkoutRequestId) await db.update('orders', o.id, { checkoutRequestId: r.checkoutRequestId, payMethod: method });
   res.json({ status: 'pending', message: r?.message });
+}));
+
+app.post('/api/orders/:id/code', limit(8, 10 * 60e3), wrap(async (req, res) => {
+  const o = await db.get('orders', req.params.id);
+  if (!o || o.accessKey !== req.body.key) return res.status(404).json({ error: 'Order not found' });
+  const r = await S.submitPaymentCode(db, o.id, req.body.code, req.body.method === 'bank' ? 'bank' : 'paybill', methods().mode);
+  res.json(r);
 }));
 
 app.get('/api/orders/:id', wrap(async (req, res) => {
@@ -135,6 +147,15 @@ app.post('/api/pay/mpesa/callback', wrap(async (req, res) => {
   res.json({ ResultCode: 0, ResultDesc: 'Accepted' });
 }));
 
+// Safaricom Daraja C2B (Paybill). Register these URLs with a secret token in the path:
+//   https://pbagco.com/api/pay/mpesa/c2b/<C2B_TOKEN>/validation  and  …/confirmation
+app.post('/api/pay/mpesa/c2b/:token/:kind', wrap(async (req, res) => {
+  const tok = process.env.C2B_TOKEN;
+  if (!tok || req.params.token !== tok) return res.status(404).json({ ResultCode: 1, ResultDesc: 'Rejected' });
+  if (req.params.kind === 'confirmation') await S.recordC2B(db, req.body);
+  res.json({ ResultCode: 0, ResultDesc: 'Accepted' });
+}));
+
 app.get('/api/tickets/verify/:code', limit(30, 60e3), wrap(async (req, res) => {
   const id = S.verifyCode(req.params.code);
   const t = id && (await db.get('tickets', id));
@@ -157,10 +178,27 @@ app.post('/api/contact', limit(5, 60e3), wrap(async (req, res) => {
   res.status(201).json({ ok: true, id });
 }));
 
+app.post('/api/escalate', limit(5, 10 * 60e3), wrap(async (req, res) => {
+  if (req.body.website) return res.json({ id: 'OK' });
+  res.status(201).json(await S.escalate(db, req.body));
+}));
+app.get('/api/auditions', wrap(async (_req, res) => { res.set('Cache-Control', 'public, max-age=60'); res.json(await S.listAuditions(db)); }));
+app.post('/api/auditions/subscribe', limit(6, 10 * 60e3), wrap(async (req, res) => { if (req.body.website) return res.json({ ok: true }); res.json(await S.subscribe(db, req.body)); }));
+app.post('/api/auditions/apply', limit(5, 10 * 60e3), wrap(async (req, res) => { if (req.body.website) return res.json({ id: 'OK' }); res.status(201).json(await S.applyAudition(db, req.body)); }));
+app.post('/api/auditions/status', limit(10, 10 * 60e3), wrap(async (req, res) => {
+  const r = await S.applicationStatus(db, req.body.ref, req.body.contact);
+  if (!r) return res.status(404).json({ error: 'No application matches that reference and contact' });
+  res.json(r);
+}));
+app.post('/api/translate', limit(30, 60e3), wrap(async (req, res) => {
+  const texts = (Array.isArray(req.body.texts) ? req.body.texts : []).slice(0, 40).map((t) => String(t).slice(0, 2000));
+  res.json(await translate(db, texts, req.body.to === 'en' ? 'en' : 'sw'));
+}));
+
 app.post('/api/chat', limit(15, 60e3), wrap(async (req, res) => {
   const msgs = Array.isArray(req.body.messages) ? req.body.messages.filter((m) => m && typeof m.text === 'string') : [];
   if (!msgs.length) return res.status(400).json({ error: 'No message' });
-  res.json(await chat(db, msgs));
+  res.json(await chat(db, msgs, { lang: req.body.lang === 'sw' ? 'sw' : 'en' }));
 }));
 
 app.post('/api/ai/spark', limit(6, 60e3), wrap(async (req, res) => res.json(await spark(req.body.kind, req.body.topic))));
@@ -205,12 +243,29 @@ app.post('/api/staff/sellers', staffOnly, wrap(async (req, res) => {
   res.status(201).json(s);
 }));
 
+app.get('/api/staff/inbox', staffOnly, wrap(async (_req, res) => {
+  res.set('Cache-Control', 'no-store');
+  const [verifying, escalations, applications, subscribers] = await Promise.all([db.list('orders', [['status', '==', 'verifying']]), db.list('escalations'), db.list('applications'), db.list('subscribers')]);
+  res.json({ verifying: verifying.map((o) => ({ id: o.id, event: o.eventTitle, tier: o.tierName, qty: o.qty, total: o.total, buyer: o.buyer, claim: o.claim })),
+    escalations: escalations.sort((a, b) => b.createdAt.localeCompare(a.createdAt)), applications: applications.sort((a, b) => b.createdAt.localeCompare(a.createdAt)), subscribers: subscribers.length });
+}));
+app.post('/api/staff/verify', staffOnly, wrap(async (req, res) => res.json(await S.staffVerify(db, req.body.orderId, !!req.body.approve, req.staff))));
+app.patch('/api/staff/escalations/:id', staffOnly, wrap(async (req, res) => { await db.update('escalations', req.params.id, { status: req.body.status === 'resolved' ? 'resolved' : 'open', note: String(req.body.note || '').slice(0, 500), updatedBy: req.staff, updatedAt: new Date().toISOString() }); res.json({ ok: true }); }));
+app.patch('/api/staff/applications/:id', staffOnly, wrap(async (req, res) => res.json(await S.setApplicationStatus(db, req.params.id, req.body.status, req.staff))));
+app.get('/api/staff/subscribers.csv', staffOnly, wrap(async (_req, res) => {
+  const rows = await db.list('subscribers');
+  const q = (v) => `"${String(v ?? '').replace(/"/g, '""')}"`;
+  res.set('Content-Type', 'text/csv; charset=utf-8').set('Content-Disposition', 'attachment; filename="pbag-subscribers.csv"');
+  res.send(['name,phone,email,categories,lists,channel,created'].concat(rows.map((r) => [r.name, r.phone, r.email, (r.categories || []).join(' '), (r.lists || []).join(' '), r.channel, r.createdAt].map(q).join(','))).join('\n'));
+}));
+
 mountMcp(app, db);
 
 // --- static site -------------------------------------------------------------------
 const pub = path.resolve('public');
 // CSS/images/fonts are fingerprinted (?v=) or stable -> long cache. JS modules keep stable URLs -> revalidate (cheap 304s).
 app.use('/assets', express.static(path.join(pub, 'assets'), { maxAge: '30d', immutable: true, setHeaders: (res, p) => { if (p.endsWith('.js') && !p.includes('/vendor/')) res.setHeader('Cache-Control', 'no-cache'); } }));
+app.get('/.well-known/security.txt', (_req, res) => res.type('text/plain').sendFile(path.join(pub, '.well-known/security.txt')));
 app.use(express.static(pub, { extensions: ['html'], setHeaders: (res, p) => { if (p.endsWith('.html')) res.setHeader('Cache-Control', 'no-cache'); } }));
 app.get('/t/:code', (req, res) => res.redirect(302, `/tickets.html#verify=${encodeURIComponent(req.params.code)}`));
 app.use((req, res) => res.status(404).sendFile(path.join(pub, '404.html')));

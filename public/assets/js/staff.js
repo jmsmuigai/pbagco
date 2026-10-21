@@ -14,7 +14,7 @@ async function login(name, pin) {
 $('#login').addEventListener('submit', async (e) => { e.preventDefault(); try { await login($('#sName').value.trim(), $('#sPin').value); } catch (err) { auth = null; $('#loginMsg').textContent = err.message; } });
 $('#logout').addEventListener('click', () => { sessionStorage.removeItem('pbag-staff'); location.reload(); });
 
-const loaders = { dash, pos, bookings, sellers, scan: () => {}, programme: () => {} };
+const loaders = { dash, inbox, auditions, pos, bookings, sellers, scan: () => {}, programme: () => {} };
 function show(tab) {
   if (!loaders[tab]) tab = 'dash';
   $$('[data-tab]').forEach((b) => b.setAttribute('aria-selected', b.dataset.tab === tab));
@@ -145,3 +145,42 @@ async function sellers() {
 }
 
 if (auth) login(auth.name, auth.pin).catch(() => { auth = null; sessionStorage.removeItem('pbag-staff'); });
+
+
+/* ---------- inbox: payment verification + escalations ---------- */
+async function inbox() {
+  const el = $('[data-panel="inbox"]');
+  const d = await sapi('/api/staff/inbox').catch((e) => ({ error: e.message }));
+  if (d.error) return (el.innerHTML = `<p class="form-msg err">${esc(d.error)}</p>`);
+  el.innerHTML = `<h3 class="h3" style="margin-bottom:10px">${icon('wallet')} Payments awaiting verification (${d.verifying.length})</h3>
+    <p class="muted" style="font-size:.88rem">Check each code against the M-Pesa / bank statement before approving. Approved codes can never be reused.</p>
+    <div class="scroll-x"><table class="table"><thead><tr><th>Order</th><th>Buyer</th><th>Event</th><th>Amount</th><th>Code</th><th></th></tr></thead><tbody>
+    ${d.verifying.map((o) => `<tr><td><b>${o.id}</b></td><td>${esc(o.buyer.name)}<br><small class="muted">${esc(o.buyer.phone)}</small></td><td>${esc(o.event)}<br><small class="muted">${o.qty} × ${esc(o.tier)}</small></td><td>${kes(o.total)}</td><td class="mono">${esc(o.claim?.code || '')}<br><small class="muted">${esc(o.claim?.method || '')}</small></td>
+      <td><button class="btn btn-sm btn-gold" data-v="${o.id}" data-ok="1">Approve</button> <button class="btn btn-sm" data-v="${o.id}" data-ok="0">Reject</button></td></tr>`).join('') || '<tr><td colspan="6" class="muted">Nothing waiting 🎉</td></tr>'}</tbody></table></div>
+    <h3 class="h3 mt" style="margin-bottom:10px">${icon('users')} Escalated to Board &amp; Management (${d.escalations.filter((x) => x.status === 'open').length} open)</h3>
+    <div class="stack">${d.escalations.map((x) => `<div class="card" style="padding:16px"><div class="row" style="justify-content:space-between"><b>${esc(x.name)} · <span class="mono">${x.id}</span></b><span class="badge ${x.status === 'open' ? 'bad' : 'ok'}">${x.status}</span></div>
+      <p style="margin:8px 0">${esc(x.question)}</p><small class="muted">${esc(x.phone || '')} ${esc(x.email || '')} · ${fmt.short(x.createdAt)} ${fmt.time(x.createdAt)}</small>
+      <div class="row mt">${x.phone ? `<a class="btn btn-sm" target="_blank" rel="noopener" href="https://wa.me/${x.phone}?text=${encodeURIComponent('Hello ' + x.name + ', this is PBAG management responding to your question (' + x.id + ').')}">${icon('whatsapp')} Reply on WhatsApp</a>` : ''}${x.email ? `<a class="btn btn-sm" href="mailto:${esc(x.email)}?subject=PBAG%20response%20${x.id}">${icon('mail')} Email</a>` : ''}
+      ${x.status === 'open' ? `<button class="btn btn-sm btn-gold" data-res="${x.id}">Mark resolved</button>` : ''}</div></div>`).join('') || '<p class="muted">No escalations yet.</p>'}</div>`;
+  $$('[data-v]', el).forEach((b) => b.addEventListener('click', async () => { b.disabled = true; try { await sapi('/api/staff/verify', { method: 'POST', body: { orderId: b.dataset.v, approve: b.dataset.ok === '1' } }); toast(b.dataset.ok === '1' ? 'Approved — tickets issued' : 'Rejected — seats released'); inbox(); } catch (e) { toast(e.message); b.disabled = false; } }));
+  $$('[data-res]', el).forEach((b) => b.addEventListener('click', async () => { await sapi(`/api/staff/escalations/${b.dataset.res}`, { method: 'PATCH', body: { status: 'resolved' } }); toast('Resolved'); inbox(); }));
+}
+
+/* ---------- auditions pipeline ---------- */
+async function auditions() {
+  const el = $('[data-panel="auditions"]');
+  const d = await sapi('/api/staff/inbox');
+  const ST = ['submitted', 'shortlisted', 'invited', 'callback', 'selected', 'not_selected'];
+  el.innerHTML = `<div class="row" style="justify-content:space-between;margin-bottom:12px"><h3 class="h3">${icon('mic-vocal')} Applications (${d.applications.length})</h3><button class="btn btn-sm" id="csv">${icon('download')} Subscribers CSV (${d.subscribers})</button></div>
+    <p class="muted" style="font-size:.88rem">Setting a status to <b>invited</b> automatically assigns the next free 10-minute audition slot. Use the WhatsApp button to send the applicant their update.</p>
+    <div class="scroll-x"><table class="table"><thead><tr><th>Ref</th><th>Applicant</th><th>Call</th><th>Talents</th><th>Clip</th><th>Status / slot</th><th></th></tr></thead><tbody>
+    ${d.applications.map((a) => `<tr><td class="mono"><b>${a.id}</b></td><td>${esc(a.name)}<br><small class="muted">${esc(a.phone)} · ${esc(a.ageGroup)}${a.ageGroup === 'under18' ? ' (guardian)' : ''}</small></td><td>${esc(a.auditionTitle)}<br><small class="muted">${esc(a.role || '')}</small></td><td><small>${(a.categories || []).join(', ')}</small></td>
+      <td>${a.link ? `<a class="gold" href="${esc(a.link)}" target="_blank" rel="noopener noreferrer">Watch ↗</a>` : '—'}</td>
+      <td><select class="input" data-app="${a.id}" style="min-height:36px;padding:4px 8px">${ST.map((s) => `<option ${s === a.status ? 'selected' : ''}>${s}</option>`).join('')}</select><small class="gold">${esc(a.slot || '')}</small></td>
+      <td><a class="btn btn-sm" target="_blank" rel="noopener" href="https://wa.me/${a.phone}?text=${encodeURIComponent(`Hello ${a.name}, PBAG here about ${a.auditionTitle} (ref ${a.id}). Your status: ${a.status}${a.slot ? '. Your audition slot: ' + a.slot : ''}. Break a leg!`)}">${icon('whatsapp')}</a></td></tr>`).join('') || '<tr><td colspan="7" class="muted">No applications yet.</td></tr>'}</tbody></table></div>`;
+  $$('[data-app]', el).forEach((sel) => sel.addEventListener('change', async () => { const r = await sapi(`/api/staff/applications/${sel.dataset.app}`, { method: 'PATCH', body: { status: sel.value } }); toast(r.slot ? `Updated · slot ${r.slot}` : 'Updated'); auditions(); }));
+  $('#csv').addEventListener('click', async () => {
+    const r = await fetch('/api/staff/subscribers.csv', { headers: { 'x-staff-pin': auth.pin, 'x-staff-name': auth.name } });
+    const a = document.createElement('a'); a.href = URL.createObjectURL(await r.blob()); a.download = 'pbag-subscribers.csv'; a.click();
+  });
+}

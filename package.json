@@ -9,7 +9,8 @@
     "build": "node src/build.mjs",
     "test": "node test/smoke.mjs",
     "build:pages": "node src/pages-build.mjs",
-    "build:preview": "node src/preview/build-preview.mjs"
+    "build:preview": "node src/preview/build-preview.mjs",
+    "translate": "node scripts/translate.mjs"
   },
   "author": "",
   "license": "ISC",

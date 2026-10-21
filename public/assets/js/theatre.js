@@ -1,4 +1,4 @@
-import { $, $$, api, icon, esc, toast } from './app.js';
+import { $, $$, api, icon, esc, toast, t } from './app.js';
 
 const screen = $('#screen'), prog = $('#programme');
 const params = new URLSearchParams(location.search);
@@ -24,17 +24,17 @@ function roll(src, title) {
 }
 function channelView() {
   current = null;
-  screen.innerHTML = `<button class="facade" type="button" aria-label="Play PBAG channel"><img src="/assets/img/team-1100.webp" alt=""><span class="play">${icon('play')}</span><span class="np"><small class="muted">PBAG — Peers Best Art Group</small><b>Latest uploads</b></span></button>`;
+  screen.innerHTML = `<button class="facade" type="button" aria-label="${t('Play PBAG channel')}"><img src="/assets/img/team-1100.webp" alt=""><span class="play">${icon('play')}</span><span class="np"><small class="muted">PBAG — Peers Best Art Group</small><b>${t('Latest uploads')}</b></span></button>`;
   $('.facade', screen).addEventListener('click', () => roll(`https://www.youtube-nocookie.com/embed/videoseries?list=${channel}&autoplay=1&rel=0`, 'PBAG channel'));
 }
 const SECTIONS = [
-  { key: 'pbag', title: 'PBAG Originals', kicker: 'From our own stage', note: 'Sketches, stage plays, poetry and festival moments by PBAG RAW, PBAG Theatre, PBAG Generation and PGT.' },
-  { key: 'kenya', title: 'Kenyan Comedy Greats', kicker: 'The scene we celebrate', note: 'Hand-picked from the official channels of Kenya’s best-loved comics and shows.' },
+  { key: 'pbag', title: 'PBAG Originals', kicker: t('From our own stage'), note: 'Sketches, stage plays, poetry and festival moments by PBAG RAW, PBAG Theatre, PBAG Generation and PGT.' },
+  { key: 'kenya', title: t('Kenyan Comedy Greats'), kicker: t('The scene we celebrate'), note: 'Hand-picked from the official channels of Kenya’s best-loved comics and shows.' },
 ];
 function card(v) {
   return `<button class="vcard reveal in" type="button" data-id="${esc(v.id)}">
       <span class="vthumb"><img src="${thumb(v.id, 'mqdefault')}" alt="" loading="lazy" width="320" height="180">
-        ${v.section === 'pbag' ? '<span class="ribbon">PBAG Original</span>' : ''}<span class="pv">${icon('play')} Preview</span><span class="vplay">${icon('play')}</span></span>
+        ${v.section === 'pbag' ? `<span class="ribbon">${t('PBAG Original')}</span>` : ''}<span class="pv">${icon('play')} ${t('Preview')}</span><span class="vplay">${icon('play')}</span></span>
       <h4>${esc(v.title)}</h4><small>${esc(v.channel || '')}</small>
     </button>`;
 }
@@ -71,7 +71,7 @@ $$('[data-tab]').forEach((t) => t.addEventListener('click', () => {
 }));
 $('#lights').addEventListener('click', (e) => {
   const on = document.body.classList.toggle('lights-down'); e.currentTarget.setAttribute('aria-pressed', on);
-  e.currentTarget.innerHTML = `${icon(on ? 'lightbulb' : 'lightbulb-off')} ${on ? 'Lights up' : 'House lights'}`;
+  e.currentTarget.innerHTML = `${icon(on ? 'lightbulb' : 'lightbulb-off')} ${on ? t('Lights up') : t('House lights')}`;
 });
 $('#share').addEventListener('click', async () => {
   const url = location.href;
@@ -79,7 +79,7 @@ $('#share').addEventListener('click', async () => {
 });
 
 (async () => {
-  try { ({ videos, channelPlaylist: channel } = await api('/api/videos')); } catch { prog.innerHTML = '<p class="muted">The programme couldn’t load. Please refresh.</p>'; return; }
+  try { ({ videos, channelPlaylist: channel } = await api('/api/videos')); } catch { prog.innerHTML = `<p class="muted">${t('The programme couldn’t load. Please refresh.')}</p>`; return; }
   if (mood) $$('#moods [data-mood]').forEach((x) => x.classList.toggle('on', x.dataset.mood === mood));
   render();
   facade(videos.find((v) => v.id === params.get('v')) || videos[0]);

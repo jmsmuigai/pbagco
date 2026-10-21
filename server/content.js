@@ -269,5 +269,32 @@ export const FAQ = [
   ['Refunds', 'Tickets are non-refundable unless an event is cancelled or rescheduled, in which case PBAG contacts buyers directly. Call 0720 960 180 for help.'],
   ['How do I join PBAG?', 'Each subsidiary has a Join button on the Subsidiaries page that opens WhatsApp to the PBAG team.'],
   ['Can I hire PBAG?', 'Yes — use Book Us to request a performance, Theatre for Development workshop, comedians/MC, production services or an AI consultation on a date that suits you.'],
+  ['Paying by M-Pesa Paybill', 'At checkout choose M-Pesa Paybill, pay to the Business Number shown using your order number as the Account Number, then paste the M-Pesa confirmation code (e.g. SJK3H5X8QP). Each code works once and your QR ticket is generated instantly once verified.'],
+  ['Auditions', 'Open calls are listed on the Auditions page. Apply online with a link to your performance, subscribe for alerts, and track your application with your reference number.'],
   ['Become a seller', 'Promoters and influencers get a personal referral code, link and QR code and earn commission on every ticket sold. Ask the PBAG team to register you.'],
 ];
+
+// ---- Payment details (placeholders until PBAG supplies them; override with env vars) ----
+export const PAYMENT_DETAILS = {
+  paybill: {
+    number: process.env.PAYBILL_NUMBER || '000000',
+    accountName: process.env.PAYBILL_ACCOUNT_NAME || 'PBAG CONSORTIUM',
+    configured: !!process.env.PAYBILL_NUMBER,
+  },
+  bank: {
+    bankName: process.env.BANK_NAME || 'Bank name — to be added',
+    accountName: process.env.BANK_ACCOUNT_NAME || 'PBAG Consortium',
+    accountNumber: process.env.BANK_ACCOUNT_NUMBER || '0000000000',
+    branch: process.env.BANK_BRANCH || 'Branch — to be added',
+    configured: !!process.env.BANK_ACCOUNT_NUMBER,
+  },
+};
+
+// ---- Auditions (provisional — PBAG to confirm dates/venues) ----
+export const SEED_AUDITIONS = [
+  { id: 'aud-ithaka', title: 'Ithaka cia Kamĩrĩĩthũ — open casting', by: 'PBAG Theatre', categories: ['acting', 'singing', 'dance'], date: '2026-11-21', time: '09:00', venue: 'Limuru Social Hall, Limuru', deadline: '2026-11-18', roles: ['Elders & chiefs (40+)', 'Young villagers (18–30)', 'Forest fighters', 'Choir & traditional dancers'], requirements: 'Prepare a 2-minute monologue (English, Kiswahili or Gĩkũyũ) and a song or dance of your choice.', status: 'open' },
+  { id: 'aud-raw', title: 'PBAG RAW — comedy & sketch auditions', by: 'Peatice Productions', categories: ['comedy', 'acting', 'content'], date: '2026-11-28', time: '14:00', venue: 'Limuru Social Hall, Limuru', deadline: '2026-11-25', roles: ['Stand-up comics', 'Sketch actors', 'Content creators'], requirements: 'Send a link to a 1–3 minute clip of your best material; shortlisted comics perform live.', status: 'open' },
+  { id: 'aud-generation', title: 'PBAG Generation — spoken word & poetry', by: 'PBAG', categories: ['poetry', 'music'], date: '2026-12-05', time: '10:00', venue: 'Limuru (venue to be confirmed)', deadline: '2026-12-01', roles: ['Spoken-word poets', 'Musicians & beat-makers'], requirements: 'Share a recorded piece or a written poem; any language.', status: 'open' },
+  { id: 'aud-film', title: 'Screen & film talent pool (AI-assisted productions)', by: 'Peatice Productions', categories: ['film', 'acting', 'tech'], date: '2027-01-16', time: '10:00', venue: 'Limuru (venue to be confirmed)', deadline: '2027-01-10', roles: ['Screen actors', 'Editors & camera crew', 'AI/visual effects creatives'], requirements: 'Showreel or portfolio link. Training in AI film tools offered to the selected pool.', status: 'upcoming' },
+];
+export const AUDITION_CATEGORIES = ['acting', 'comedy', 'singing', 'dance', 'poetry', 'music', 'film', 'content', 'tech'];

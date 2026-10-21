@@ -13,9 +13,9 @@ const DARAJA = MODE === 'live' ? 'https://api.safaricom.co.ke' : 'https://sandbo
 export function methods() {
   return {
     mode: MODE,
-    mpesa: true,
-    card: MODE === 'mock' || !!process.env.PESAPAL_CONSUMER_KEY,
-    paypal: MODE === 'mock' || !!process.env.PAYPAL_CLIENT_ID,
+    mpesa: MODE === 'mock' || !!process.env.MPESA_CONSUMER_KEY, // STK prompt needs Daraja credentials
+    card: !!process.env.PESAPAL_CONSUMER_KEY,
+    paypal: !!process.env.PAYPAL_CLIENT_ID,
     cash: true, // POS only
   };
 }

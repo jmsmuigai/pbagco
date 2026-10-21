@@ -1,9 +1,9 @@
-import { $, $$, esc, icon } from './app.js';
+import { $, $$, esc, icon, t } from './app.js';
 const base = window.PBAG_STATIC?.base || '/';
 const CATS = {
-  culture: ['Culture & memory', '#ffc23d', '★'], colonial: ['Colonial economy & admin', '#b07a4a', '⚑'], land: ['Land & removals', '#e0703c', '⌂'],
-  memorial: ['Conflict & memorial', '#c0392b', '✝'], forest: ['Forests & Mau Mau', '#4f8a4a', '♣'], resistance: ['Resistance & chiefs', '#8b5cf6', '⚔'],
-  sacred: ['Sacred & natural', '#22c7b8', '◈'], nature: ['Natural landmark', '#5aa9e6', '~'],
+  culture: [t('Culture & memory'), '#ffc23d', '★'], colonial: [t('Colonial economy & admin'), '#b07a4a', '⚑'], land: [t('Land & removals'), '#e0703c', '⌂'],
+  memorial: [t('Conflict & memorial'), '#c0392b', '✝'], forest: [t('Forests & Mau Mau'), '#4f8a4a', '♣'], resistance: [t('Resistance & chiefs'), '#8b5cf6', '⚔'],
+  sacred: [t('Sacred & natural'), '#22c7b8', '◈'], nature: [t('Natural landmark'), '#5aa9e6', '~'], physical: [t('Physical features'), '#0e9f8e', '▲'],
 };
 const loadCSS = (h) => new Promise((ok) => { const l = document.createElement('link'); l.rel = 'stylesheet'; l.href = h; l.onload = ok; document.head.append(l); });
 const loadJS = (s) => new Promise((ok, no) => { const e = document.createElement('script'); e.src = s; e.onload = ok; e.onerror = no; document.head.append(e); });
@@ -49,12 +49,12 @@ const loadJS = (s) => new Promise((ok, no) => { const e = document.createElement
     const m = L.marker([s.lat, s.lon], { icon: pin(s), title: s.name, riseOnHover: true }).bindPopup(`<div class="pop">
       <span class="tag" style="background:${CATS[s.cat][1]}">${esc(CATS[s.cat][0])}</span>
       <h3>${esc(s.name)}</h3><small>${esc(s.period)}${s.approx ? ' · location approximate' : ''}</small>
-      <p><b>Used for:</b> ${esc(s.used)}</p><p>${esc(s.desc)}</p><p class="src">Source: ${esc(s.src)}</p>
-      <a href="https://www.google.com/maps/dir/?api=1&destination=${s.lat},${s.lon}" target="_blank" rel="noopener">Directions ↗</a> · <a href="${base}ithaka#sites">Read the story</a></div>`, { maxWidth: 320 });
+      <p><b>${t('Used for:')}</b> ${esc(s.used)}</p><p>${esc(s.desc)}</p><p class="src">Source: ${esc(s.src)}</p>
+      <a href="https://www.google.com/maps/dir/?api=1&destination=${s.lat},${s.lon}" target="_blank" rel="noopener">Directions ↗</a> · <a href="${base}ithaka#sites">${t('Read the story')}</a></div>`, { maxWidth: 320 });
     m.addTo(sitesLayer); markers[s.id] = { m, s };
   }
-  L.control.layers({ 'Colonial survey (sepia)': colonial, 'Street map': street, 'Hybrid satellite': hybrid, 'Topographic': topo },
-    { 'Historic sites': sitesLayer, 'Boundaries: Kiambu · Limuru · Lari': boundaryGroup, 'Forests (approx.)': forests, 'Mau Mau routes (indicative)': routes }, { position: 'topright', collapsed: innerWidth < 900 }).addTo(map);
+  L.control.layers({ [t('Colonial survey (sepia)')]: colonial, [t('Street map')]: street, [t('Hybrid satellite')]: hybrid, [t('Topographic')]: topo },
+    { [t('Historic sites')]: sitesLayer, [t('Boundaries: Kiambu · Limuru · Lari')]: boundaryGroup, [t('Forests (approx.)')]: forests, [t('Mau Mau routes (indicative)')]: routes }, { position: 'topright', collapsed: innerWidth < 900 }).addTo(map);
 
   // Compass rose + legend
   const Compass = L.Control.extend({ onAdd() { const d = L.DomUtil.create('div', 'compass'); d.innerHTML = '<svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="46" fill="rgba(239,227,200,.92)" stroke="#7a1f12" stroke-width="2"/><path d="M50 8 L58 50 L50 92 L42 50 Z" fill="#2b2117"/><path d="M50 8 L58 50 L50 50 Z" fill="#7a1f12"/><path d="M8 50 L50 43 L92 50 L50 57 Z" fill="#6b5a44" opacity=".6"/><text x="50" y="22" text-anchor="middle" font-size="14" font-family="Georgia" fill="#7a1f12" font-weight="bold">N</text></svg>'; return d; } });
@@ -68,7 +68,7 @@ const loadJS = (s) => new Promise((ok, no) => { const e = document.createElement
   const renderList = () => {
     const q = $('#siteSearch').value.trim().toLowerCase();
     const show = heritage.sites.filter((s) => active.has(s.cat) && (!q || (s.name + ' ' + s.desc + ' ' + s.used).toLowerCase().includes(q)));
-    list.innerHTML = show.map((s) => `<li><button type="button" data-site="${s.id}"><span class="dot" style="background:${CATS[s.cat][1]}">${CATS[s.cat][2]}</span><span><b>${esc(s.name)}</b><small>${esc(s.period)}${s.approx ? ' ◌' : ''}</small></span></button></li>`).join('') || '<li class="muted">No sites match.</li>';
+    list.innerHTML = show.map((s) => `<li><button type="button" data-site="${s.id}"><span class="dot" style="background:${CATS[s.cat][1]}">${CATS[s.cat][2]}</span><span><b>${esc(s.name)}</b><small>${esc(s.period)}${s.approx ? ' ◌' : ''}</small></span></button></li>`).join('') || `<li class="muted">${t('No sites match.')}</li>`;
     for (const { m, s } of Object.values(markers)) { const vis = show.includes(s); vis ? sitesLayer.addLayer(m) : sitesLayer.removeLayer(m); }
   };
   $('#cats').addEventListener('click', (e) => { const b = e.target.closest('[data-cat]'); if (!b) return; const k = b.dataset.cat; active.has(k) ? active.delete(k) : active.add(k); b.classList.toggle('on'); renderList(); });

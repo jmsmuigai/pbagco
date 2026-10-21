@@ -7,7 +7,7 @@ import { ORG, FAQ } from './content.js';
 const API = 'https://generativelanguage.googleapis.com/v1beta/models';
 const MODELS = (process.env.GEMINI_MODEL || 'gemini-pro-latest,gemini-2.5-pro,gemini-2.5-flash').split(',').map((s) => s.trim());
 
-const SYSTEM = () => `You are "Cue", the friendly AI usher of the PBAG Consortium (Peers Best Art Group) website, pbagco.com.
+const SYSTEM = () => `You are "Cue", the kind, warm robot usher of the PBAG Consortium (Peers Best Art Group) website, pbagco.com.
 PBAG is a community-based arts consortium founded 23 Aug 2011 in Limuru, Kenya, with four subsidiaries: PBAG Theatre, Peatice Productions, Peers Got Talanta (PGT) CBO and PBAG Bunge (lead subsidiary). PBAG also offers Generative AI consultancy for creatives, NGOs and businesses.
 Today is ${new Date().toLocaleDateString('en-KE', { timeZone: 'Africa/Nairobi', dateStyle: 'full' })} (Nairobi time).
 Rules:
@@ -17,6 +17,10 @@ Rules:
 - To buy tickets, give the event's ticket link as a markdown link, e.g. [Get tickets](/tickets?event=slug). You cannot take payments yourself.
 - For hiring PBAG or an AI consultation, collect service, date, name and phone/email, confirm, then call request_booking and share the reference. Or link [Book Us](/book).
 - Links must be relative site paths from tool results, or ${ORG.contact.whatsapp}. No other URLs.
+- Always be kind, patient and encouraging — greet warmly, thank people, never blame them.
+- Auditions: use list_auditions and link [Auditions](/auditions).
+- Payments: tickets can be paid by M-Pesa Paybill (Business Number on the checkout page, Account = order number, then paste the M-Pesa code) or by bank transfer; never ask for PINs.
+- If you cannot answer, or the person wants a human, offer to pass the question to the PBAG Board & Management: collect the question plus a phone or email, confirm, then call escalate_to_management and share the reference.
 - If unsure, offer the phone ${ORG.contact.phone} or email ${ORG.contact.email}.`;
 
 const declarations = TOOLS.map((t) => {
@@ -36,12 +40,13 @@ async function callModel(model, body) {
   return r.json();
 }
 
-export async function chat(db, history = []) {
+export async function chat(db, history = [], { lang = 'en' } = {}) {
   // history: [{role:'user'|'assistant', text}]
   const contents = history.slice(-12).map((m) => ({ role: m.role === 'assistant' ? 'model' : 'user', parts: [{ text: String(m.text).slice(0, 2000) }] }));
-  if (!process.env.GEMINI_API_KEY) return { text: offlineAnswer(history.at(-1)?.text || ''), offline: true };
+  if (!process.env.GEMINI_API_KEY) return { ...offlineAnswer(history.at(-1)?.text || ''), offline: true };
 
-  const body = { systemInstruction: { parts: [{ text: SYSTEM() }] }, contents, tools: [{ functionDeclarations: declarations }], generationConfig: { temperature: 0.6, maxOutputTokens: 1024 } };
+  const sys = SYSTEM() + (lang === 'sw' ? '\n- The visitor is browsing the Kiswahili version of the site: reply in clear, standard Kiswahili (Kiswahili sanifu) unless they write in another language. Keep links as relative site paths.' : '');
+  const body = { systemInstruction: { parts: [{ text: sys }] }, contents, tools: [{ functionDeclarations: declarations }], generationConfig: { temperature: 0.6, maxOutputTokens: 1024 } };
   let lastErr;
   for (const model of MODELS) {
     try {
@@ -53,7 +58,7 @@ export async function chat(db, history = []) {
         const calls = parts.filter((p) => p.functionCall);
         if (!calls.length) {
           const text = parts.filter((p) => p.text && !p.thought).map((p) => p.text).join('').trim();
-          return { text: text || 'Sorry — I missed my cue. Could you ask that again?', model, tools: used };
+          return { text: text || 'Sorry — I missed my cue. Could you ask that again?', model, tools: used, escalate: /board|management/i.test(text) && !used.includes('escalate_to_management') };
         }
         body.contents.push(content); // keep thought signatures intact
         const responses = [];
@@ -73,22 +78,11 @@ export async function chat(db, history = []) {
     }
   }
   console.error('[gemini]', lastErr?.message);
-  return { text: offlineAnswer(history.at(-1)?.text || ''), offline: true };
+  return { ...offlineAnswer(history.at(-1)?.text || ''), offline: true };
 }
 
-// Keyword fallback so the bot still helps if Gemini is unreachable.
-function offlineAnswer(q) {
-  const s = q.toLowerCase();
-  const hit = (...w) => w.some((x) => s.includes(x));
-  if (hit('ticket', 'buy', 'price', 'show', 'event', 'tiketi')) return 'You can see every upcoming show, pick a date on the calendar and pay by M-Pesa on the [Tickets page](/tickets).';
-  if (hit('lost', 'download', 'resend')) return FAQ[1][1] + ' → [My Tickets](/tickets#my-tickets)';
-  if (hit('hire', 'book', 'perform', 'workshop', 'mc')) return 'Pick a service and date on [Book Us](/book) and the team will confirm.';
-  if (hit(' ai', 'gemini', 'consult', 'artificial')) return 'PBAG offers Generative AI consultancy for creatives, NGOs and businesses — see [AI Studio](/consultancy) or book a free discovery call on [Book Us](/book?service=ai).';
-  if (hit('join', 'member', 'audition')) return FAQ[3][1] + ' → [Subsidiaries](/subsidiaries)';
-  if (hit('watch', 'comedy', 'video', 'youtube')) return 'Grab some popcorn — the [Virtual Theatre](/theatre) is screening Kenyan comedy and PBAG’s own channel.';
-  if (hit('contact', 'phone', 'call', 'email', 'where')) return `Call or WhatsApp ${ORG.contact.phone}, or email ${ORG.contact.email}. More on the [Contact page](/contact).`;
-  return `I’m Cue, PBAG’s usher. I can help with tickets, shows, hiring PBAG, our AI consultancy, or joining a subsidiary. You can also reach the team on ${ORG.contact.phone}.`;
-}
+export { offlineAnswer } from './offline.js';
+import { offlineAnswer } from './offline.js';
 
 // "AI Spark" — tiny live demo of generative AI for creatives on the AI Studio page.
 const SPARK = {
@@ -113,4 +107,29 @@ export async function spark(kind, topic) {
     } catch (e) { if (![404, 400].includes(e.status)) break; }
   }
   return { text: SPARK_FALLBACK[k](t), offline: true };
+}
+
+
+// ---- Gemini translation (EN <-> Kiswahili) with a Firestore/memory cache ------------------
+import crypto from 'node:crypto';
+export async function translate(db, texts, to = 'sw') {
+  const out = new Array(texts.length).fill(null), miss = [];
+  for (const [i, t] of texts.entries()) {
+    const id = 'TR_' + to + '_' + crypto.createHash('sha1').update(t).digest('hex').slice(0, 20);
+    const hit = await db.get('translations', id).catch(() => null);
+    if (hit) out[i] = hit.text; else miss.push([i, id, t]);
+  }
+  if (miss.length && process.env.GEMINI_API_KEY) {
+    const lang = to === 'sw' ? 'Kiswahili (Kenyan standard, natural and warm; keep proper nouns, Gĩkũyũ names, URLs, numbers and markdown unchanged)' : 'English';
+    const prompt = `Translate each item into ${lang}. Return ONLY a JSON array of strings in the same order.\n` + JSON.stringify(miss.map((m) => m[2]));
+    for (const model of MODELS) {
+      try {
+        const j = await callModel(model, { contents: [{ role: 'user', parts: [{ text: prompt }] }], generationConfig: { temperature: 0.2, responseMimeType: 'application/json' } });
+        const arr = JSON.parse((j.candidates?.[0]?.content?.parts || []).map((p) => p.text || '').join(''));
+        for (const [k, [i, id]] of miss.entries()) if (typeof arr[k] === 'string') { out[i] = arr[k]; await db.set('translations', id, { text: arr[k], to, model, at: new Date().toISOString() }); }
+        break;
+      } catch (e) { if (![404, 400].includes(e.status)) break; }
+    }
+  }
+  return { texts: out.map((t, i) => t ?? texts[i]), translated: out.filter(Boolean).length, engine: process.env.GEMINI_API_KEY ? 'gemini' : 'none' };
 }

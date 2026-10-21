@@ -1,4 +1,4 @@
-import { $, $$, api, esc, icon } from './app.js';
+import { $, $$, api, esc, icon, t } from './app.js';
 const STAGES = [
   { tool: 'NotebookLM', c: '#4285f4', label: 'Research', i: 'search' },
   { tool: 'Gemini', c: '#8b5cf6', label: 'Script', i: 'wand-sparkles' },
@@ -83,3 +83,47 @@ async function run() {
 $('#simRun').addEventListener('click', run);
 $$('#simProjects [data-p]').forEach((b) => b.addEventListener('click', () => { if (running) return; proj = b.dataset.p; $$('#simProjects [data-p]').forEach((x) => x.setAttribute('aria-selected', x === b)); renderBoard(P[proj], 0); cons.innerHTML = '<p class="muted">Press <b>Run production</b> to start.</p>'; $$('li', pipe).forEach((li) => li.className = ''); }));
 renderBoard(P[proj], 0);
+
+
+/* ---------- Film manager simulation ---------- */
+const COLS = [['dev', 'Development'], ['pre', 'Pre-production'], ['prod', 'Production'], ['post', 'Post-production'], ['dist', 'Distribution']];
+const TASKS = [
+  { id: 't1', title: 'Script breakdown', tool: 'Gemini', col: 'dev', c: '#8b5cf6', log: 'Gemini broke the 12-page script into 9 scenes, 6 locations, 7 speaking roles and 41 props.', budget: 0, days: 0 },
+  { id: 't2', title: 'Research & authenticity notes', tool: 'NotebookLM', col: 'dev', c: '#4285f4', log: 'NotebookLM grounded the story in Ndeiya oral history; 3 details flagged for elders to confirm.', budget: 15000 },
+  { id: 't3', title: 'Casting from PBAG auditions', tool: 'AI Studio app', col: 'pre', c: '#22c7b8', log: 'Casting assistant matched 18 audition applicants to 7 roles; director shortlists 11 for callbacks.', budget: 40000 },
+  { id: 't4', title: 'Storyboards & look book', tool: 'Nano Banana', col: 'pre', c: '#ffc23d', log: 'Nano Banana produced 36 storyboard frames and costume boards with consistent characters.', budget: 20000 },
+  { id: 't5', title: 'Schedule & call sheets', tool: 'Gemini', col: 'pre', c: '#8b5cf6', log: 'Gemini grouped scenes by location and light: 4 shoot days at Ndeiya, golden-hour first. Call sheets drafted.', budget: 0, days: 4 },
+  { id: 't6', title: 'Previz of the cliff sequence', tool: 'Veo + Flow', col: 'prod', c: '#f2456e', log: 'Veo/Flow generated 8 previz shots of the cliff sequence; crew uses them to plan drone and camera moves.', budget: 35000 },
+  { id: 't7', title: 'Shoot (human crew)', tool: 'PBAG crew', col: 'prod', c: '#e0703c', log: 'Producer approved day 1–4 plans. Real cast and crew shoot on location — AI never replaces the performance.', budget: 260000 },
+  { id: 't8', title: 'Edit assist & VFX cleanup', tool: 'Gemini + Flow', col: 'post', c: '#ff8a3d', log: 'Rough-cut notes generated from the script; sky replacements and clean-ups prototyped in Flow.', budget: 60000 },
+  { id: 't9', title: 'Subtitles: Kiswahili & Gĩkũyũ', tool: 'Gemini', col: 'post', c: '#8b5cf6', log: 'Subtitles drafted in Kiswahili and Gĩkũyũ, then corrected by native-speaker reviewers.', budget: 10000 },
+  { id: 't10', title: 'Poster & trailer cut-downs', tool: 'Nano Banana + Veo', col: 'dist', c: '#ffc23d', log: 'Key art and 3 vertical teasers produced; all labelled as AI-assisted.', budget: 25000 },
+  { id: 't11', title: 'Screening page & tickets', tool: 'Antigravity → Cloud Run', col: 'dist', c: '#34d399', log: 'Screening event, M-Pesa ticketing and Cue FAQ deployed to Cloud Run.', budget: 15000 },
+];
+const fmBoard = document.querySelector('#fmBoard');
+if (fmBoard) {
+  const state = Object.fromEntries(TASKS.map((x) => [x.id, 'todo']));
+  const draw = () => {
+    fmBoard.innerHTML = COLS.map(([k, n]) => `<div class="fm-col"><h4>${t(n)}</h4>${TASKS.filter((x) => x.col === k).map((x) => `<div class="fm-card ${state[x.id]}" style="--c:${x.c}"><b>${t(x.title)}</b><small>${x.tool}</small><i class="fm-st">${state[x.id] === 'done' ? '✓ ' + t('approved') : state[x.id] === 'run' ? t('agent working…') : t('to do')}</i></div>`).join('')}</div>`).join('');
+  };
+  const gantt = document.querySelector('#fmGantt');
+  const drawGantt = (n) => { gantt.innerHTML = `<h4>${t('Schedule')}</h4>` + COLS.map(([k, name], i) => `<div class="g-row"><span>${t(name)}</span><i style="--s:${i * 18}%;--w:${n > i ? 22 : 0}%;--c:${['#8b5cf6', '#22c7b8', '#f2456e', '#ff8a3d', '#34d399'][i]}"></i></div>`).join('') + `<div class="g-axis"><span>${t('Week')} 1</span><span>3</span><span>5</span><span>7</span><span>9</span></div>`; };
+  draw(); drawGantt(0);
+  let busy = false;
+  document.querySelector('#fmRun').addEventListener('click', async () => {
+    if (busy) return; busy = true; const log = document.querySelector('#fmLog'); log.innerHTML = '';
+    let budget = 0, done = 0, days = 0;
+    TASKS.forEach((x) => (state[x.id] = 'todo')); draw();
+    for (const x of TASKS) {
+      state[x.id] = 'run'; draw(); await new Promise((r) => setTimeout(r, 700));
+      state[x.id] = 'done'; done++; budget += x.budget || 0; days += x.days || 0; draw();
+      log.insertAdjacentHTML('beforeend', `<p><span class="tagc" style="background:${x.c}">${x.tool}</span> ${t(x.log)} <em class="ok">✓ ${t('Producer approved')}</em></p>`); log.scrollTop = log.scrollHeight;
+      document.querySelector('#fmProg').textContent = Math.round((done / TASKS.length) * 100) + '%';
+      document.querySelector('#fmBudget').textContent = 'KES ' + budget.toLocaleString('en-KE');
+      document.querySelector('#fmDays').textContent = days || '—'; document.querySelector('#fmAppr').textContent = done;
+      drawGantt(COLS.findIndex(([k]) => k === x.col) + 1);
+    }
+    log.insertAdjacentHTML('beforeend', `<p class="ok"><b>✓ ${t('Ready for the premiere.')}</b> <a class="gold" href="/book?service=ai">${t('Want this workflow for your film? Contact PBAG →')}</a></p>`);
+    busy = false;
+  });
+}

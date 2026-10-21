@@ -8,7 +8,7 @@ const b64 = (f, mime) => `data:${mime};base64,${fs.readFileSync(f).toString('bas
 const MIME = { webp: 'image/webp', png: 'image/png', jpg: 'image/jpeg', woff2: 'font/woff2' };
 const inlineAssets = (s) => s.replace(/\/assets\/(img|fonts)\/([\w.-]+\.(webp|png|jpg|woff2))/g, (m, d, f, ext) => b64(path.join(pub, 'assets', d, f), MIME[ext]))
   .replaceAll('/assets/img/icons.svg#', '#');
-const js = (await build({ entryPoints: [path.join(here, 'entry.js')], bundle: true, format: 'iife', minify: true, write: false, target: 'es2020' })).outputFiles[0].text;
+const js = (await build({ entryPoints: [path.join(here, 'entry.js')], bundle: true, format: 'iife', minify: true, write: false, target: 'es2020', define: { 'process.env': '{}' } })).outputFiles[0].text;
 const pages = ['index', 'about', 'subsidiaries', 'theatre', 'tickets', 'book', 'consultancy', 'contact'];
 const main = (f) => { const h = fs.readFileSync(path.join(pub, f + '.html'), 'utf8'); return { body: h.split('<main id="main">')[1].split('</main>')[0], title: h.match(/<title>(.*?)<\/title>/)[1] }; };
 const idx = fs.readFileSync(path.join(pub, 'index.html'), 'utf8');

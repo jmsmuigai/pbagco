@@ -14,3 +14,15 @@
 10. **Boniface Kanyuira's own videos** — no YouTube channel or videos under his name were found. Send links and add them in Staff › Programme (shelf: PBAG Originals).
 11. **Heritage map** — sites marked "approximate" (Kereita forest centre, Ihiga rĩa Gũoya, the Kamĩrĩĩthũ centre site, Kirenga homestead, forest extents) should be confirmed with a GPS visit. Mau Mau routes are labelled as indicative corridors, not surveyed tracks.
 12. **Historic photos** load from Wikimedia Commons with their licences credited; replace with PBAG's own archive photos when available.
+
+## Added with the Paybill · Auditions · NLP · Kiswahili release (Oct 2026)
+
+| Item | Where | What PBAG must confirm |
+|---|---|---|
+| **M-Pesa Paybill number & account name** | env `PAYBILL_NUMBER`, `PAYBILL_ACCOUNT_NAME` | Site shows placeholder `000000` and a "placeholder" notice until set. |
+| **Bank details** | env `BANK_NAME`, `BANK_ACCOUNT_NAME`, `BANK_ACCOUNT_NUMBER`, `BANK_BRANCH` | Placeholders until set. |
+| **Auto-confirmation of Paybill payments** | env `C2B_TOKEN`; register `https://pbagco.com/api/pay/mpesa/c2b/<C2B_TOKEN>/confirmation` with Safaricom Daraja (C2B) | Without it, pasted codes go to *Staff → Inbox* for a one-click approval. |
+| **Audition dates, venues and roles** | `server/content.js` → `SEED_AUDITIONS` | All four calls are provisional. |
+| **Ex-Chief Mũkoma wa Njiriiri card** | `src/pages/ithaka.html` | Text is as supplied by PBAG (Tignor's "petty oppression" passage and the Mbũrũ wa Njiriiri biography were not independently verified online). |
+| **Kiswahili translation** | `src/i18n/sw/*.json`, `public/assets/js/i18n.js` | Drafted by the build team (Gemini was not reachable from the build environment). Have a native speaker review, or run `GEMINI_API_KEY=… npm run translate` to (re)generate with Gemini — output lands in `src/i18n/sw/50-gemini.json`. Event descriptions, heritage-site descriptions and the AI-film simulation logs stay in English for now. |
+| **Board / Management escalation** | Staff → Inbox | Questions Cue can't answer arrive here with an `ES…` reference; decide who replies and how fast. |

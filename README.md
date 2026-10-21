@@ -19,6 +19,12 @@ Add `GEMINI_API_KEY=...` before `npm start` to switch Cue and AI Spark to live G
 Editing pages: change files in `src/pages/` or `src/partials/`, then `npm run build` (writes `public/*.html`).
 Other builds: `BASE=/pbagco/ npm run build:pages` (static site in `_site/`), `npm run build:preview` (whole site in one offline file, `dist/pbagco-preview.html`).
 
+## Languages: English + Kiswahili
+
+Every public page is also built at `/sw/…` (switch with the **SW / EN** button in the header; `hreflang` tags and the sitemap link the pairs).
+Page text is translated segment-by-segment from the English source using `src/i18n/sw/*.json`; script strings live in `public/assets/js/i18n.js`.
+`npm run build` warns about any untranslated segment, and `GEMINI_API_KEY=… npm run translate` fills the gaps with Gemini. Cue answers in Kiswahili on `/sw/` pages.
+
 ## What's inside
 | Page | Highlights |
 |---|---|

@@ -13,9 +13,9 @@ fs.rmSync(out, { recursive: true, force: true });
 fs.cpSync(path.join(root, 'public'), out, { recursive: true });
 fs.rmSync(path.join(out, 'staff.html'), { force: true }); // staff console needs the real API
 
-await build({ entryPoints: [path.join(here, 'preview/mock.js')], bundle: true, format: 'iife', minify: true, outfile: path.join(out, 'assets/js/static-mock.js'), target: 'es2020' });
+await build({ entryPoints: [path.join(here, 'preview/mock.js')], bundle: true, format: 'iife', minify: true, outfile: path.join(out, 'assets/js/static-mock.js'), target: 'es2020', define: { 'process.env': '{}' } });
 
-const SEG = 'manifest.webmanifest|assets|api|data|about|subsidiaries|theatre|tickets|book|consultancy|contact|ithaka|heritage-map|ai-film|events|t/';
+const SEG = 'manifest.webmanifest|assets|api|data|about|subsidiaries|theatre|tickets|book|consultancy|contact|ithaka|heritage-map|ai-film|events|auditions|nlp|sw/|t/';
 const rebase = (s) => s
   .replace(new RegExp(`(["'\`(,]\\s?)/(${SEG})`, 'g'), `$1${BASE}$2`)
   .replace(/(href|src|action)="\/"/g, `$1="${BASE}"`);
@@ -29,7 +29,7 @@ for (const f of fs.readdirSync(out, { recursive: true })) {
   if (/\.(html|css|js|json|webmanifest|txt|xml)$/.test(p)) {
     let s = fs.readFileSync(p, 'utf8');
     if (p.endsWith('.html')) {
-      s = s.replace(/<a href="\/staff"[^>]*>Staff<\/a> · /, '');
+      s = s.replace(/<a href="\/staff"[^>]*>[^<]*<\/a> · /, '');
       s = rebase(s).replace('</head>', head + '\n</head>').replace('</body>', banner + '\n</body>');
     } else if (!/\.(txt|xml)$/.test(p)) s = rebase(s);
     fs.writeFileSync(p, s);

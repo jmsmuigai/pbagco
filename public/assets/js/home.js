@@ -1,4 +1,4 @@
-import { $, $$, api, poster, stub, observeReveals, icon, esc } from './app.js';
+import { $, $$, api, poster, stub, observeReveals, icon, esc, t } from './app.js';
 
 // Now-showing marquee carousel + upcoming grid
 (async () => {
@@ -33,7 +33,7 @@ import { $, $$, api, poster, stub, observeReveals, icon, esc } from './app.js';
   try {
     const { videos } = await api('/api/videos');
     const v = videos[0]; if (!v) return;
-    s.innerHTML = `<div class="facade"><img src="https://i.ytimg.com/vi/${v.id}/hqdefault.jpg" alt="" loading="lazy" width="480" height="360"><span class="play">${icon('play')}</span><div class="np"><small class="muted">Now screening</small><b>${esc(v.title)}</b></div></div>`;
+    s.innerHTML = `<div class="facade"><img src="https://i.ytimg.com/vi/${v.id}/hqdefault.jpg" alt="" loading="lazy" width="480" height="360"><span class="play">${icon('play')}</span><div class="np"><small class="muted">${t('Now screening')}</small><b>${esc(v.title)}</b></div></div>`;
   } catch {}
 })();
 

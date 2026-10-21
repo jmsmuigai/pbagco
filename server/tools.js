@@ -2,7 +2,7 @@
 // (b) external AI agents via the MCP server at /mcp. One definition, two doors.
 import { z } from 'zod';
 import { ORG, SUBSIDIARIES, BOOKING_SERVICES, AI_SERVICES, FAQ } from './content.js';
-import { listEvents, getEvent, publicEvent, createBooking, busyDates } from './services.js';
+import { listEvents, getEvent, publicEvent, createBooking, busyDates, escalate, listAuditions } from './services.js';
 
 const fmtDate = (iso) => new Date(iso).toLocaleString('en-KE', { timeZone: 'Africa/Nairobi', weekday: 'short', day: 'numeric', month: 'short', hour: 'numeric', minute: '2-digit' });
 
@@ -80,5 +80,21 @@ export const TOOLS = [
     },
   },
 ];
+
+TOOLS.push(
+  {
+    name: 'list_auditions',
+    description: 'List open and upcoming PBAG auditions (title, date, venue, roles, requirements, deadline) with the apply link.',
+    schema: {}, jsonSchema: { type: 'object', properties: {} },
+    run: async (db) => (await listAuditions(db)).map((a) => ({ title: a.title, by: a.by, date: a.date, time: a.time, venue: a.venue, deadline: a.deadline, roles: a.roles, requirements: a.requirements, status: a.status, apply: `/auditions#apply-${a.id}` })),
+  },
+  {
+    name: 'escalate_to_management',
+    description: 'Forward a question or complaint to the PBAG Board & Management when you cannot answer it, or when the person asks for a human. Only call after collecting their question and a phone number or email, and getting their OK.',
+    schema: { question: z.string(), name: z.string().optional(), phone: z.string().optional(), email: z.string().optional() },
+    jsonSchema: { type: 'object', properties: { question: { type: 'string' }, name: { type: 'string' }, phone: { type: 'string' }, email: { type: 'string' } }, required: ['question'] },
+    run: async (db, args, ctx = {}) => { const r = await escalate(db, { ...args, source: ctx.source || 'bot' }); return { ok: true, reference: r.id, message: 'Sent to the PBAG Board & Management. They will reply by phone or email.' }; },
+  },
+);
 
 export const toolByName = Object.fromEntries(TOOLS.map((t) => [t.name, t]));

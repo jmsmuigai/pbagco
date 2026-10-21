@@ -1,5 +1,5 @@
 // Ticket rendering: on-screen HTML (SVG QR), downloadable PNG and PDF.
-import { esc, fmt } from './app.js';
+import { esc, fmt, t as _t } from './app.js';
 
 let qrLib;
 function loadScript(src) { return new Promise((ok, no) => { const s = document.createElement('script'); s.src = src; s.onload = ok; s.onerror = no; document.head.append(s); }); }
@@ -17,16 +17,16 @@ export async function ticketHTML(t, color = '#3b82f6') {
       <div class="et-brand"><img src="/assets/img/pbag-logo.webp" alt="PBAG" width="60" height="34"><span>Admit one · ${esc(t.tierName)}</span></div>
       <h3>${esc(t.eventTitle)}</h3>
       <dl>
-        <div><dt>Date</dt><dd>${fmt.date(t.startsAt)}</dd></div>
-        <div><dt>Time</dt><dd>${fmt.time(t.startsAt)}</dd></div>
-        <div><dt>Venue</dt><dd>${esc(t.venue)}</dd></div>
-        <div><dt>Holder</dt><dd>${esc(t.holder)}</dd></div>
-        <div><dt>Ticket</dt><dd>${esc(t.seat)}</dd></div>
-        <div><dt>Tier</dt><dd>${esc(t.tierName)}</dd></div>
+        <div><dt>${_t('Date')}</dt><dd>${fmt.date(t.startsAt)}</dd></div>
+        <div><dt>${_t('Time')}</dt><dd>${fmt.time(t.startsAt)}</dd></div>
+        <div><dt>${_t('Venue')}</dt><dd>${esc(t.venue)}</dd></div>
+        <div><dt>${_t('Holder')}</dt><dd>${esc(t.holder)}</dd></div>
+        <div><dt>${_t('Ticket')}</dt><dd>${esc(t.seat)}</dd></div>
+        <div><dt>${_t('Tier')}</dt><dd>${esc(t.tierName)}</dd></div>
       </dl>
     </div>
-    <div class="et-stub"><div class="qr" role="img" aria-label="Ticket QR code">${svg}</div><code>${esc(t.id)}</code><small style="color:#6d6883;font-size:.7rem">Show this QR at the gate</small></div>
-    ${t.status === 'used' ? '<div class="used">SCANNED</div>' : STATIC ? '<div class="used" style="font-size:2rem">PREVIEW · NOT VALID</div>' : ''}
+    <div class="et-stub"><div class="qr" role="img" aria-label="${_t('Ticket QR code')}">${svg}</div><code>${esc(t.id)}</code><small style="color:#6d6883;font-size:.7rem">${_t('Show this QR at the gate')}</small></div>
+    ${t.status === 'used' ? `<div class="used">${_t('SCANNED')}</div>` : STATIC ? '<div class="used" style="font-size:2rem">PREVIEW · NOT VALID</div>' : ''}
   </article>`;
 }
 

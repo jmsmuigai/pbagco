@@ -16,6 +16,8 @@
   <div id="console" hidden>
     <div class="tabs" role="tablist" style="flex-wrap:wrap;margin-bottom:22px">
       <button role="tab" data-tab="dash" aria-selected="true">{{i:bar-chart-3}} Dashboard</button>
+      <button role="tab" data-tab="inbox" aria-selected="false">{{i:bell}} Inbox</button>
+      <button role="tab" data-tab="auditions" aria-selected="false">{{i:mic-vocal}} Auditions</button>
       <button role="tab" data-tab="scan" aria-selected="false">{{i:scan-line}} Gate scan</button>
       <button role="tab" data-tab="pos" aria-selected="false">{{i:wallet}} Door sales</button>
       <button role="tab" data-tab="bookings" aria-selected="false">{{i:calendar-days}} Bookings</button>
@@ -33,6 +35,8 @@
         </div>
       </div>
     </div>
+    <div data-panel="inbox" hidden></div>
+    <div data-panel="auditions" hidden></div>
     <div data-panel="pos" hidden></div>
     <div data-panel="bookings" hidden></div>
     <div data-panel="programme" hidden>

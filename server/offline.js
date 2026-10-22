@@ -14,7 +14,7 @@ export function offlineAnswer(q) {
   if (hit(' ai', 'gemini', 'consult', 'artificial', 'film', 'veo', 'nano banana')) return { text: 'PBAG uses Google AI tools for theatre and film and offers training and consultancy — see [AI in Theatre & Film](/ai-film) or book a free call on [Book Us](/book?service=ai).' };
   if (hit('history', 'ithaka', 'kamiriithu', 'kamirithu', 'lari', 'mau mau', 'ngugi', 'chief', 'mukoma')) return { text: 'The history of Kamĩrĩĩthũ and Limuru — from Gĩkũyũ and Mũmbi to the Lari Massacre and Ngũgĩ\'s theatre — is on [Ithaka cia Kamĩrĩĩthũ](/ithaka), with a [Heritage Map](/heritage-map).' };
   if (hit('watch', 'comedy', 'video', 'youtube', 'funny')) return { text: 'Grab some popcorn 🍿 — the [Virtual Theatre](/theatre) screens PBAG originals first, then Kenyan comedy greats.' };
-  if (hit('contact', 'phone', 'call', 'email', 'where', 'location')) return { text: `You can call or WhatsApp ${ORG.contact.phone}, or email ${ORG.contact.email}. We\'re in Limuru, Kiambu County. More on the [Contact page](/contact).` };
+  if (hit('contact', 'phone', 'call', 'email', 'where', 'location')) return { text: `You can call or WhatsApp ${ORG.contact.phone}, or email ${ORG.contact.email} (or ${ORG.contact.emailAlt}). We\'re in Limuru, Kiambu County. More on the [Contact page](/contact).` };
   if (hit('thank', 'asante')) return { text: 'Asante sana — it\'s a pleasure! Anything else I can help with? 🎭' };
   return { text: 'I\'m sorry — I don\'t have a good answer for that yet. I can pass your question to the **PBAG Board & Management** so a person can reply to you. Would you like me to do that?', escalate: true };
 }

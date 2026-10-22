@@ -86,7 +86,7 @@ export async function downloadPDF(tickets, color, name = 'PBAG-tickets') {
     if (i) pdf.addPage([210, 100], 'landscape');
     const c = await ticketCanvas(t, color);
     pdf.addImage(c.toDataURL('image/jpeg', .92), 'JPEG', 5, 5, 200, 85.7);
-    pdf.setFontSize(7); pdf.setTextColor(120); pdf.text('Non-transferable copies are void once scanned. Help: 0720 960 180 · theatre@pbagco.com', 105, 96, { align: 'center' });
+    pdf.setFontSize(7); pdf.setTextColor(120); pdf.text('Non-transferable copies are void once scanned. Help: 0720 960 180 · info@pbagco.com', 105, 96, { align: 'center' });
   }
   pdf.save(`${name}.pdf`);
 }

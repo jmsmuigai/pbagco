@@ -39,7 +39,8 @@ export const ORG = {
   contact: {
     phone: '0720 960 180',
     phoneIntl: '+254720960180',
-    email: 'theatre@pbagco.com',
+    email: 'info@pbagco.com',
+    emailAlt: 'pbagint@gmail.com',
     whatsapp: 'https://wa.me/254720960180',
     address: 'Limuru, Kiambu County, Kenya',
     social: {

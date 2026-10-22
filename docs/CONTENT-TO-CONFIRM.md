@@ -26,3 +26,17 @@
 | **Ex-Chief Mũkoma wa Njiriiri card** | `src/pages/ithaka.html` | Text is as supplied by PBAG (Tignor's "petty oppression" passage and the Mbũrũ wa Njiriiri biography were not independently verified online). |
 | **Kiswahili translation** | `src/i18n/sw/*.json`, `public/assets/js/i18n.js` | Drafted by the build team (Gemini was not reachable from the build environment). Have a native speaker review, or run `GEMINI_API_KEY=… npm run translate` to (re)generate with Gemini — output lands in `src/i18n/sw/50-gemini.json`. Event descriptions, heritage-site descriptions and the AI-film simulation logs stay in English for now. |
 | **Board / Management escalation** | Staff → Inbox | Questions Cue can't answer arrive here with an `ES…` reference; decide who replies and how fast. |
+
+## Added with the Ithaka poster · logos · governance release (22 Oct 2026)
+
+| Item | Where | What PBAG must confirm |
+|---|---|---|
+| **Ithaka cia Kamĩrĩĩthũ** dates, times, venue and prices | `server/content.js` (`evt-ithaka`, from the official poster) | 10 shows: Fri 4 & 11 Dec 5pm; Sat/Sun 5–6 & 12–13 Dec 3pm and 6pm at Kamirithu Polytechnic. Early bird KSh 1,000 (21 Oct–10 Nov), Advance KSh 1,500 (to 30 Nov), Gate KSh 2,000 (sold at the gate only), VIP KSh 3,000. **Seat capacities per show are estimates** (300 / 1,500 / 1,000 / 100) — give us the hall capacity. |
+| Crew | Ithaka page, event, structured data | Boni Kanyuira — Director & Executive Producer · Samuel Gitonga — Producer · Mwaniki Njache — Head Writer. |
+| Poster artwork | `public/assets/img/ithaka-poster-*` | The logo on the supplied poster reads **"PBQG THEATRE"** (AI-art typo). Consider fixing it on the printed poster. |
+| Enquiries number | Ithaka page / event | +254 790 223 513 (main PBAG line stays 0720 960 180). |
+| **New logos** | `public/assets/img/logos/` (SVG + PNG, dark & light, emblem-only) | Proposed new identity for PBAG Consortium, PBAG Bunge, PBAG Community Theatre, Peers Got Talanta (PGT) and Peatice Productions. Regenerate with `python3 scripts/logos.py`. |
+| Name change | Site-wide | "PBAG Theatre" is now **PBAG Community Theatre**. |
+| PBAG Bunge mandate | `/governance` (EN + SW) | Section 6.2 roles 6.2.1–6.2.18 lightly edited for the web from the text supplied. |
+| Ithaka audition call | `SEED_AUDITIONS` | Changed to chorus, dancers & understudies on 7 Nov at Kamirithu Polytechnic — provisional. |
+| Online ticket sales on the live site | env `TICKET_SALES` | `soon` (default in `deploy.sh`) shows shows & prices but pauses checkout until the real Paybill is set; switch to `open` when payments are live. |

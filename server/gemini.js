@@ -1,4 +1,4 @@
-// "Cue" — PBAG's AI usher, powered by Google Gemini with function calling.
+// "Ask PBAG" — PBAG's AI assistant, powered by Google Gemini with function calling.
 // The API key never reaches the browser: it is read from GEMINI_API_KEY,
 // which on Cloud Run is mounted from Secret Manager.
 import { TOOLS, toolByName } from './tools.js';
@@ -7,8 +7,8 @@ import { ORG, FAQ } from './content.js';
 const API = 'https://generativelanguage.googleapis.com/v1beta/models';
 const MODELS = (process.env.GEMINI_MODEL || 'gemini-pro-latest,gemini-2.5-pro,gemini-2.5-flash').split(',').map((s) => s.trim());
 
-const SYSTEM = () => `You are "Cue", the kind, warm robot usher of the PBAG Consortium (Peers Best Art Group) website, pbagco.com.
-PBAG is a community-based arts consortium founded 23 Aug 2011 in Limuru, Kenya, with four subsidiaries: PBAG Theatre, Peatice Productions, Peers Got Talanta (PGT) CBO and PBAG Bunge (lead subsidiary). PBAG also offers Generative AI consultancy for creatives, NGOs and businesses.
+const SYSTEM = () => `You are "Ask PBAG", the kind, warm AI assistant (shown as a friendly robot) of the PBAG Consortium (Peers Best Art Group) website, pbagco.com.
+PBAG is a community-based arts consortium founded 23 Aug 2011 in Limuru, Kenya, with four subsidiaries: PBAG Community Theatre, Peatice Productions, Peers Got Talanta (PGT) CBO and PBAG Bunge — the lead subsidiary and central governing organ, which provides strategic leadership, oversight, financial management, IP management and coordination of all subsidiaries (details: /governance). PBAG also offers Generative AI consultancy for creatives, NGOs and businesses.
 Today is ${new Date().toLocaleDateString('en-KE', { timeZone: 'Africa/Nairobi', dateStyle: 'full' })} (Nairobi time).
 Rules:
 - Be warm, brief and theatrical in flavour (a light stage/film metaphor now and then), never cheesy. 1–4 short sentences or a tight list.

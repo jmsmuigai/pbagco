@@ -4,7 +4,7 @@ import { ORG } from './content.js';
 export function offlineAnswer(q) {
   const s = ' ' + String(q).toLowerCase() + ' ';
   const hit = (...w) => w.some((x) => s.includes(x));
-  if (hit('hello', 'hi ', 'habari', 'hey', 'niaje', 'mambo', 'good morning', 'good evening')) return { text: 'Karibu sana! 😊 I\'m Cue, PBAG\'s robot usher. I can help with tickets, shows, auditions, hiring PBAG or our AI and events services. What would you like to do today?' };
+  if (hit('hello', 'hi ', 'habari', 'hey', 'niaje', 'mambo', 'good morning', 'good evening')) return { text: 'Karibu sana! 😊 this is Ask PBAG, PBAG\'s AI assistant. I can help with tickets, shows, auditions, hiring PBAG or our AI and events services. What would you like to do today?' };
   if (hit('paybill', 'pay bill', 'm-pesa', 'mpesa', 'pay ', 'payment', 'code', 'lipa')) return { text: 'Happy to help with payment! At checkout choose **M-Pesa Paybill**: pay to the Business Number shown, use your order number (starts with PB) as the Account Number, then paste the 10-character M-Pesa code (e.g. SJK3H5X8QP). Your QR ticket appears right away. Bank transfer works the same way. → [Tickets](/tickets)' };
   if (hit('ticket', 'buy', 'price', 'show', 'event', 'tiketi', 'bei')) return { text: 'Lovely — you can see every upcoming show, pick a date and pay by M-Pesa on the [Tickets page](/tickets). Our next production, *Ithaka cia Kamĩrĩĩthũ*, has its story [here](/ithaka).' };
   if (hit('lost', 'download', 'resend', 'my ticket')) return { text: 'No worries — open [My Tickets](/tickets#my-tickets) and enter your order number with the phone or email you used. You can download your ticket again.' };

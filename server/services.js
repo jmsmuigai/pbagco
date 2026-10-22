@@ -30,18 +30,22 @@ const phoneNorm = (p = '') => {
   return d;
 };
 
+// A tier is bookable online when it is not gate-only and today is inside its sales window.
+export const tierOpen = (t, now = new Date()) => !t.gateOnly && (!t.salesStart || new Date(t.salesStart) <= now) && (!t.salesEnd || new Date(t.salesEnd) > now);
+
 export function publicEvent(e) {
   const sub = SUBSIDIARIES.find((s) => s.slug === e.subsidiary);
   return {
     id: e.id, slug: e.slug, title: e.title, tagline: e.tagline, description: e.description, category: e.category,
     venue: e.venue, subsidiary: e.subsidiary, subsidiaryName: sub?.name, palette: e.palette, status: e.status,
     performances: e.performances,
+    poster: e.poster || null, crew: e.crew || null, enquiries: e.enquiries || null,
     tiers: e.tiers.map((t) => ({
-      id: t.id, name: t.name, price: t.price, salesEnd: t.salesEnd || null,
+      id: t.id, name: t.name, price: t.price, salesEnd: t.salesEnd || null, salesStart: t.salesStart || null, gateOnly: !!t.gateOnly,
       remaining: Math.max(0, t.capacity - (t.sold || 0) - (t.held || 0)),
-      onSale: !t.salesEnd || new Date(t.salesEnd) > new Date(),
+      onSale: tierOpen(t),
     })),
-    fromPrice: Math.min(...e.tiers.map((t) => t.price)),
+    fromPrice: Math.min(...(e.tiers.filter((t) => tierOpen(t)).length ? e.tiers.filter((t) => tierOpen(t)) : e.tiers).map((t) => t.price)),
   };
 }
 
@@ -77,11 +81,14 @@ export async function createOrder(db, input, { channel = 'online', staff = null 
   const orderId = 'PB' + rid(8);
   const order = await db.transact(async (t) => {
     const e = await t.get('events', eventId);
+    if (process.env.TICKET_SALES === 'soon') throw httpErr(403, 'Online ticket sales open soon — please call +254 790 223 513 to reserve.');
     if (!e || e.status !== 'on_sale') throw httpErr(404, 'Event not on sale');
     const perf = e.performances.find((p) => p.id === performanceId);
     if (!perf) throw httpErr(400, 'Pick a show date');
     const tier = e.tiers.find((x) => x.id === tierId);
     if (!tier) throw httpErr(400, 'Pick a ticket type');
+    if (tier.gateOnly) throw httpErr(400, `${tier.name} tickets are sold at the gate on the day`);
+    if (tier.salesStart && new Date(tier.salesStart) > new Date()) throw httpErr(400, `${tier.name} sales have not opened yet`);
     if (tier.salesEnd && new Date(tier.salesEnd) < new Date()) throw httpErr(400, `${tier.name} sales have closed`);
     const remaining = tier.capacity - (tier.sold || 0) - (tier.held || 0);
     if (remaining < qty) throw httpErr(409, remaining > 0 ? `Only ${remaining} ${tier.name} left` : `${tier.name} is sold out`);

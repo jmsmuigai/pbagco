@@ -67,7 +67,7 @@ app.get('/api/health', (_req, res) => res.json({ ok: true, db: db.kind, payments
 
 app.get('/api/site', (_req, res) => {
   res.set('Cache-Control', 'public, max-age=300');
-  res.json({ org: ORG, subsidiaries: SUBSIDIARIES, bookingServices: BOOKING_SERVICES, aiServices: AI_SERVICES, faq: FAQ, payments: { ...methods(), paybill: true, bank: true }, paymentDetails: PAYMENT_DETAILS, auditionCategories: AUDITION_CATEGORIES });
+  res.json({ org: ORG, subsidiaries: SUBSIDIARIES, bookingServices: BOOKING_SERVICES, aiServices: AI_SERVICES, faq: FAQ, payments: { ...methods(), paybill: true, bank: true }, paymentDetails: PAYMENT_DETAILS, auditionCategories: AUDITION_CATEGORIES, salesOpen: process.env.TICKET_SALES !== 'soon' });
 });
 
 app.get('/api/events', wrap(async (_req, res) => { res.set('Cache-Control', 'public, max-age=30'); res.json(await S.listEvents(db)); }));

@@ -14,7 +14,7 @@ export async function ticketHTML(t, color = '#3b82f6') {
   const svg = makeQR(ticketUrl(t.code)).createSvgTag({ cellSize: 4, margin: 0, scalable: true });
   return `<article class="e-ticket" style="--c:${color}" data-code="${esc(t.code)}">
     <div class="et-main">
-      <div class="et-brand"><img src="/assets/img/pbag-logo.webp" alt="PBAG" width="60" height="34"><span>Admit one · ${esc(t.tierName)}</span></div>
+      <div class="et-brand"><img src="/assets/img/logos/pbag-consortium-light.svg" alt="PBAG Consortium" width="94" height="22"><span>Admit one · ${esc(t.tierName)}</span></div>
       <h3>${esc(t.eventTitle)}</h3>
       <dl>
         <div><dt>${_t('Date')}</dt><dd>${fmt.date(t.startsAt)}</dd></div>
@@ -44,7 +44,7 @@ function wrapText(ctx, text, x, y, maxW, lh, maxLines = 2) {
 /** Draw a ticket to a canvas (1400x600) for PNG/PDF export. */
 export async function ticketCanvas(t, color = '#3b82f6') {
   await ensureQR(); await document.fonts?.ready;
-  logoImg ||= await loadImg('/assets/img/pbag-logo.png');
+  logoImg ||= await loadImg((window.PBAG_STATIC?.base || '/') + 'assets/img/logos/pbag-consortium-light.png');
   const W = 1400, H = 600, c = document.createElement('canvas'); c.width = W; c.height = H;
   const x = c.getContext('2d');
   x.fillStyle = '#f7f2e8'; x.beginPath(); x.roundRect(0, 0, W, H, 36); x.fill();
@@ -54,7 +54,7 @@ export async function ticketCanvas(t, color = '#3b82f6') {
   // perforation
   x.strokeStyle = '#cfc6b3'; x.setLineDash([14, 12]); x.lineWidth = 4; x.beginPath(); x.moveTo(1000, 30); x.lineTo(1000, H - 30); x.stroke(); x.setLineDash([]);
   x.fillStyle = '#ffffff'; [[1000, 0], [1000, H]].forEach(([cx, cy]) => { x.save(); x.globalCompositeOperation = 'destination-out'; x.beginPath(); x.arc(cx, cy, 26, 0, 7); x.fill(); x.restore(); });
-  if (logoImg) x.drawImage(logoImg, 60, 46, 120, 120 * logoImg.height / logoImg.width);
+  if (logoImg) x.drawImage(logoImg, 54, 40, 260, 260 * logoImg.height / logoImg.width);
   x.fillStyle = '#5b5670'; x.font = '700 22px "DM Sans", sans-serif'; x.textAlign = 'right'; x.fillText(`ADMIT ONE · ${t.tierName.toUpperCase()}`, 950, 76); x.textAlign = 'left';
   x.fillStyle = '#0e0b18'; x.font = '900 76px "Big Shoulders Display", Impact, sans-serif';
   let y = wrapText(x, t.eventTitle.toUpperCase(), 60, 210, 880, 74);

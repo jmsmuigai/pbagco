@@ -25,7 +25,7 @@ gcloud projects add-iam-policy-binding "$PROJECT" --member="serviceAccount:$SA" 
 
 gcloud run deploy "$SERVICE" --source . --region "$REGION" --allow-unauthenticated \
   --min-instances 0 --max-instances 4 --cpu 1 --memory 512Mi --concurrency 80 \
-  --set-env-vars "DB=firestore,PAYMENTS_MODE=${PAYMENTS_MODE:-mock},PUBLIC_URL=https://pbagco.com" \
+  --set-env-vars "DB=firestore,PAYMENTS_MODE=${PAYMENTS_MODE:-mock},TICKET_SALES=${TICKET_SALES:-soon},PUBLIC_URL=https://pbagco.com" \
   --set-secrets "GEMINI_API_KEY=GEMINI_API_KEY:latest,TICKET_SECRET=TICKET_SECRET:latest,STAFF_PIN=STAFF_PIN:latest"
 
 echo "Deployed. Next: map pbagco.com (see docs/DEPLOYMENT.md)."

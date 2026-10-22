@@ -38,4 +38,4 @@ import { $, $$, api, poster, stub, observeReveals, icon, esc, t } from './app.js
 })();
 
 // nested link inside the story band
-document.querySelectorAll('[data-href]').forEach((b) => b.addEventListener('click', (e) => { e.preventDefault(); e.stopPropagation(); location.href = (window.PBAG_STATIC?.base || '/') + b.dataset.href.slice(1); }));
+document.querySelectorAll('[data-href]').forEach((b) => b.addEventListener('click', (e) => { e.preventDefault(); e.stopPropagation(); location.href = (window.PBAG_STATIC?.base || '/') + (document.documentElement.lang === 'sw' ? 'sw/' : '') + b.dataset.href.slice(1); }));

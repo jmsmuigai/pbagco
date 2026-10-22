@@ -3,6 +3,9 @@ const _t = t; // alias for scopes where `t` is a ticket/tier
 import { Calendar } from './calendar.js';
 import { ticketHTML, downloadPDF, downloadPNG, gcalLink, ticketUrl } from './ticket-render.js';
 
+let site;
+// Live site before the real Paybill is configured: browse shows & prices, but checkout is paused (server sets TICKET_SALES=soon).
+const SALES_SOON = await api('/api/site').then((s) => { site = s; return s.salesOpen === false; }).catch(() => false);
 const S = { events: [], ev: null, perf: null, tier: null, qty: 1, buyer: {}, order: null, method: 'paybill', pay: {}, step: 1 };
 const body = $('#stepBody');
 let cal;
@@ -67,14 +70,14 @@ function stepTickets() {
     <div role="radiogroup" aria-label="${t('Ticket type')}">${ev.tiers.map((t) => {
       const off = !t.onSale || t.remaining < 1;
       return `<div class="tier${S.tier?.id === t.id ? ' on' : ''}${off ? ' soldout' : ''}" role="radio" tabindex="${off ? -1 : 0}" aria-checked="${S.tier?.id === t.id}" data-t="${t.id}">
-        <div><h4>${esc(t.name)}</h4><small>${off ? (t.onSale ? _t('Sold out') : _t('Sales closed')) : t.remaining <= 20 ? `<span class="magenta">${_t('Only')} ${t.remaining} ${_t('left')}</span>` : `${t.remaining} ${_t('available')}`}${t.salesEnd && t.onSale ? ` · ${_t('until')} ${fmt.short(t.salesEnd)}` : ''}</small></div>
+        <div><h4>${esc(t.name)}</h4><small>${off ? (t.onSale ? _t('Sold out') : t.gateOnly ? _t('Sold at the gate on the day') : t.salesStart && new Date(t.salesStart) > new Date() ? `${_t('Opens')} ${fmt.short(t.salesStart)}` : _t('Sales closed')) : t.remaining <= 20 ? `<span class="magenta">${_t('Only')} ${t.remaining} ${_t('left')}</span>` : `${t.remaining} ${_t('available')}`}${t.salesEnd && t.onSale ? ` · ${_t('until')} ${fmt.short(t.salesEnd)}` : ''}</small></div>
         <span class="price">${kes(t.price)}</span>
       </div>`; }).join('')}</div>
     <div class="row mt" style="justify-content:space-between">
       <div class="qty" aria-label="Quantity"><button type="button" data-q="-1" aria-label="${t('One less')}">${icon('minus')}</button><output id="qty">${S.qty}</output><button type="button" data-q="1" aria-label="${t('One more')}">${icon('plus')}</button></div>
       <div class="price" id="sub">${kes((S.tier?.price || 0) * S.qty)}</div>
     </div>
-    <div class="row mt" style="justify-content:flex-end"><button class="btn btn-gold" id="next2" ${S.tier ? '' : 'disabled'}>Continue ${icon('arrow-right')}</button></div>`;
+    ${SALES_SOON ? `<div class="notice mt">${icon('info')} <span><b>${t('Online ticket sales open soon.')}</b> ${t('To reserve now, call or WhatsApp')} <a class="gold" href="tel:${(ev.enquiries || '+254720960180').replace(/\s/g, '')}">${esc(ev.enquiries || '0720 960 180')}</a>.</span></div>` : `<div class="row mt" style="justify-content:flex-end"><button class="btn btn-gold" id="next2" ${S.tier ? '' : 'disabled'}>${t('Continue')} ${icon('arrow-right')}</button></div>`}`;
   const upd = () => { $('#qty').textContent = S.qty; $('#sub').textContent = kes((S.tier?.price || 0) * S.qty); };
   $$('[data-t]', body).forEach((el) => {
     const sel = () => { const t = ev.tiers.find((x) => x.id === el.dataset.t); if (!t.onSale || t.remaining < 1) return; S.tier = t; S.qty = Math.min(S.qty, t.remaining); go(2); };
@@ -82,7 +85,7 @@ function stepTickets() {
   });
   $$('[data-q]', body).forEach((b) => b.addEventListener('click', () => { S.qty = Math.max(1, Math.min(10, S.tier?.remaining || 10, S.qty + Number(b.dataset.q))); upd(); }));
   $('[data-back]', body).addEventListener('click', () => go(1));
-  $('#next2').addEventListener('click', () => go(3));
+  $('#next2')?.addEventListener('click', () => go(3));
 }
 
 function stepDetails() {
@@ -121,7 +124,6 @@ const summary = () => `<div class="summary">
   ${S.order?.fee ? `<div><span>${t('Booking fee')}</span><span>${kes(S.order.fee)}</span></div>` : ''}
   <div class="total"><span>${t('Total')}</span><span>${kes(S.order?.total ?? S.tier.price * S.qty)}</span></div></div>`;
 
-let site;
 async function stepPay() {
   site ||= await api('/api/site').catch(() => ({ payments: { mpesa: true, paybill: true, bank: true } }));
   const pm = site.payments || {};

@@ -8,7 +8,7 @@ export const L = (path) => (LANG === 'sw' ? '/sw' : '') + path; // language-awar
 // On Kiswahili pages, keep every internal page link inside /sw/ (covers links rendered by scripts too).
 if (LANG === 'sw') {
   const BASE = window.PBAG_STATIC?.base || '/';
-  const PAGES = /^(about|subsidiaries|theatre|tickets|book|consultancy|contact|ithaka|heritage-map|ai-film|events|auditions|nlp)?([?#].*)?$/;
+  const PAGES = /^(about|subsidiaries|theatre|tickets|book|consultancy|contact|ithaka|heritage-map|ai-film|events|auditions|nlp|governance)?([?#].*)?$/;
   const fix = (root) => root.querySelectorAll?.('a[href]').forEach((a) => {
     const h = a.getAttribute('href'); if (!h.startsWith(BASE) || h.startsWith(BASE + 'sw/') || a.hasAttribute('hreflang')) return;
     const rest = h.slice(BASE.length); if (PAGES.test(rest)) a.setAttribute('href', BASE + 'sw/' + rest);
@@ -49,6 +49,7 @@ const SUB_ICON = { 'pbag-theatre': 'drama', 'peatice-productions': 'clapperboard
 /** Generated, lightweight event poster (pure HTML/CSS — no image download). */
 export function poster(e, { compact = false, bare = false } = {}) {
   const [a, b] = e.palette || ['#3b82f6', '#8b5cf6'];
+  if (e.poster) return `<div class="poster has-img" style="--a:${a};--b:${b}"><img src="${(window.PBAG_STATIC?.base || '/') + e.poster.replace(/^\//, '')}" alt="${esc(e.title)} — official poster" loading="lazy" decoding="async"></div>`;
   const first = e.performances?.[0]?.startsAt;
   return `<div class="poster" style="--a:${a};--b:${b}">
     <i class="p-spot"></i><span class="p-word" aria-hidden="true">${esc(e.category || 'Live')}</span>
@@ -111,7 +112,7 @@ export function getRef() {
   try { const r = JSON.parse(localStorage.getItem('pbag-ref')); return r && r.exp > Date.now() ? r : null; } catch { return null; }
 }
 
-/* ---------- Cue: robot usher chat ---------- */
+/* ---------- Ask PBAG: robot assistant chat ---------- */
 const cue = $('#cue'), fab = $('.cue-fab'), log = $('.cue-log'), form = $('.cue-form'), input = $('#cueInput'), sugg = $('.cue-sugg');
 const bubbleEl = $('#roboBubble');
 let history = [];
@@ -126,7 +127,7 @@ function bubble(role, text) {
 const SUGG = [t("What's showing this month?"), t('How do I pay with M-Pesa Paybill?'), t('Upcoming auditions'), t('Hire PBAG for an event'), t('Talk to a person')];
 function renderCue() {
   log.innerHTML = '';
-  bubble('assistant', t('Karibu! 🤖 I’m **Cue**, PBAG’s robot usher. I’m happy to help with shows, tickets, auditions, hiring PBAG or our AI services — and if I can’t answer, I’ll pass your question to the PBAG Board & Management.'));
+  bubble('assistant', t('Karibu! 🤖 This is **Ask PBAG**, PBAG’s AI assistant. I’m happy to help with shows, tickets, auditions, hiring PBAG or our AI services — and if I can’t answer, I’ll pass your question to the PBAG Board & Management.'));
   history.forEach((m) => bubble(m.role, m.text));
   sugg.innerHTML = history.length ? '' : SUGG.map((x) => `<button class="chip" type="button">${esc(x)}</button>`).join('');
 }
@@ -184,3 +185,10 @@ if (bubbleEl) {
   let seen = false; try { seen = sessionStorage.getItem('pbag-robo'); sessionStorage.setItem('pbag-robo', 1); } catch {}
   if (!seen && !location.pathname.includes('staff')) setTimeout(() => { if (!cue.classList.contains('open')) { bubbleEl.hidden = false; $('.robo')?.classList.add('wave'); setTimeout(() => { bubbleEl.hidden = true; }, 14000); } }, 5000);
 }
+
+// Governance page: expand / collapse all roles
+document.querySelector('[data-gov-toggle]')?.addEventListener('click', (e) => {
+  const all = [...document.querySelectorAll('.gov-role')]; const open = !all.every((d) => d.open);
+  all.forEach((d) => { d.open = open; });
+  e.currentTarget.lastChild.textContent = ' ' + t(open ? 'Collapse all' : 'Expand all');
+});

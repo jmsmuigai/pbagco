@@ -105,7 +105,13 @@ export async function createStore() {
 // Idempotent: only inserts seed docs that don't exist yet.
 async function seed(store) {
   for (const e of SEED_EVENTS) {
-    if (!(await store.get('events', e.id))) await store.set('events', e.id, { ...e, createdAt: new Date().toISOString() });
+    const cur = await store.get('events', e.id);
+    if (!cur) await store.set('events', e.id, { ...e, createdAt: new Date().toISOString() });
+    else if ((e.seedVersion || 0) > (cur.seedVersion || 0)) {
+      // Official details changed (dates/prices/venue): refresh the event but keep any sales already made.
+      const sold = Object.fromEntries((cur.tiers || []).map((t) => [t.id, { sold: t.sold || 0, held: t.held || 0 }]));
+      await store.set('events', e.id, { ...cur, ...e, tiers: e.tiers.map((t) => ({ ...t, ...(sold[t.id] || {}) })), updatedAt: new Date().toISOString() });
+    }
   }
   for (const [i, v] of SEED_VIDEOS.entries()) {
     const cur = await store.get('videos', v.id);
@@ -113,7 +119,11 @@ async function seed(store) {
     else if (!cur.section) await store.update('videos', v.id, { section: v.section, order: i }); // migrate older seeds
   }
   for (const id of RETIRED_VIDEOS) if (await store.get('videos', id)) await store.update('videos', id, { retired: true });
-  for (const a of SEED_AUDITIONS) if (!(await store.get('auditions', a.id))) await store.set('auditions', a.id, { ...a, createdAt: new Date().toISOString() });
+  for (const a of SEED_AUDITIONS) {
+    const cur = await store.get('auditions', a.id);
+    if (!cur) await store.set('auditions', a.id, { ...a, createdAt: new Date().toISOString() });
+    else if ((a.seedVersion || 0) > (cur.seedVersion || 0)) await store.set('auditions', a.id, { ...cur, ...a, updatedAt: new Date().toISOString() });
+  }
   if (!(await store.get('sellers', 'PBAG10'))) {
     await store.set('sellers', 'PBAG10', { code: 'PBAG10', name: 'PBAG Promoters Desk', phone: '', commissionRate: null, active: true, createdAt: new Date().toISOString() });
   }

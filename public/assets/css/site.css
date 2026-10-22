@@ -892,3 +892,52 @@ textarea.input { min-height: 120px; resize: vertical; }
 
 .nav > a, .nav .dd > button { white-space: nowrap; }
 @media (min-width: 1040px) and (max-width: 1259px) { .header-cta { display: none; } .nav > a, .nav .dd > button { padding-left: 8px; padding-right: 8px; } }
+
+/* real event posters (e.g. Ithaka cia Kamĩrĩĩthũ) */
+.poster.has-img { padding: 0 !important; background: #120c18; }
+.poster.has-img img { width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block; }
+/* Ithaka: crew, poster, show facts */
+.crew { list-style: none; padding: 0; margin: 18px 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.crew li { border: 1px solid var(--line-2); border-radius: 14px; padding: 12px 14px; background: rgba(255, 194, 61, .05); }
+.crew b { display: block; font-family: var(--font-display, inherit); font-size: 1.05rem; letter-spacing: .02em; }
+.crew small { color: var(--gold); font-size: .75rem; text-transform: uppercase; letter-spacing: .08em; }
+@media (max-width: 640px) { .crew { grid-template-columns: 1fr; } }
+.ith-poster { margin: 0; justify-self: center; max-width: 480px; width: 100%; }
+.ith-poster img { width: 100%; height: auto; border-radius: 18px; box-shadow: 0 30px 80px rgba(0, 0, 0, .55), 0 0 0 1px rgba(255, 194, 61, .25); display: block; transition: transform .4s; }
+.ith-poster a:hover img { transform: translateY(-4px) rotate(-.4deg); }
+.play-facts .facts { list-style: none; padding: 0; margin: 0 0 14px; display: grid; gap: 10px; }
+.play-facts .facts li { display: flex; gap: 10px; align-items: flex-start; }
+.play-facts .facts .i { color: var(--gold); flex: none; margin-top: 3px; }
+.prices { width: 100%; border-collapse: collapse; font-size: .95rem; }
+.prices th { text-align: left; font-weight: 700; } .prices td, .prices th { padding: 9px 6px; border-top: 1px solid var(--line); }
+.prices td:nth-child(2) { color: var(--gold); font-weight: 800; white-space: nowrap; }
+.ith-band-art.has-poster { padding: 0; overflow: hidden; background: #120c18; }
+.ith-band-art.has-poster img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.ith-band-art.has-poster { height: auto; aspect-ratio: 3 / 2; }
+.sub-logo img { max-width: 100%; height: auto; max-height: 160px; }
+
+/* governance (PBAG Bunge) */
+.gov-hero { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 40px; align-items: center; }
+.gov-logo { width: clamp(140px, 18vw, 220px); height: auto; filter: drop-shadow(0 20px 50px rgba(91, 63, 217, .45)); }
+@media (max-width: 760px) { .gov-hero { grid-template-columns: 1fr; } .gov-logo { order: -1; width: 120px; } }
+.gov-map { display: grid; gap: 18px; justify-items: center; padding: 26px; border: 1px solid var(--line); border-radius: 22px; background: radial-gradient(60% 80% at 50% 0%, rgba(91, 63, 217, .22), transparent 70%); }
+.gov-arms { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; width: 100%; position: relative; }
+.gov-arms::before { content: ''; position: absolute; left: 16%; right: 16%; top: -10px; height: 10px; border: 2px solid rgba(255, 194, 61, .45); border-bottom: 0; border-radius: 10px 10px 0 0; }
+.gov-node { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 16px; border: 1px solid var(--line-2); background: rgba(255, 255, 255, .03); color: #fff; }
+.gov-node.lead { flex-direction: column; text-align: center; border-color: rgba(255, 194, 61, .5); background: rgba(91, 63, 217, .2); }
+.gov-node small { color: var(--muted); font-size: .8rem; }
+a.gov-node:hover { border-color: var(--gold); }
+@media (max-width: 760px) { .gov-arms { grid-template-columns: 1fr; } .gov-arms::before { display: none; } }
+.gov-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin-top: 26px; align-items: start; }
+@media (max-width: 860px) { .gov-grid { grid-template-columns: 1fr; } }
+.gov-role { border: 1px solid var(--line); border-radius: 16px; background: rgba(255, 255, 255, .025); transition: border-color .2s; }
+.gov-role[open] { border-color: rgba(255, 194, 61, .45); background: rgba(91, 63, 217, .08); }
+.gov-role summary { list-style: none; cursor: pointer; display: flex; align-items: center; gap: 12px; padding: 16px 18px; }
+.gov-role summary::-webkit-details-marker { display: none; }
+.gov-role summary .i { color: var(--gold); flex: none; }
+.gov-role summary b { font-size: 1.02rem; }
+.gov-role .num { font: 800 .72rem var(--font-body); letter-spacing: .08em; color: var(--muted); min-width: 3.4em; }
+.gov-role p { margin: 0; padding: 0 18px 18px 18px; color: var(--muted-2, #cfc9de); line-height: 1.65; }
+
+.notice { display: flex; gap: 10px; align-items: flex-start; padding: 14px 16px; border-radius: 14px; border: 1px solid rgba(255, 194, 61, .45); background: rgba(255, 194, 61, .08); }
+.notice .i { color: var(--gold); flex: none; margin-top: 2px; }

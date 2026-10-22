@@ -41,7 +41,7 @@ export const TOOLS = [
     run: async (_db, { topic }) => ({
       about: { story: ORG.story, mission: ORG.mission, vision: ORG.vision, purpose: ORG.purpose, values: ORG.values, founded: ORG.founded, members: ORG.members, tagline: ORG.tagline },
       subsidiaries: SUBSIDIARIES.map(({ name, kicker, summary, mission, offers }) => ({ name, kicker, summary, mission, offers, page: '/subsidiaries' })),
-      management: { roles: ORG.management, philosophy: ORG.leadershipPhilosophy, note: 'Management sits within PBAG Bunge, the lead subsidiary.' },
+      management: { roles: ORG.management, philosophy: ORG.leadershipPhilosophy, note: 'The management team is appointed and overseen by PBAG Bunge, the lead subsidiary and governing organ of the Consortium. Full roles: /governance.' },
       contact: ORG.contact,
       faq: FAQ.map(([q, a]) => ({ q, a })),
       ai_consultancy: { services: AI_SERVICES.map(({ name, text }) => ({ name, text })), book: '/book?service=ai' },

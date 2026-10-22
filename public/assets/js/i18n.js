@@ -23,7 +23,7 @@ export const SW = {
   'Hire PBAG for an event': 'Kodi PBAG kwa tukio', 'Historic sites': 'Maeneo ya kihistoria', 'Holder': 'Mmiliki', 'House lights': 'Taa za ukumbi',
   'How do I pay with M-Pesa Paybill?': 'Nalipaje kwa M-Pesa Paybill?', 'How would you like to pay?': 'Ungependa kulipa vipi?',
   'Hybrid satellite': 'Setilaiti mseto', 'Instant PIN prompt': 'Ombi la PIN papo hapo',
-  'Karibu! 🤖 I’m **Cue**, PBAG’s robot usher. I’m happy to help with shows, tickets, auditions, hiring PBAG or our AI services — and if I can’t answer, I’ll pass your question to the PBAG Board & Management.': 'Karibu! 🤖 Mimi ni **Cue**, roboti mkaribishaji wa PBAG. Nina furaha kukusaidia kuhusu maonyesho, tiketi, usaili, kukodi PBAG au huduma zetu za AI — na nisipoweza kujibu, nitapeleka swali lako kwa Bodi na Uongozi wa PBAG.',
+  'Karibu! 🤖 This is **Ask PBAG**, PBAG’s AI assistant. I’m happy to help with shows, tickets, auditions, hiring PBAG or our AI services — and if I can’t answer, I’ll pass your question to the PBAG Board & Management.': 'Karibu! 🤖 Hii ni **Uliza PBAG**, msaidizi wa AI wa PBAG. Nina furaha kukusaidia kuhusu maonyesho, tiketi, usaili, kukodi PBAG au huduma zetu za AI — na nisipoweza kujibu, nitapeleka swali lako kwa Bodi na Uongozi wa PBAG.',
   'Kenyan Comedy Greats': 'Magwiji wa Vichekesho Kenya', 'Land & removals': 'Ardhi na kuhamishwa', 'Latest uploads': 'Video mpya zaidi', 'Lights up': 'Washa taa',
   'M-PESA menu → Lipa na M-PESA → Pay Bill': 'Menyu ya M-PESA → Lipa na M-PESA → Pay Bill', 'M-Pesa Paybill': 'M-Pesa Paybill', 'M-Pesa prompt': 'Ombi la M-Pesa',
   'Mau Mau routes (indicative)': 'Njia za Mau Mau (elekezi)', 'More on PBAG’s YouTube': 'Zaidi kwenye YouTube ya PBAG', 'Natural landmark': 'Alama ya asili',
@@ -70,6 +70,6 @@ export const SW = {
   'Your seats were released — please start again.': 'Viti vyako vimeachiliwa — tafadhali anza upya.',
   'agent working…': 'wakala anafanya kazi…', 'approved': 'imeidhinishwa', 'available': 'zinapatikana', 'days to apply': 'siku za kutuma maombi',
   'from': 'kuanzia', 'presents': 'inawasilisha', 'shows': 'maonyesho', 'to do': 'ya kufanya', 'until': 'hadi',
-  unavailable: 'haipatikani',
+  unavailable: 'haipatikani', Continue: 'Endelea', 'Online ticket sales open soon.': 'Uuzaji wa tiketi mtandaoni unafunguliwa hivi karibuni.', 'To reserve now, call or WhatsApp': 'Kuhifadhi sasa, piga simu au tuma WhatsApp kwa', 'Expand all': 'Panua yote', 'Collapse all': 'Kunja yote', 'Sold at the gate on the day': 'Zinauzwa langoni siku ya onyesho', Opens: 'Zinafunguliwa',
   Submitted: 'Limetumwa', Shortlisted: 'Orodha fupi', Invited: 'Umealikwa', Callback: 'Kuitwa tena', Selected: 'Umechaguliwa',
 };

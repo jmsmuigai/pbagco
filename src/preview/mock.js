@@ -15,7 +15,8 @@ const save = () => { if (!CFG.persist) return; try { const sold = {}; events.for
 const B32 = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
 const rid = (n) => Array.from(crypto.getRandomValues(new Uint8Array(n)), (x) => B32[x % 32]).join('');
 const subName = (s) => SUBSIDIARIES.find((x) => x.slug === s)?.name;
-const pub = (e) => ({ ...e, subsidiaryName: subName(e.subsidiary), tiers: e.tiers.map((t) => ({ id: t.id, name: t.name, price: t.price, salesEnd: t.salesEnd || null, remaining: t.capacity - (t.sold || 0), onSale: !t.salesEnd || new Date(t.salesEnd) > new Date() })), fromPrice: Math.min(...e.tiers.map((t) => t.price)) });
+const tierOpen = (t) => !t.gateOnly && (!t.salesStart || new Date(t.salesStart) <= new Date()) && (!t.salesEnd || new Date(t.salesEnd) > new Date());
+const pub = (e) => ({ ...e, subsidiaryName: subName(e.subsidiary), tiers: e.tiers.map((t) => ({ id: t.id, name: t.name, price: t.price, salesEnd: t.salesEnd || null, salesStart: t.salesStart || null, gateOnly: !!t.gateOnly, remaining: t.capacity - (t.sold || 0), onSale: tierOpen(t) })), fromPrice: Math.min(...(e.tiers.filter(tierOpen).length ? e.tiers.filter(tierOpen) : e.tiers).map((t) => t.price)) });
 const norm = (p = '') => { const d = String(p).replace(/\D/g, ''); return d.startsWith('254') ? d : d.startsWith('0') ? '254' + d.slice(1) : d; };
 const pubOrder = (o) => ({ ...o, tickets: (o.ticketIds || []).map((id) => tickets[id]) });
 const ok = (b, s = 200) => new Response(JSON.stringify(b), { status: s, headers: { 'content-type': 'application/json' } });

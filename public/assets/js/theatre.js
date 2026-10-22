@@ -28,7 +28,7 @@ function channelView() {
   $('.facade', screen).addEventListener('click', () => roll(`https://www.youtube-nocookie.com/embed/videoseries?list=${channel}&autoplay=1&rel=0`, 'PBAG channel'));
 }
 const SECTIONS = [
-  { key: 'pbag', title: 'PBAG Originals', kicker: t('From our own stage'), note: 'Sketches, stage plays, poetry and festival moments by PBAG RAW, PBAG Theatre, PBAG Generation and PGT.' },
+  { key: 'pbag', title: 'PBAG Originals', kicker: t('From our own stage'), note: 'Sketches, stage plays, poetry and festival moments by PBAG RAW, PBAG Community Theatre, PBAG Generation and PGT.' },
   { key: 'kenya', title: t('Kenyan Comedy Greats'), kicker: t('The scene we celebrate'), note: 'Hand-picked from the official channels of Kenya’s best-loved comics and shows.' },
 ];
 function card(v) {

@@ -13,8 +13,9 @@ const eventLd = SEED_EVENTS.flatMap((e) => e.performances.map((p) => ({
   eventStatus: 'https://schema.org/EventScheduled', eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
   location: { '@type': 'Place', name: e.venue, address: { '@type': 'PostalAddress', addressLocality: e.venue.split(',').pop().trim(), addressCountry: 'KE' } },
   organizer: { '@type': 'PerformingGroup', name: SUBSIDIARIES.find((x) => x.slug === e.subsidiary)?.name || 'PBAG Consortium', url: SITE },
-  image: [`${SITE}/assets/img/og-image.jpg`],
-  offers: e.tiers.map((t) => ({ '@type': 'Offer', name: t.name, price: t.price, priceCurrency: 'KES', availability: 'https://schema.org/InStock', url: `${SITE}/tickets?event=${e.slug}` })),
+  image: [e.poster ? `${SITE}/assets/img/og-ithaka.jpg` : `${SITE}/assets/img/og-image.jpg`],
+  ...(e.crew ? { director: { '@type': 'Person', name: e.crew[0].name }, contributor: e.crew.map((c) => ({ '@type': 'Person', name: c.name, jobTitle: c.role })) } : {}),
+  offers: e.tiers.map((t) => ({ '@type': 'Offer', name: t.name, price: t.price, priceCurrency: 'KES', availability: 'https://schema.org/InStock', url: `${SITE}/tickets?event=${e.slug}`, ...(t.salesStart ? { validFrom: t.salesStart } : {}), ...(t.salesEnd ? { validThrough: t.salesEnd } : {}) })),
 })));
 const ld = (o) => `<script type="application/ld+json">${JSON.stringify(o).replace(/</g, '\\u003c')}</script>`;
 const sitemap = [];
@@ -27,7 +28,7 @@ const icon = (s) => s.replace(/\{\{i:([\w-]+)(?:\s+([\w-]+))?\}\}/g, (_, n, c) =
 const SW = Object.assign({}, ...fs.readdirSync(path.join(here, 'i18n', 'sw')).filter((f) => f.endsWith('.json')).sort().map((f) => JSON.parse(fs.readFileSync(path.join(here, 'i18n', 'sw', f), 'utf8'))));
 const swMissing = new Set(); const SWOUT = new Set(Object.values(SW));
 const tr = (s) => { if (s in SW) return SW[s]; if (!SWOUT.has(s)) swMissing.add(s); return null; };
-const SWLINK = /(href=")\/(about|subsidiaries|theatre|tickets|book|consultancy|contact|ithaka|heritage-map|ai-film|events|auditions|nlp)?((?:[?#][^"]*)?")/g;
+const SWLINK = /(href=")\/(about|subsidiaries|theatre|tickets|book|consultancy|contact|ithaka|heritage-map|ai-film|events|auditions|nlp|governance)?((?:[?#][^"]*)?")/g;
 const EN_ONLY = new Set(['staff.html']);
 const allPages = fs.readdirSync(path.join(here, 'pages')).filter((f) => f.endsWith('.html'));
 const swPages = new Set(allPages.filter((f) => !EN_ONLY.has(f)));
@@ -59,6 +60,7 @@ for (const [lang, f] of jobs) {
     // One module URL per page; page modules import ./app.js, so app.js always has a single URL (no ?v) => one instance.
     .replaceAll('{{pagejs}}', `<script type="module" src="/assets/js/${meta.js || 'app'}.js"></script>`)
     .replaceAll('{{curtains}}', meta.curtains ? '<div class="curtains" aria-hidden="true"><i></i><i></i></div>' : '')
+    .replaceAll('{{og}}', meta.og || '/assets/img/og-image.jpg')
     .replaceAll('{{v}}', V)
     .replaceAll('{{lang}}', lang)
     .replaceAll('{{locale}}', lang === 'sw' ? 'sw_KE' : 'en_KE')
@@ -76,11 +78,12 @@ for (const [lang, f] of jobs) {
   let extra = '';
   if (slug !== 'index') extra += ld({ '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Home', item: SITE + '/' }, { '@type': 'ListItem', position: 2, name: (meta.title || slug).split(/ [—|] /)[0], item: url }].map((x) => (x.position === 1 && lang === 'sw' ? { ...x, name: 'Nyumbani', item: SITE + '/sw/' } : x)) });
   if (slug === 'index' || slug === 'tickets' || slug === 'events') extra += eventLd.map(ld).join('');
-  if (meta.schema === 'article') extra += ld({ '@context': 'https://schema.org', '@type': 'Article', inLanguage: lang, headline: 'Ithaka cia Kamĩrĩĩthũ — The Story of Kamĩrĩĩthũ, Limuru', author: { '@type': 'Person', name: 'Boniface Kanyuira' }, publisher: { '@type': 'Organization', name: 'PBAG Consortium', logo: { '@type': 'ImageObject', url: SITE + '/assets/img/pbag-logo.png' } }, datePublished: '2026-10-21', image: [SITE + '/assets/img/og-image.jpg'], about: ['Kamĩrĩĩthũ', 'Limuru', 'Lari Massacre', 'Mau Mau', 'Ngũgĩ wa Thiong\'o', 'Kiambu County'], mainEntityOfPage: url });
+  if (meta.schema === 'article') extra += ld({ '@context': 'https://schema.org', '@type': 'Article', inLanguage: lang, headline: 'Ithaka cia Kamĩrĩĩthũ — The Story of Kamĩrĩĩthũ, Limuru', author: { '@type': 'Organization', name: 'PBAG Community Theatre' }, contributor: [{ '@type': 'Person', name: 'Boni Kanyuira', jobTitle: 'Director & Executive Producer' }, { '@type': 'Person', name: 'Samuel Gitonga', jobTitle: 'Producer' }, { '@type': 'Person', name: 'Mwaniki Njache', jobTitle: 'Head Writer' }], publisher: { '@type': 'Organization', name: 'PBAG Consortium', logo: { '@type': 'ImageObject', url: SITE + '/assets/img/logos/pbag-consortium.png' } }, datePublished: '2026-10-21', image: [SITE + '/assets/img/og-image.jpg'], about: ['Kamĩrĩĩthũ', 'Limuru', 'Lari Massacre', 'Mau Mau', 'Ngũgĩ wa Thiong\'o', 'Kiambu County'], mainEntityOfPage: url });
   html = html.replace('</head>', extra + '\n</head>');
   if (!meta.noindex) sitemap.push(`<url><loc>${url}</loc>${hasAlt ? `<xhtml:link rel="alternate" hreflang="en" href="${SITE + pth('en', slug)}"/><xhtml:link rel="alternate" hreflang="sw" href="${SITE + pth('sw', slug)}"/>` : ''}<changefreq>${slug === 'tickets' || slug === 'index' ? 'daily' : 'weekly'}</changefreq><priority>${slug === 'index' ? '1.0' : slug === 'ithaka' || slug === 'tickets' ? '0.9' : '0.7'}</priority></url>`);
   fs.writeFileSync(path.join(pub, lang === 'sw' ? 'sw' : '', f), icon(html));
 }
 fs.writeFileSync(path.join(pub, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">${sitemap.join('')}</urlset>\n`);
+if (swMissing.size) fs.writeFileSync(path.join(here, 'i18n', 'missing-sw.json'), JSON.stringify([...swMissing], null, 1)); else fs.rmSync(path.join(here, 'i18n', 'missing-sw.json'), { force: true });
 if (swMissing.size) console.warn(`[i18n] ${swMissing.size} Kiswahili segment(s) missing — run \`npm run translate\`:\n  ` + [...swMissing].slice(0, 40).map((x) => x.slice(0, 120)).join('\n  '));
 console.log('built', V, `(${jobs.length} pages: en + sw)`);

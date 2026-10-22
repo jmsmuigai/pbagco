@@ -57,22 +57,22 @@ export const ORG = {
 export const SUBSIDIARIES = [
   {
     slug: 'pbag-theatre',
-    name: 'PBAG Theatre',
-    kicker: 'Professional Theatre & Theatre for Development',
-    logo: '/assets/img/logo-theatre.webp',
+    name: 'PBAG Community Theatre',
+    kicker: 'Community Theatre & Theatre for Development',
+    logo: '/assets/img/logos/pbag-community-theatre.svg',
     color: '#8B3FD9',
     icon: 'drama',
     summary:
       'Professional theatre productions, issue-based performances and Theatre for Development programmes that use drama to engage audiences and communities around relevant social and cultural issues.',
     mission: 'To create impactful theatre that entertains, educates, provokes dialogue and contributes to social and cultural development.',
     offers: ['Stage productions & seasons', 'Issue-based / forum theatre', 'Theatre for Development (TfD) programmes', 'Schools & community tours'],
-    join: 'Hi PBAG, I would like to join PBAG Theatre',
+    join: 'Hi PBAG, I would like to join PBAG Community Theatre',
   },
   {
     slug: 'peatice-productions',
     name: 'Peatice Productions',
     kicker: 'Entertainment, Media & Content',
-    logo: '/assets/img/logo-peatice.webp',
+    logo: '/assets/img/logos/peatice-productions.svg',
     color: '#2F6FD6',
     icon: 'clapperboard',
     summary:
@@ -85,7 +85,7 @@ export const SUBSIDIARIES = [
     slug: 'peers-got-talanta',
     name: 'Peers Got Talanta (PGT) CBO',
     kicker: 'Community, Talent & Social Impact',
-    logo: '/assets/img/logo-pgt.webp',
+    logo: '/assets/img/logos/peers-got-talanta.svg',
     color: '#F2A516',
     icon: 'trophy',
     summary:
@@ -97,16 +97,17 @@ export const SUBSIDIARIES = [
   {
     slug: 'pbag-bunge',
     name: 'PBAG Bunge',
-    kicker: 'Leadership, Civic Engagement & Advocacy · Lead subsidiary',
-    logo: '/assets/img/logo-bunge.webp',
-    color: '#1C1C28',
+    kicker: 'Lead subsidiary · Governing organ of the Consortium',
+    logo: '/assets/img/logos/pbag-bunge.svg',
+    color: '#5B3FD9',
     icon: 'landmark',
     lead: true,
     summary:
-      'Platforms for leadership development, civic engagement, policy dialogue, governance forums, mentorship and youth advocacy — encouraging informed participation in community and public affairs. Home of the Consortium’s management.',
-    mission: 'To cultivate informed, responsible and engaged citizens by creating spaces for leadership, dialogue, mentorship and civic participation.',
-    offers: ['Leadership development', 'Policy dialogue & governance forums', 'Mentorship', 'Youth advocacy'],
-    join: 'Hi PBAG, I would like to join PBAG Bunge',
+      'The lead subsidiary and central governing organ of the PBAG Consortium. Its mandate covers every subsidiary — PBAG Bunge, PBAG Community Theatre, Peatice Productions and Peers Got Talanta (PGT) CBO — providing strategic leadership, institutional oversight, coordination and accountability so the Consortium fulfils its mission, vision and objectives.',
+    mission: 'To lead, oversee and coordinate the PBAG Consortium with transparency and accountability — so that every subsidiary delivers on the shared mission, vision and objectives.',
+    offers: ['Strategic leadership & policy direction', 'Project oversight, monitoring & reporting', 'Financial oversight & resource mobilisation', 'Coordination of all subsidiaries', 'Intellectual property & commercial strategy', 'Governance, compliance & succession'],
+    join: 'Hi PBAG, I would like to know more about PBAG Bunge',
+    page: '/governance',
   },
 ];
 
@@ -174,27 +175,43 @@ export const SEED_EVENTS = [
   },
   {
     id: 'evt-ithaka',
+    seedVersion: 2, // Oct 2026: official poster dates, venue and prices
     slug: 'ithaka-cia-kamiriithu',
     title: 'Ithaka cia Kamĩrĩĩthũ',
     subsidiary: 'pbag-theatre',
     category: 'Theatre',
-    tagline: 'A stage production by PBAG Theatre',
+    tagline: 'A PBAG Community Theatre production',
     description:
-      'PBAG Theatre’s flagship stage production, rooted in the Kamĩrĩĩthũ community-theatre tradition of Limuru. A limited festive run — matinée and evening shows.',
-    venue: 'Kenya National Theatre, Nairobi',
-    performances: [
-      { id: 'p1', startsAt: '2026-12-11T19:00:00+03:00' },
-      { id: 'p2', startsAt: '2026-12-12T15:00:00+03:00' },
-      { id: 'p3', startsAt: '2026-12-12T19:00:00+03:00' },
-      { id: 'p4', startsAt: '2026-12-13T15:00:00+03:00' },
+      'PBAG Community Theatre’s flagship stage production, performed at Kamĩrĩĩthũ itself — the ancestral lands, chiefs, forests and fire of Limuru, rooted in the Kamĩrĩĩthũ community-theatre tradition. Directed & executive-produced by Boni Kanyuira · Produced by Samuel Gitonga · Head writer Mwaniki Njache. Enquiries: +254 790 223 513.',
+    venue: 'Kamirithu Polytechnic, Limuru',
+    enquiries: '+254 790 223 513',
+    poster: '/assets/img/ithaka-poster-480.webp',
+    crew: [
+      { name: 'Boni Kanyuira', role: 'Director & Executive Producer' },
+      { name: 'Samuel Gitonga', role: 'Producer' },
+      { name: 'Mwaniki Njache', role: 'Head Writer' },
     ],
+    performances: [
+      { id: 'p1', startsAt: '2026-12-04T17:00:00+03:00' },
+      { id: 'p2', startsAt: '2026-12-05T15:00:00+03:00' },
+      { id: 'p3', startsAt: '2026-12-05T18:00:00+03:00' },
+      { id: 'p4', startsAt: '2026-12-06T15:00:00+03:00' },
+      { id: 'p5', startsAt: '2026-12-06T18:00:00+03:00' },
+      { id: 'p6', startsAt: '2026-12-11T17:00:00+03:00' },
+      { id: 'p7', startsAt: '2026-12-12T15:00:00+03:00' },
+      { id: 'p8', startsAt: '2026-12-12T18:00:00+03:00' },
+      { id: 'p9', startsAt: '2026-12-13T15:00:00+03:00' },
+      { id: 'p10', startsAt: '2026-12-13T18:00:00+03:00' },
+    ],
+    // Capacities are working estimates for Kamirithu Polytechnic hall — PBAG to confirm.
     tiers: [
-      { id: 'early', name: 'Early Bird', price: 800, capacity: 100, sold: 0, salesEnd: '2026-11-30T23:59:00+03:00' },
-      { id: 'regular', name: 'Regular', price: 1200, capacity: 300, sold: 0 },
-      { id: 'vip', name: 'VIP', price: 2500, capacity: 50, sold: 0 },
+      { id: 'early', name: 'Early Bird', price: 1000, capacity: 300, sold: 0, salesStart: '2026-10-21T00:00:00+03:00', salesEnd: '2026-11-10T23:59:00+03:00' },
+      { id: 'advance', name: 'Advance', price: 1500, capacity: 1500, sold: 0, salesEnd: '2026-11-30T23:59:00+03:00' },
+      { id: 'gate', name: 'Gate', price: 2000, capacity: 1000, sold: 0, gateOnly: true },
+      { id: 'vip', name: 'VIP · limited seating', price: 3000, capacity: 100, sold: 0 },
     ],
     commissionRate: 0.1,
-    palette: ['#8B3FD9', '#E8445A'],
+    palette: ['#F57C1F', '#B3261E'],
     status: 'on_sale',
   },
 ];
@@ -206,7 +223,7 @@ export const SEED_VIDEOS = [
   { id: 'wcxiNt5-RLk', title: 'Familia Baridi Show', channel: 'PBAG', section: 'pbag', mood: ['silly', 'everyday'] },
   { id: '3cG_naNVfbE', title: 'Laugh 23 Sketch Show — Limuru', channel: 'PBAG', section: 'pbag', mood: ['silly', 'standup'] },
   { id: 'NADZxgbG0jc', title: 'Toxic — Trailer', channel: 'PBAG', section: 'pbag', mood: ['story'] },
-  { id: 'RDOxsPwBAh8', title: 'Bring Back My Husband — 2018 stage play', channel: 'PBAG Theatre', section: 'pbag', mood: ['story', 'classic'] },
+  { id: 'RDOxsPwBAh8', title: 'Bring Back My Husband — 2018 stage play', channel: 'PBAG Community Theatre', section: 'pbag', mood: ['story', 'classic'] },
   { id: 't5QGNTeomGY', title: 'PGT Festival — Season 5', channel: 'PBAG · PGT', section: 'pbag', mood: ['classic'] },
   { id: 'Jh15BGjLMsk', title: 'PBAG RAW: Introductory Edition', channel: 'PBAG RAW', section: 'pbag', mood: ['standup', 'silly'] },
   { id: '8O_k3Kq3y8E', title: "St. Paul's University Performance", channel: 'PBAG RAW', section: 'pbag', mood: ['standup'] },
@@ -293,7 +310,7 @@ export const PAYMENT_DETAILS = {
 
 // ---- Auditions (provisional — PBAG to confirm dates/venues) ----
 export const SEED_AUDITIONS = [
-  { id: 'aud-ithaka', title: 'Ithaka cia Kamĩrĩĩthũ — open casting', by: 'PBAG Theatre', categories: ['acting', 'singing', 'dance'], date: '2026-11-21', time: '09:00', venue: 'Limuru Social Hall, Limuru', deadline: '2026-11-18', roles: ['Elders & chiefs (40+)', 'Young villagers (18–30)', 'Forest fighters', 'Choir & traditional dancers'], requirements: 'Prepare a 2-minute monologue (English, Kiswahili or Gĩkũyũ) and a song or dance of your choice.', status: 'open' },
+  { id: 'aud-ithaka', seedVersion: 2, title: 'Ithaka cia Kamĩrĩĩthũ — chorus, dancers & understudies', by: 'PBAG Community Theatre', categories: ['acting', 'singing', 'dance'], date: '2026-11-07', time: '09:00', venue: 'Kamirithu Polytechnic, Limuru', deadline: '2026-11-04', roles: ['Choir & traditional dancers', 'Villagers & crowd scenes', 'Understudies for lead roles'], requirements: 'Prepare a 2-minute monologue (English, Kiswahili or Gĩkũyũ) and a song or dance of your choice.', status: 'open' },
   { id: 'aud-raw', title: 'PBAG RAW — comedy & sketch auditions', by: 'Peatice Productions', categories: ['comedy', 'acting', 'content'], date: '2026-11-28', time: '14:00', venue: 'Limuru Social Hall, Limuru', deadline: '2026-11-25', roles: ['Stand-up comics', 'Sketch actors', 'Content creators'], requirements: 'Send a link to a 1–3 minute clip of your best material; shortlisted comics perform live.', status: 'open' },
   { id: 'aud-generation', title: 'PBAG Generation — spoken word & poetry', by: 'PBAG', categories: ['poetry', 'music'], date: '2026-12-05', time: '10:00', venue: 'Limuru (venue to be confirmed)', deadline: '2026-12-01', roles: ['Spoken-word poets', 'Musicians & beat-makers'], requirements: 'Share a recorded piece or a written poem; any language.', status: 'open' },
   { id: 'aud-film', title: 'Screen & film talent pool (AI-assisted productions)', by: 'Peatice Productions', categories: ['film', 'acting', 'tech'], date: '2027-01-16', time: '10:00', venue: 'Limuru (venue to be confirmed)', deadline: '2027-01-10', roles: ['Screen actors', 'Editors & camera crew', 'AI/visual effects creatives'], requirements: 'Showreel or portfolio link. Training in AI film tools offered to the selected pool.', status: 'upcoming' },

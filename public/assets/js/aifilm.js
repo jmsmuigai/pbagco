@@ -15,7 +15,7 @@ const P = {
       '6 boards: dawn ridge · mũgumo council · 1939 removal · forest night · village stage · return of the land. Character sheets kept consistent.',
       '6 × 8-second previz shots generated for the opening sequence; director marks 2 for re-shoot, 4 approved.',
       'Key art + 3 social cut-downs; captions in Gĩkũyũ, Kiswahili, English. Every asset labelled "AI-assisted".',
-      'Ticket page, schools booking form and Cue FAQ updated; deployed to Cloud Run. Human sign-off ✓ at every stage.'],
+      'Ticket page, schools booking form and Ask PBAG FAQ updated; deployed to Cloud Run. Human sign-off ✓ at every stage.'],
     shots: ['Dawn over the ridge', 'Council at the mũgumo', '1939: the removal', 'Forest at night', 'The village stage', 'The land returns'] },
   comedy: { title: 'Peatice Comedy Night', palette: ['#13204a', '#2f6fd6', '#8b5cf6'], topic: 'matatu life and Limuru market banter',
     lines: [
@@ -98,7 +98,7 @@ const TASKS = [
   { id: 't8', title: 'Edit assist & VFX cleanup', tool: 'Gemini + Flow', col: 'post', c: '#ff8a3d', log: 'Rough-cut notes generated from the script; sky replacements and clean-ups prototyped in Flow.', budget: 60000 },
   { id: 't9', title: 'Subtitles: Kiswahili & Gĩkũyũ', tool: 'Gemini', col: 'post', c: '#8b5cf6', log: 'Subtitles drafted in Kiswahili and Gĩkũyũ, then corrected by native-speaker reviewers.', budget: 10000 },
   { id: 't10', title: 'Poster & trailer cut-downs', tool: 'Nano Banana + Veo', col: 'dist', c: '#ffc23d', log: 'Key art and 3 vertical teasers produced; all labelled as AI-assisted.', budget: 25000 },
-  { id: 't11', title: 'Screening page & tickets', tool: 'Antigravity → Cloud Run', col: 'dist', c: '#34d399', log: 'Screening event, M-Pesa ticketing and Cue FAQ deployed to Cloud Run.', budget: 15000 },
+  { id: 't11', title: 'Screening page & tickets', tool: 'Antigravity → Cloud Run', col: 'dist', c: '#34d399', log: 'Screening event, M-Pesa ticketing and Ask PBAG FAQ deployed to Cloud Run.', budget: 15000 },
 ];
 const fmBoard = document.querySelector('#fmBoard');
 if (fmBoard) {

@@ -9,7 +9,7 @@ import { $, $$, api, poster, stub, observeReveals, icon, esc, t } from './app.js
   observeReveals(grid);
   if (!events.length) return;
 
-  board.innerHTML = events.map((e, i) => `<a class="slide${i ? '' : ' on'}" href="/tickets?event=${e.slug}" aria-label="${esc(e.title)} — get tickets" ${i ? 'tabindex="-1"' : ''}>${poster(e)}</a>`).join('') +
+  board.innerHTML = events.map((e, i) => `<a class="slide${i ? '' : ' on'}" href="/tickets?event=${e.slug}" aria-label="${esc(e.title)} — dates and tickets" ${i ? 'tabindex="-1"' : ''}>${poster(e)}</a>`).join('') +
     `<div class="board-nav">${events.map((e, i) => `<button type="button" class="${i ? '' : 'on'}" aria-label="Show ${esc(e.title)}"></button>`).join('')}</div>`;
   const slides = $$('.slide', board), dots = $$('.board-nav button', board);
   let i = 0, timer;
@@ -38,4 +38,5 @@ import { $, $$, api, poster, stub, observeReveals, icon, esc, t } from './app.js
 })();
 
 // nested link inside the story band
+document.querySelectorAll('[data-ext]').forEach((b) => b.addEventListener('click', (e) => { e.preventDefault(); e.stopPropagation(); window.open(b.dataset.ext, '_blank', 'noopener'); }));
 document.querySelectorAll('[data-href]').forEach((b) => b.addEventListener('click', (e) => { e.preventDefault(); e.stopPropagation(); location.href = (window.PBAG_STATIC?.base || '/') + (document.documentElement.lang === 'sw' ? 'sw/' : '') + b.dataset.href.slice(1); }));

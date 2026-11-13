@@ -70,6 +70,12 @@ export const SW = {
   'Your seats were released — please start again.': 'Viti vyako vimeachiliwa — tafadhali anza upya.',
   'agent working…': 'wakala anafanya kazi…', 'approved': 'imeidhinishwa', 'available': 'zinapatikana', 'days to apply': 'siku za kutuma maombi',
   'from': 'kuanzia', 'presents': 'inawasilisha', 'shows': 'maonyesho', 'to do': 'ya kufanya', 'until': 'hadi',
+  'Shows on': 'Maonyesho ya', 'At the venue on the day': 'Ukumbini siku ya onyesho', 'On sale now': 'Zinauzwa sasa', 'Buy tickets on': 'Nunua tiketi', 'Buy tickets': 'Nunua tiketi', Details: 'Maelezo',
+  'You will pay and receive your ticket on the secure site of our ticketing partner.': 'Utalipa na kupokea tiketi yako kwenye tovuti salama ya mshirika wetu wa tiketi.',
+  'Reserve on WhatsApp': 'Hifadhi kupitia WhatsApp', 'Online sales for this event are not open yet — reserve by WhatsApp or call': 'Mauzo ya mtandaoni ya tukio hili bado hayajafunguliwa — hifadhi kupitia WhatsApp au piga',
+  'Dates & times': 'Tarehe na muda', 'Ticket prices': 'Bei za tiketi', 'Read the story behind the play': 'Soma hadithi nyuma ya tamthilia', 'How do I buy tickets?': 'Nanunuaje tiketi?',
+  Creator: 'Mbunifu', Producer: 'Mtayarishaji', 'Head Writer': 'Mwandishi Mkuu', 'Early Access': 'Tiketi za Mapema', Advance: 'Advance', Gate: 'Langoni',
+  'On stage now': 'Jukwaani sasa', 'Opening night is tomorrow': 'Usiku wa uzinduzi ni kesho', 'days to opening night': 'siku hadi usiku wa uzinduzi',
   unavailable: 'haipatikani', Continue: 'Endelea', 'Online ticket sales open soon.': 'Uuzaji wa tiketi mtandaoni unafunguliwa hivi karibuni.', 'To reserve now, call or WhatsApp': 'Kuhifadhi sasa, piga simu au tuma WhatsApp kwa', 'Expand all': 'Panua yote', 'Collapse all': 'Kunja yote', 'Sold at the gate on the day': 'Zinauzwa langoni siku ya onyesho', Opens: 'Zinafunguliwa',
   Submitted: 'Limetumwa', Shortlisted: 'Orodha fupi', Invited: 'Umealikwa', Callback: 'Kuitwa tena', Selected: 'Umechaguliwa',
 };

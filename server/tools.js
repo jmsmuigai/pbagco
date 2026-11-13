@@ -14,12 +14,12 @@ export const TOOLS = [
     jsonSchema: { type: 'object', properties: {} },
     run: async (db) => (await listEvents(db)).map((e) => ({
       title: e.title, category: e.category, by: e.subsidiaryName, venue: e.venue, from_price_kes: e.fromPrice,
-      dates: e.performances.map((p) => fmtDate(p.startsAt)), ticket_link: `/tickets?event=${e.slug}`,
+      dates: e.performances.map((p) => fmtDate(p.startsAt)), ticket_link: e.ticketUrl || `/tickets?event=${e.slug}`, sold_by: e.ticketVendor || 'PBAG (enquire on 0720 960 180)',
     })),
   },
   {
     name: 'check_ticket_availability',
-    description: 'Get ticket tiers, prices and remaining seats for one event (by slug or title words).',
+    description: 'Get ticket tiers, prices, sales deadlines and the buy link for one event (by slug or title words).',
     schema: { event: z.string().describe('Event slug or part of its title') },
     jsonSchema: { type: 'object', properties: { event: { type: 'string', description: 'Event slug or part of its title' } }, required: ['event'] },
     run: async (db, { event }) => {
@@ -30,7 +30,7 @@ export const TOOLS = [
       }
       if (!e) return { error: 'No matching event' };
       const p = publicEvent(e);
-      return { title: p.title, venue: p.venue, dates: p.performances.map((x) => fmtDate(x.startsAt)), tiers: p.tiers.map((t) => ({ name: t.name, price_kes: t.price, remaining: t.remaining, on_sale: t.onSale })), buy_link: `/tickets?event=${p.slug}` };
+      return { title: p.title, venue: p.venue, dates: p.performances.map((x) => fmtDate(x.startsAt)), tiers: p.tiers.map((t) => ({ name: t.name, price_kes: t.price, sales_end: t.salesEnd, gate_only: t.gateOnly, on_sale: t.onSale })), buy_link: p.ticketUrl || `/tickets?event=${p.slug}`, sold_by: p.ticketVendor || 'PBAG (enquire on 0720 960 180)', note: p.ticketUrl ? 'Tickets are bought on the partner site; PBAG does not show live seat counts.' : 'Online sales not open; reserve by phone/WhatsApp.' };
     },
   },
   {

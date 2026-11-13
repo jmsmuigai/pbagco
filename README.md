@@ -4,7 +4,7 @@ Theatre-and-film themed website for **PBAG Consortium (Peers Best Art Group)** w
 
 ## Live preview (GitHub Pages)
 https://jmsmuigai.github.io/pbagco/ — rebuilt automatically on every push to `master` (`.github/workflows/pages.yml`).
-This is a **static preview**: the API runs in the browser, payments are simulated and tickets are watermarked *PREVIEW · NOT VALID*. The production site (real M-Pesa, Firestore, live Gemini, staff console) runs on Google Cloud Run — see `docs/DEPLOYMENT.md`.
+This is a **static preview**: the API runs in the browser. Tickets are sold by PBAG's ticketing partner (Ticketvort) — every *Buy tickets* button links there. The production site (Firestore, live Gemini, staff console) runs on Google Cloud Run — see `docs/DEPLOYMENT.md`.
 The previous Next.js version is kept on the `legacy-nextjs` branch.
 
 ## Run it locally (2 minutes)

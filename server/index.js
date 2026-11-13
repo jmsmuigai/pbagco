@@ -7,14 +7,17 @@ import helmet from 'helmet';
 import crypto from 'node:crypto';
 import path from 'node:path';
 import { createStore } from './db.js';
-import { ORG, SUBSIDIARIES, BOOKING_SERVICES, AI_SERVICES, FAQ, PAYMENT_DETAILS, AUDITION_CATEGORIES } from './content.js';
+import { ORG, SUBSIDIARIES, BOOKING_SERVICES, AI_SERVICES, FAQ, PAYMENT_DETAILS, AUDITION_CATEGORIES, ITHAKA_TICKETS } from './content.js';
 import * as S from './services.js';
 import { methods, startPayment, parseMpesaCallback } from './payments.js';
 import { chat, spark, translate } from './gemini.js';
 import { mountMcp } from './mcp.js';
 
 const PORT = process.env.PORT || 8080;
-const STAFF_PIN = process.env.STAFF_PIN || '2468';
+// Never run in production on the development PIN: without STAFF_PIN the staff area is locked (random PIN nobody knows).
+const PROD = !!process.env.K_SERVICE || process.env.NODE_ENV === 'production';
+const STAFF_PIN = process.env.STAFF_PIN || (PROD ? crypto.randomBytes(12).toString('hex') : '2468');
+if (PROD && !process.env.STAFF_PIN) console.error('[security] STAFF_PIN is not set — the staff area is locked until it is configured.');
 const db = await createStore();
 const app = express();
 app.set('trust proxy', true);
@@ -67,7 +70,7 @@ app.get('/api/health', (_req, res) => res.json({ ok: true, db: db.kind, payments
 
 app.get('/api/site', (_req, res) => {
   res.set('Cache-Control', 'public, max-age=300');
-  res.json({ org: ORG, subsidiaries: SUBSIDIARIES, bookingServices: BOOKING_SERVICES, aiServices: AI_SERVICES, faq: FAQ, payments: { ...methods(), paybill: true, bank: true }, paymentDetails: PAYMENT_DETAILS, auditionCategories: AUDITION_CATEGORIES, salesOpen: process.env.TICKET_SALES !== 'soon' });
+  res.json({ org: ORG, subsidiaries: SUBSIDIARIES, bookingServices: BOOKING_SERVICES, aiServices: AI_SERVICES, faq: FAQ, payments: { ...methods(), paybill: true, bank: true }, paymentDetails: PAYMENT_DETAILS, auditionCategories: AUDITION_CATEGORIES, salesOpen: process.env.TICKET_SALES === 'open', ticketing: { mode: process.env.TICKET_SALES === 'open' ? 'builtin' : 'partner', vendor: 'Ticketvort', url: ITHAKA_TICKETS } });
 });
 
 app.get('/api/events', wrap(async (_req, res) => { res.set('Cache-Control', 'public, max-age=30'); res.json(await S.listEvents(db)); }));

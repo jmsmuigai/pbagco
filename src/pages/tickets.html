@@ -1,12 +1,12 @@
-<!--{"title":"Tickets — PBAG Box Office | Pay with M-Pesa, get a QR ticket","desc":"Buy tickets to PBAG theatre, comedy, PGT Festival and Bunge events. Pick a date on the calendar, pay with M-Pesa Paybill or bank transfer and download your QR ticket instantly.","nav":"tickets","js":"tickets"}-->
+<!--{"title":"Tickets & What's On — PBAG Box Office | Ithaka cia Kamĩrĩĩthũ, 17–20 December","desc":"What's on at PBAG: dates, venues and ticket prices for PBAG Community Theatre, Peatice comedy, PGT Festival and Bunge events. Buy tickets for Ithaka cia Kamĩrĩĩthũ (17–20 December, Kamirithu Polytechnic, Limuru) on Ticketvort.","nav":"tickets","js":"tickets","og":"/assets/img/og-ithaka-dec.jpg"}-->
 <section class="page-hero" style="padding-bottom:28px;--hc:var(--gold)">
   <div class="wrap row" style="justify-content:space-between;align-items:end">
     <div>
-      <span class="kicker">Box office</span>
+      <span class="kicker">Box office · What's on</span>
       <h1 class="display h1" style="font-size:clamp(2.6rem,7vw,5rem)">Your seat is <span class="serif gold">waiting</span></h1>
-      <p class="lead" style="margin:0">Pick a date, choose your tickets, pay with M-Pesa — your QR ticket appears instantly.</p>
+      <p class="lead" style="margin:0">Pick a show, check the dates and prices, then buy securely from our ticketing partner, Ticketvort.</p>
     </div>
-    <a class="btn" href="#my-tickets">{{i:qr-code}} Find my tickets</a>
+    <a class="btn btn-gold btn-ticket" href="https://ticketvort.com/event-ticketing/ithaka-cia-kamirithu/?show=2" target="_blank" rel="noopener" data-buy>{{i:ticket}} Buy Ithaka tickets {{i:external-link}}</a>
   </div>
 </section>
 
@@ -19,51 +19,29 @@
     </aside>
 
     <div class="card" id="checkout" style="padding:clamp(18px,3vw,28px)">
-      <div class="grid" style="grid-template-columns:minmax(0,150px) 1fr;gap:18px;align-items:center;margin-bottom:20px" id="coHead">
-        <div style="aspect-ratio:4/5;border-radius:12px;overflow:hidden" id="coPoster"></div>
-        <div><span class="badge" id="coCat">Select a show</span><h2 class="display" style="font-size:clamp(1.8rem,4vw,2.6rem);margin:8px 0" id="coTitle">Choose a show to begin</h2><p class="muted" id="coDesc" style="margin:0;font-size:.95rem">Tap a date on the calendar or any show in the list.</p></div>
+      <div class="show-head" id="coHead">
+        <div class="show-poster" id="coPoster"></div>
+        <div><span class="badge" id="coCat">Select a show</span><h2 class="display" style="font-size:clamp(1.8rem,4vw,2.6rem);margin:8px 0 4px" id="coTitle">Choose a show</h2><p class="serif gold" id="coTag" style="font-size:1.25rem;margin:0 0 8px"></p><p class="muted" id="coDesc" style="margin:0;font-size:.95rem">Tap a date on the calendar or any show in the list.</p></div>
       </div>
-      <ol class="steps" id="steps"><li data-s="1"><b>1</b>Date</li><li data-s="2"><b>2</b>Tickets</li><li data-s="3"><b>3</b>Details</li><li data-s="4"><b>4</b>Pay</li><li data-s="5"><b>5</b>Tickets</li></ol>
       <div id="stepBody"></div>
     </div>
   </div>
 </section>
 
-<section class="section" id="my-tickets" style="padding-top:0">
-  <div class="wrap grid g2" style="align-items:start">
-    <div>
-      <span class="scene-no">Ticket wallet</span>
-      <h2 class="display h2" style="margin:10px 0 14px">My <span class="serif gold">tickets</span></h2>
-      <p class="muted">Lost your ticket or changed phones? Enter your order number (it starts with <b style="color:#fff">PB</b>) and the phone number or email you used.</p>
-      <form class="stack" id="lookup" style="max-width:460px">
-        <div class="field"><label for="lkOrder">Order number</label><input class="input" id="lkOrder" required placeholder="PBXXXXXXXX" autocomplete="off" style="text-transform:uppercase"></div>
-        <div class="field"><label for="lkContact">Phone or email</label><input class="input" id="lkContact" required placeholder="0712 345 678 or you@email.com"></div>
-        <button class="btn btn-gold">{{i:search}} Find tickets</button>
-        <p class="form-msg" id="lkMsg" role="status"></p>
-      </form>
-    </div>
-    <div id="lkResult" class="stack"></div>
-  </div>
-</section>
-
-<section class="section" id="verify" hidden style="padding-top:0">
-  <div class="wrap"><div class="card" id="verifyBox"></div></div>
-</section>
-
-<section class="section" id="sell" style="padding-top:0">
+<section class="section" style="padding-top:0">
   <div class="wrap">
     <div class="band">
       <div class="grid g2" style="align-items:center">
         <div>
-          <span class="kicker">Sellers &amp; influencers</span>
-          <h2 class="display h2" style="margin:14px 0">Sell tickets. <span class="serif gold">Earn</span> commission.</h2>
-          <p class="lead">Get your own referral code, trackable link and QR code for posters and flyers. Every sale is attributed to you automatically and your commission is calculated on the spot.</p>
+          <span class="kicker">How ticketing works</span>
+          <h2 class="display h2" style="margin:14px 0">Three steps to your <span class="serif gold">seat</span></h2>
+          <p class="lead">PBAG tickets are sold online by Ticketvort, our official ticketing partner. Buy only through the links on this site or on ticketvort.com.</p>
         </div>
         <ul class="stack" style="list-style:none;padding:0;margin:0">
-          <li class="role"><span class="n">{{i:ticket}}</span><div><b>Code</b><p>Buyers type your code (e.g. JANE10) at checkout.</p></div></li>
-          <li class="role"><span class="n">{{i:external-link}}</span><div><b>Link</b><p>pbagco.com/tickets?ref=JANE10 — remembered for 30 days.</p></div></li>
-          <li class="role"><span class="n">{{i:qr-code}}</span><div><b>QR</b><p>Print it on flyers; scans are tracked separately.</p></div></li>
-          <li><a class="btn btn-gold" href="https://wa.me/254720960180?text=Hi%20PBAG%2C%20I%27d%20like%20to%20become%20a%20ticket%20seller" target="_blank" rel="noopener">{{i:whatsapp}} Become a seller</a></li>
+          <li class="role"><span class="n">1</span><div><b>Choose your show</b><p>Pick the date and time that suits you on this page.</p></div></li>
+          <li class="role"><span class="n">2</span><div><b>Pay on Ticketvort</b><p>The Buy tickets button opens Ticketvort, where you pay and receive your ticket.</p></div></li>
+          <li class="role"><span class="n">3</span><div><b>Show your ticket at the gate</b><p>Arrive early — gate tickets are also sold at the venue on the day, at the gate price.</p></div></li>
+          <li class="row"><a class="btn" href="https://wa.me/254720960180?text=Hi%20PBAG%2C%20I%20need%20help%20with%20tickets" target="_blank" rel="noopener">{{i:whatsapp}} Ticket help on WhatsApp</a><a class="btn btn-ghost" href="/book?service=performance">{{i:users}} Group &amp; school bookings</a></li>
         </ul>
       </div>
     </div>

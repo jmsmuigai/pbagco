@@ -557,7 +557,7 @@ textarea.input { min-height: 120px; resize: vertical; }
 
 #coHead.empty { grid-template-columns: 1fr !important; }
 #coHead.empty #coPoster { display: none; }
-@media (max-width: 560px) { #coHead { grid-template-columns: 96px 1fr !important; } }
+@media (max-width: 560px) { #coHead { grid-template-columns: 1fr !important; } #coHead .show-poster { max-width: 240px; } }
 
 /* ---------- theatre rails ---------- */
 .rail + .rail { margin-top: 56px; }
@@ -941,3 +941,37 @@ a.gov-node:hover { border-color: var(--gold); }
 
 .notice { display: flex; gap: 10px; align-items: flex-start; padding: 14px 16px; border-radius: 14px; border: 1px solid rgba(255, 194, 61, .45); background: rgba(255, 194, 61, .08); }
 .notice .i { color: var(--gold); flex: none; margin-top: 2px; }
+
+/* ---- Nov 2026: partner ticketing (Ticketvort), official logo plate, subsidiary figures ---- */
+.btn-lg { padding: 16px 26px; font-size: 1.05rem; }
+.show-head { display: grid; grid-template-columns: minmax(0, 170px) 1fr; gap: 20px; align-items: center; margin-bottom: 22px; }
+.show-poster { aspect-ratio: 905 / 1280; border-radius: 12px; overflow: hidden; box-shadow: 0 16px 40px rgba(0, 0, 0, .5); }
+.show-head.empty .show-poster { display: none; }
+@media (max-width: 560px) { .show-head { grid-template-columns: 1fr; } .show-poster { max-width: 260px; } }
+span.perf-chip { display: inline-block; }
+.tier.static { cursor: default; } .tier.static b { display: block; } .tier.static.off { opacity: .5; } .tier.static.off .price { text-decoration: line-through; }
+.buy-bar { margin-top: 22px; padding-top: 20px; border-top: 1px dashed var(--line-2); }
+.buy-bar .i { vertical-align: -3px; }
+.brand img { border-radius: 10px; box-shadow: 0 6px 18px rgba(0, 0, 0, .35); }
+.stat-chip { display: inline-flex; align-items: baseline; gap: 8px; padding: 6px 12px; border-radius: 999px; background: color-mix(in srgb, var(--c, var(--gold)) 16%, transparent); border: 1px solid color-mix(in srgb, var(--c, var(--gold)) 45%, transparent); font-weight: 700; font-size: .82rem; letter-spacing: .02em; }
+.stat-chip b { font-family: var(--font-display, inherit); font-size: 1.35rem; line-height: 1; color: #fff; }
+.sub-stat { display: flex; flex-wrap: wrap; gap: 12px 22px; align-items: center; margin: 16px 0; }
+.sub-stat .big { font-family: var(--font-display, inherit); font-size: clamp(2.6rem, 6vw, 4rem); line-height: .9; color: var(--gold); }
+.sub-stat .lbl { text-transform: uppercase; letter-spacing: .12em; font-size: .78rem; font-weight: 800; }
+.sub-stat a { color: #fff; border-bottom: 1px dashed var(--line-2); }
+.impact { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
+.impact > a { display: block; padding: 22px 18px; border-radius: 18px; border: 1px solid var(--line); background: linear-gradient(160deg, color-mix(in srgb, var(--c) 22%, transparent), transparent 70%); color: #fff; transition: transform .25s, border-color .25s; }
+.impact > a:hover { transform: translateY(-4px); border-color: var(--c); }
+.impact b { display: block; font-family: var(--font-display, inherit); font-size: clamp(2.6rem, 5vw, 3.8rem); line-height: 1; }
+.impact span { display: block; font-weight: 700; margin-top: 6px; } .impact small { color: var(--muted); }
+@media (max-width: 860px) { .impact { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.mail-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.mail-grid a { display: block; padding: 14px 16px; border-radius: 14px; border: 1px solid var(--line); color: #fff; overflow-wrap: anywhere; }
+.mail-grid a:hover { border-color: var(--gold); } .mail-grid small { display: block; color: var(--muted); font-size: .78rem; text-transform: uppercase; letter-spacing: .08em; }
+@media (max-width: 520px) { .mail-grid { grid-template-columns: 1fr; } }
+.ith-tagline { font-size: clamp(1.4rem, 3vw, 2.1rem); margin: 4px 0 10px; text-shadow: 0 2px 18px rgba(0,0,0,.6); }
+.lead-flag { top: -10px; right: -8px; }
+.brand img { height: 52px; width: auto; }
+@media (max-width: 640px) { .brand img { height: 44px; } }
+.open-count { display: inline-flex; align-items: center; gap: 8px; margin: 0 0 16px; padding: 7px 14px; border-radius: 999px; border: 1px solid rgba(255,194,61,.5); background: rgba(255,194,61,.1); color: var(--gold); font-weight: 800; font-size: .85rem; letter-spacing: .04em; }
+.open-count[hidden] { display: none; }

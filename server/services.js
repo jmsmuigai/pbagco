@@ -2,7 +2,7 @@
 import crypto from 'node:crypto';
 import { SUBSIDIARIES } from './content.js';
 
-const SECRET = process.env.TICKET_SECRET || 'dev-only-ticket-secret-change-me';
+const SECRET = process.env.TICKET_SECRET || ((process.env.K_SERVICE || process.env.NODE_ENV === 'production') ? crypto.randomBytes(32).toString('hex') : 'dev-only-ticket-secret-change-me'); // production never signs with the dev secret
 const HOLD_MINUTES = 15;
 export const PLATFORM_FEE = Number(process.env.PLATFORM_FEE_RATE ?? 0); // e.g. 0.05 to add a 5% booking fee
 
@@ -40,6 +40,7 @@ export function publicEvent(e) {
     venue: e.venue, subsidiary: e.subsidiary, subsidiaryName: sub?.name, palette: e.palette, status: e.status,
     performances: e.performances,
     poster: e.poster || null, crew: e.crew || null, enquiries: e.enquiries || null,
+    ticketUrl: e.ticketUrl || null, ticketVendor: e.ticketVendor || null, featured: !!e.featured,
     tiers: e.tiers.map((t) => ({
       id: t.id, name: t.name, price: t.price, salesEnd: t.salesEnd || null, salesStart: t.salesStart || null, gateOnly: !!t.gateOnly,
       remaining: Math.max(0, t.capacity - (t.sold || 0) - (t.held || 0)),
@@ -55,7 +56,7 @@ export async function listEvents(db, { upcomingOnly = true } = {}) {
   return evs
     .filter((e) => e.status !== 'draft')
     .filter((e) => !upcomingOnly || e.performances.some((p) => new Date(p.startsAt).getTime() > t - 6 * 3600e3))
-    .sort((a, b) => new Date(a.performances[0].startsAt) - new Date(b.performances[0].startsAt))
+    .sort((a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0) || new Date(a.performances[0].startsAt) - new Date(b.performances[0].startsAt)) // featured production first, then by date
     .map(publicEvent);
 }
 
@@ -81,7 +82,9 @@ export async function createOrder(db, input, { channel = 'online', staff = null 
   const orderId = 'PB' + rid(8);
   const order = await db.transact(async (t) => {
     const e = await t.get('events', eventId);
-    if (process.env.TICKET_SALES === 'soon') throw httpErr(403, 'Online ticket sales open soon — please call +254 790 223 513 to reserve.');
+    // Public ticketing is handled by PBAG's ticketing partner; the built-in checkout only runs when explicitly enabled.
+    if (process.env.TICKET_SALES !== 'open') throw httpErr(403, 'Tickets are sold through our ticketing partner — use the Buy tickets link, or call 0720 960 180.');
+    if (e.ticketUrl) throw httpErr(403, `Tickets for ${e.title} are sold on ${e.ticketVendor || 'our ticketing partner'}.`);
     if (!e || e.status !== 'on_sale') throw httpErr(404, 'Event not on sale');
     const perf = e.performances.find((p) => p.id === performanceId);
     if (!perf) throw httpErr(400, 'Pick a show date');

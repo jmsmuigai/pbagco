@@ -63,14 +63,14 @@ export function poster(e, { compact = false, bare = false } = {}) {
 
 export function stub(e) {
   const p = e.performances[0].startsAt;
-  return `<a class="stub reveal" href="/tickets?event=${e.slug}" style="--c:${e.palette?.[0]}">
+  return `<a class="stub reveal" href="${e.ticketUrl ? esc(e.ticketUrl) + '" target="_blank" rel="noopener' : '/tickets?event=' + e.slug}" style="--c:${e.palette?.[0]}">
     <div class="s-art">${poster(e, { bare: true })}</div>
     <span class="datebox"><b>${fmt.day(p)}</b><span>${fmt.mon(p)}</span></span>
     <div class="s-body">
       <span class="badge">${esc(e.category)}</span>
       <h3 class="sr-only">${esc(e.title)}</h3>
       <div class="meta"><span>${icon('map-pin')} ${esc(e.venue)}</span><span>${icon('clock')} ${e.performances.length > 1 ? e.performances.length + ' ' + t('shows') : fmt.time(p)}</span></div>
-      <div class="s-foot"><span class="price"><small>${t('from')}</small>${kes(e.fromPrice)}</span><span class="btn btn-gold btn-sm btn-ticket">${icon('ticket')} ${t('Book')}</span></div>
+      <div class="s-foot"><span class="price"><small>${t('from')}</small>${kes(e.fromPrice)}</span><span class="btn btn-gold btn-sm btn-ticket">${icon('ticket')} ${e.ticketUrl ? t('Buy tickets') : t('Details')}</span></div>
     </div></a>`;
 }
 
@@ -118,13 +118,13 @@ const bubbleEl = $('#roboBubble');
 let history = [];
 try { history = JSON.parse(sessionStorage.getItem('pbag-cue') || '[]'); } catch {}
 const md = (x) => esc(x)
-  .replace(/\[([^\]]+)\]\(((?:\/|https:\/\/wa\.me\/)[^)\s]*)\)/g, (m, a, h) => `<a href="${h.startsWith('/') ? (window.PBAG_STATIC?.base || '/') + h.slice(1) : h}">${a}</a>`)
+  .replace(/\[([^\]]+)\]\(((?:\/|https:\/\/wa\.me\/|https:\/\/ticketvort\.com\/)[^)\s]*)\)/g, (m, a, h) => `<a href="${h.startsWith('/') ? (window.PBAG_STATIC?.base || '/') + h.slice(1) : h}"${h.startsWith('/') ? '' : ' target="_blank" rel="noopener"'}>${a}</a>`)
   .replace(/\*\*([^*]+)\*\*/g, '<b>$1</b>').replace(/(^|\s)\*([^*]+)\*/g, '$1<i>$2</i>');
 function bubble(role, text) {
   const d = document.createElement('div'); d.className = 'msg ' + (role === 'user' ? 'me' : 'bot');
   d.innerHTML = role === 'user' ? esc(text) : md(text); log.append(d); log.scrollTop = log.scrollHeight; return d;
 }
-const SUGG = [t("What's showing this month?"), t('How do I pay with M-Pesa Paybill?'), t('Upcoming auditions'), t('Hire PBAG for an event'), t('Talk to a person')];
+const SUGG = [t("What's showing this month?"), t('How do I buy tickets?'), t('Upcoming auditions'), t('Hire PBAG for an event'), t('Talk to a person')];
 function renderCue() {
   log.innerHTML = '';
   bubble('assistant', t('Karibu! 🤖 This is **Ask PBAG**, PBAG’s AI assistant. I’m happy to help with shows, tickets, auditions, hiring PBAG or our AI services — and if I can’t answer, I’ll pass your question to the PBAG Board & Management.'));
@@ -191,4 +191,12 @@ document.querySelector('[data-gov-toggle]')?.addEventListener('click', (e) => {
   const all = [...document.querySelectorAll('.gov-role')]; const open = !all.every((d) => d.open);
   all.forEach((d) => { d.open = open; });
   e.currentTarget.lastChild.textContent = ' ' + t(open ? 'Collapse all' : 'Expand all');
+});
+
+// Opening-night countdown chips (Ithaka cia Kamĩrĩĩthũ)
+document.querySelectorAll('[data-countdown]').forEach((el) => {
+  const start = new Date(el.dataset.countdown), end = new Date(el.dataset.end || el.dataset.countdown), now = new Date();
+  const days = Math.ceil((start - now) / 864e5);
+  const txt = now > end ? '' : now >= start ? t('On stage now') : days <= 1 ? t('Opening night is tomorrow') : `${days} ${t('days to opening night')}`;
+  if (txt) { el.innerHTML = `${icon('clock')} ${txt}`; el.hidden = false; }
 });

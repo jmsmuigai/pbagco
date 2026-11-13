@@ -57,6 +57,8 @@ export const ORG = {
 export const SUBSIDIARIES = [
   {
     slug: 'pbag-theatre',
+    stat: { n: '35+', label: 'Theatre shows' },
+    email: 'theatre@pbagco.com',
     name: 'PBAG Community Theatre',
     kicker: 'Community Theatre & Theatre for Development',
     logo: '/assets/img/logos/pbag-community-theatre.svg',
@@ -70,6 +72,8 @@ export const SUBSIDIARIES = [
   },
   {
     slug: 'peatice-productions',
+    stat: { n: '10+', label: 'Comedy productions' },
+    email: 'peatice@pbagco.com',
     name: 'Peatice Productions',
     kicker: 'Entertainment, Media & Content',
     logo: '/assets/img/logos/peatice-productions.svg',
@@ -83,6 +87,8 @@ export const SUBSIDIARIES = [
   },
   {
     slug: 'peers-got-talanta',
+    stat: { n: '5+', label: 'Community initiatives' },
+    email: 'pgt@pbagco.com',
     name: 'Peers Got Talanta (PGT) CBO',
     kicker: 'Community, Talent & Social Impact',
     logo: '/assets/img/logos/peers-got-talanta.svg',
@@ -96,6 +102,8 @@ export const SUBSIDIARIES = [
   },
   {
     slug: 'pbag-bunge',
+    stat: { n: '15+', label: 'Community projects' },
+    email: 'info@pbagco.com',
     name: 'PBAG Bunge',
     kicker: 'Lead subsidiary · Governing organ of the Consortium',
     logo: '/assets/img/logos/pbag-bunge.svg',
@@ -113,6 +121,9 @@ export const SUBSIDIARIES = [
 
 // Seed events. Dates/prices are PROVISIONAL until PBAG confirms them —
 // producers can edit everything from the Staff › Events panel or Firestore.
+// Official ticketing partner link for Ithaka cia Kamĩrĩĩthũ (supplied by PBAG, Nov 2026).
+export const ITHAKA_TICKETS = 'https://ticketvort.com/event-ticketing/ithaka-cia-kamirithu/?show=2';
+
 export const SEED_EVENTS = [
   {
     id: 'evt-bunge-forum',
@@ -175,42 +186,40 @@ export const SEED_EVENTS = [
   },
   {
     id: 'evt-ithaka',
-    seedVersion: 2, // Oct 2026: official poster dates, venue and prices
+    seedVersion: 3, // Nov 2026: updated official poster — new dates, prices and Ticketvort ticketing
+    featured: true,
     slug: 'ithaka-cia-kamiriithu',
     title: 'Ithaka cia Kamĩrĩĩthũ',
     subsidiary: 'pbag-theatre',
     category: 'Theatre',
-    tagline: 'A PBAG Community Theatre production',
+    tagline: 'The ridges witnessed it all. Now they speak.',
     description:
-      'PBAG Community Theatre’s flagship stage production, performed at Kamĩrĩĩthũ itself — the ancestral lands, chiefs, forests and fire of Limuru, rooted in the Kamĩrĩĩthũ community-theatre tradition. Directed & executive-produced by Boni Kanyuira · Produced by Samuel Gitonga · Head writer Mwaniki Njache. Enquiries: +254 790 223 513.',
+      'A community theatre production by PBAG Theatre, performed at Kamĩrĩĩthũ itself — the ancestral lands, chiefs, forests and fire of Limuru. The ridges witnessed it all. Now they speak. Created by Boni Kanyuira · Produced by Samuel Gitonga · Head writer Mwaniki Njache.',
     venue: 'Kamirithu Polytechnic, Limuru',
-    enquiries: '+254 790 223 513',
-    poster: '/assets/img/ithaka-poster-480.webp',
+    enquiries: '0720 960 180',
+    poster: '/assets/img/ithaka-official-480.webp',
+    ticketUrl: ITHAKA_TICKETS,
+    ticketVendor: 'Ticketvort',
     crew: [
-      { name: 'Boni Kanyuira', role: 'Director & Executive Producer' },
+      { name: 'Boni Kanyuira', role: 'Creator' },
       { name: 'Samuel Gitonga', role: 'Producer' },
       { name: 'Mwaniki Njache', role: 'Head Writer' },
     ],
     performances: [
-      { id: 'p1', startsAt: '2026-12-04T17:00:00+03:00' },
-      { id: 'p2', startsAt: '2026-12-05T15:00:00+03:00' },
-      { id: 'p3', startsAt: '2026-12-05T18:00:00+03:00' },
-      { id: 'p4', startsAt: '2026-12-06T15:00:00+03:00' },
-      { id: 'p5', startsAt: '2026-12-06T18:00:00+03:00' },
-      { id: 'p6', startsAt: '2026-12-11T17:00:00+03:00' },
-      { id: 'p7', startsAt: '2026-12-12T15:00:00+03:00' },
-      { id: 'p8', startsAt: '2026-12-12T18:00:00+03:00' },
-      { id: 'p9', startsAt: '2026-12-13T15:00:00+03:00' },
-      { id: 'p10', startsAt: '2026-12-13T18:00:00+03:00' },
+      { id: 'p1', startsAt: '2026-12-17T17:00:00+03:00' },
+      { id: 'p2', startsAt: '2026-12-18T17:00:00+03:00' },
+      { id: 'p3', startsAt: '2026-12-19T15:00:00+03:00' },
+      { id: 'p4', startsAt: '2026-12-19T18:00:00+03:00' },
+      { id: 'p5', startsAt: '2026-12-20T15:00:00+03:00' },
+      { id: 'p6', startsAt: '2026-12-20T18:00:00+03:00' },
     ],
-    // Capacities are working estimates for Kamirithu Polytechnic hall — PBAG to confirm.
+    // Prices as printed on the official poster. Tickets are sold on Ticketvort, so capacities here are nominal.
     tiers: [
-      { id: 'early', name: 'Early Bird', price: 1000, capacity: 300, sold: 0, salesStart: '2026-10-21T00:00:00+03:00', salesEnd: '2026-11-10T23:59:00+03:00' },
-      { id: 'advance', name: 'Advance', price: 1500, capacity: 1500, sold: 0, salesEnd: '2026-11-30T23:59:00+03:00' },
+      { id: 'early', name: 'Early Access', price: 1000, capacity: 1000, sold: 0, salesEnd: '2026-11-20T23:59:00+03:00' },
+      { id: 'advance', name: 'Advance', price: 1500, capacity: 1000, sold: 0, salesEnd: '2026-12-13T23:59:00+03:00' },
       { id: 'gate', name: 'Gate', price: 2000, capacity: 1000, sold: 0, gateOnly: true },
-      { id: 'vip', name: 'VIP · limited seating', price: 3000, capacity: 100, sold: 0 },
     ],
-    commissionRate: 0.1,
+    commissionRate: 0,
     palette: ['#F57C1F', '#B3261E'],
     status: 'on_sale',
   },
@@ -282,14 +291,14 @@ export const AI_SERVICES = [
 ];
 
 export const FAQ = [
-  ['How do I buy a ticket?', 'Open Tickets, pick a date on the calendar, choose your ticket type and quantity, then pay with M-Pesa (an STK prompt appears on your phone), card or PayPal. Your QR ticket is shown instantly and you can download it as a PDF or image.'],
-  ['I lost my ticket', 'Go to Tickets › My Tickets and enter your order number with the phone number or email you used. You can download it again.'],
-  ['Refunds', 'Tickets are non-refundable unless an event is cancelled or rescheduled, in which case PBAG contacts buyers directly. Call 0720 960 180 for help.'],
+  ['How do I buy a ticket?', 'Tickets for Ithaka cia Kamĩrĩĩthũ are sold online by our ticketing partner, Ticketvort. Tap any Buy tickets button on this site, or go to ticketvort.com, choose your show date and pay there. Gate tickets are sold at the venue on the day.'],
+  ['What are the ticket prices?', 'Ithaka cia Kamĩrĩĩthũ: Early Access KES 1,000 (until 20 November), Advance KES 1,500 (until 13 December), Gate KES 2,000.'],
+  ['I need help with my ticket', 'Tickets are issued by Ticketvort — check the email or SMS they sent you, or contact Ticketvort support. For anything about the show itself, call or WhatsApp PBAG on 0720 960 180.'],
+  ['Refunds', 'Tickets are non-refundable unless an event is cancelled or rescheduled, in which case buyers are contacted directly. Call 0720 960 180 for help.'],
   ['How do I join PBAG?', 'Each subsidiary has a Join button on the Subsidiaries page that opens WhatsApp to the PBAG team.'],
   ['Can I hire PBAG?', 'Yes — use Book Us to request a performance, Theatre for Development workshop, comedians/MC, production services or an AI consultation on a date that suits you.'],
-  ['Paying by M-Pesa Paybill', 'At checkout choose M-Pesa Paybill, pay to the Business Number shown using your order number as the Account Number, then paste the M-Pesa confirmation code (e.g. SJK3H5X8QP). Each code works once and your QR ticket is generated instantly once verified.'],
   ['Auditions', 'Open calls are listed on the Auditions page. Apply online with a link to your performance, subscribe for alerts, and track your application with your reference number.'],
-  ['Become a seller', 'Promoters and influencers get a personal referral code, link and QR code and earn commission on every ticket sold. Ask the PBAG team to register you.'],
+  ['Who do I email?', 'PBAG Bunge and general enquiries: info@pbagco.com · PBAG Community Theatre: theatre@pbagco.com · Peers Got Talanta (PGT): pgt@pbagco.com · Peatice Productions: peatice@pbagco.com.'],
 ];
 
 // ---- Payment details (placeholders until PBAG supplies them; override with env vars) ----

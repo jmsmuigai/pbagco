@@ -40,3 +40,15 @@
 | PBAG Bunge mandate | `/governance` (EN + SW) | Section 6.2 roles 6.2.1–6.2.18 lightly edited for the web from the text supplied. |
 | Ithaka audition call | `SEED_AUDITIONS` | Changed to chorus, dancers & understudies on 7 Nov at Kamirithu Polytechnic — provisional. |
 | Online ticket sales on the live site | env `TICKET_SALES` | `soon` (default in `deploy.sh`) shows shows & prices but pauses checkout until the real Paybill is set; switch to `open` when payments are live. |
+
+## Added with the official-poster release (13 Nov 2026)
+
+| Item | Where | What PBAG must confirm |
+|---|---|---|
+| **Ithaka cia Kamĩrĩĩthũ — new dates** | `server/content.js` (`evt-ithaka`, seedVersion 3) | Thu 17 & Fri 18 Dec 5pm; Sat 19 & Sun 20 Dec 3pm and 6pm, Kamirithu Polytechnic. Early Access KES 1,000 (to 20 Nov), Advance KES 1,500 (to 13 Dec), Gate KES 2,000. VIP removed (not on the new poster). Enquiries 0720 960 180. |
+| **Ticketing partner** | every "Buy tickets" button, `ITHAKA_TICKETS` in `server/content.js` | Links to `https://ticketvort.com/event-ticketing/ithaka-cia-kamirithu/?show=2`. The built-in checkout, ticket wallet and seller programme are retired from the public site (server code stays, disabled unless `TICKET_SALES=open`). |
+| **Boni Kanyuira's credit** | Ithaka page, event, structured data | Set to **Creator** — the WhatsApp screenshot was cut off after "Creator"; send the full wording if it is longer. |
+| **Subsidiary figures** | home, Subsidiaries page | Bunge 15+ community projects · Community Theatre 35+ theatre shows · PGT 5+ community initiatives · Peatice 10+ comedy productions. |
+| **Subsidiary emails** | Contact, Subsidiaries, footer, Ask PBAG | info@ (Bunge/general), theatre@, pgt@, peatice@pbagco.com — **each mailbox or forwarder must be created in cPanel**. |
+| **Logo** | `public/assets/img/logos/`, `scripts/logos.py` | Redrawn in the official format from the poster (purple wordmark, masks in the brushed ring, blue name line). Send the original vector/PNG artwork to replace the redraw. |
+| **Activities Calendar 2026/27** | — | The `.xlsx` was not received; the three non-Ithaka events on the calendar are still the earlier provisional ones. |

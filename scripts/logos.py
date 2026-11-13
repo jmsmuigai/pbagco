@@ -1,114 +1,94 @@
-"""Generate the PBAG family of logos as self-contained SVGs (text converted to paths).
-Run: python3 scripts/logos.py  -> public/assets/img/logos/*.svg"""
-import os
+"""PBAG logo family in the official format (as on the Ithaka cia Kamĩrĩĩthũ poster):
+purple wordmark whose "A" is a brushed blue ring holding the two theatre masks, blue name line beneath.
+Vector redraw — replace with PBAG's own master artwork when available.
+Run: python3 scripts/logos.py [path-to-montserrat-files]  -> public/assets/img/logos/*.svg"""
+import os, re, sys
 from fontTools.ttLib import TTFont
 from fontTools.pens.svgPathPen import SVGPathPen
 from fontTools.pens.transformPen import TransformPen
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-F = os.path.join(ROOT, 'public/assets/fonts')
+FD = sys.argv[1] if len(sys.argv) > 1 else '/home/claude/buildtools/node_modules/@fontsource/montserrat/files'
 OUT = os.path.join(ROOT, 'public/assets/img/logos'); os.makedirs(OUT, exist_ok=True)
-FONTS = {k: TTFont(os.path.join(F, v)) for k, v in {
-  'display': 'big-shoulders-display-latin-900-normal.woff2',
-  'sans': 'dm-sans-latin-800-normal.woff2',
-  'sans6': 'dm-sans-latin-600-normal.woff2',
-  'serif': 'instrument-serif-latin-400-italic.woff2'}.items()}
+FONTS = {w: TTFont(os.path.join(FD, f'montserrat-latin-{w}-normal.woff2')) for w in (500, 600)}
+PURPLE, BLUE, WHITE = '#6D2C82', '#1F6FBF', '#FFFFFF'
 
-def text(s, font, size, x, y, fill, track=0, anchor='start'):
-    """Return (svg_path, width) for string s, baseline at y."""
-    f = FONTS[font]; gs = f.getGlyphSet(); cmap = f.getBestCmap(); upm = f['head'].unitsPerEm; sc = size / upm
-    hmtx = f['hmtx']; adv = 0; parts = []
-    widths = []
-    for ch in s:
-        g = cmap.get(ord(ch)); w = hmtx[g][0] * sc if g else size * .3
-        widths.append((g, w))
-    total = sum(w for _, w in widths) + track * (len(s) - 1)
-    if anchor == 'middle': x -= total / 2
-    elif anchor == 'end': x -= total
-    for g, w in widths:
-        if g:
-            pen = SVGPathPen(gs); tp = TransformPen(pen, (sc, 0, 0, -sc, x + adv, y)); gs[g].draw(tp)
-            d = __import__('re').sub(r'(\d+\.\d{2})\d+', r'\1', pen.getCommands())
-            if d: parts.append(d)
-        adv += w + track
-    return f'<path fill="{fill}" d="{" ".join(parts)}"/>', total
+
+def text(s, w, size, x, y, fill, track=0):
+    f = FONTS[w]; gs = f.getGlyphSet(); cmap = f.getBestCmap(); sc = size / f['head'].unitsPerEm; hm = f['hmtx']
+    adv = 0; parts = []
+    for i, ch in enumerate(s):
+        g = cmap.get(ord(ch))
+        if g and ch != ' ':
+            pen = SVGPathPen(gs); gs[g].draw(TransformPen(pen, (sc, 0, 0, -sc, x + adv, y)))
+            parts.append(re.sub(r'(\d+\.\d{2})\d+', r'\1', pen.getCommands()))
+        adv += (hm[g][0] * sc if g else size * .3) + (track if i < len(s) - 1 else 0)
+    return f'<path fill="{fill}" d="{" ".join(parts)}"/>', adv
+
+
+def emblem(cx, cy, r):
+    """Brushed ring + comedy/tragedy masks, centred at (cx, cy) with outer radius r."""
+    k = r / 50.0
+
+    def P(d):
+        return re.sub(r'-?\d+\.?\d*', lambda m: f'{float(m.group()) * k:.2f}', d)
+    ri = r * .86
+    ring = (f'<path fill="{BLUE}" fill-rule="evenodd" d="M{cx - r:.2f} {cy:.2f}a{r:.2f} {r:.2f} 0 1 0 {2 * r:.2f} 0a{r:.2f} {r:.2f} 0 1 0 {-2 * r:.2f} 0Z'
+            f'M{cx - ri - r * .05:.2f} {cy - r * .05:.2f}a{ri:.2f} {ri:.2f} 0 1 0 {2 * ri:.2f} 0a{ri:.2f} {ri:.2f} 0 1 0 {-2 * ri:.2f} 0Z"/>')
+    T = f'transform="translate({cx:.2f} {cy:.2f})"'
+    tail = f'<path fill="{BLUE}" {T} d="{P("M26 34 C34 38 44 46 52 50 C54 44 50 34 42 24 C38 30 32 33 26 34Z")}"/>'
+    m1 = P('M-30 -16 C-22 -22 -10 -22 -2 -16 C0 2 -4 20 -16 28 C-28 20 -32 2 -30 -16Z')
+    m2 = P('M2 -24 C10 -30 24 -30 32 -24 C34 -6 30 12 18 20 C6 12 0 -6 2 -24Z')
+    f1 = P('M-25 -8 q4 -4 8 0 q-4 3 -8 0Z M-13 -8 q4 -4 8 0 q-4 3 -8 0Z M-24 6 q8 10 16 0 q-8 4 -16 0Z')
+    f2 = P('M7 -16 q4 -4 8 0 q-4 3 -8 0Z M19 -16 q4 -4 8 0 q-4 3 -8 0Z M9 6 q8 -9 16 0 q-8 -4 -16 0Z')
+    g = (f'<g {T}><path fill="{BLUE}" d="{m2}"/><path fill="{WHITE}" d="{f2}"/>'
+         f'<path fill="{PURPLE}" stroke="{WHITE}" stroke-width="{1.6 * k:.2f}" d="{m1}"/><path fill="{WHITE}" d="{f1}"/></g>')
+    return ring + tail + g
+
+
+def wordmark(pre, post, sub, size=92):
+    """`pre` + emblem + `post` in purple, `sub` in blue beneath. Returns (body, w, h), origin 0,0."""
+    cap = size * .70; base = cap + 6; x = 0; body = ''
+    if pre:
+        p, w = text(pre, 500, size, x, base, PURPLE, track=size * .02); body += p; x += w + size * .07
+    r = cap * .56; body += emblem(x + r, base - cap / 2, r); x += 2 * r + size * .12
+    if post:
+        p, w = text(post, 500, size, x, base, PURPLE, track=size * .02); body += p; x += w
+    W = x
+    ssize = size * .50; _, sw = text(sub, 600, ssize, 0, 0, BLUE)
+    track = max(0, min((W - sw) / max(1, len(sub) - 1), ssize * .28))
+    _, sw2 = text(sub, 600, ssize, 0, 0, BLUE, track)
+    if sw2 > W:  # long names: shrink to the wordmark width
+        ssize *= W / sw2; track = 0; _, sw2 = text(sub, 600, ssize, 0, 0, BLUE)
+    sy = base + ssize * .72 + size * .16
+    p, _ = text(sub, 600, ssize, (W - sw2) / 2, sy, BLUE, track); body += p
+    return body, W, sy + size * .08
+
 
 def svg(w, h, body, title):
-    return f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {w} {h}" width="{w}" height="{h}" role="img" aria-label="{title}"><title>{title}</title>{body}</svg>\n'
+    return f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {w:.0f} {h:.0f}" width="{w:.0f}" height="{h:.0f}" role="img" aria-label="{title}"><title>{title}</title>{body}</svg>\n'
 
-GOLD, MAG, PUR, TEAL, BLUE, ORANGE, INK = '#FFC23D', '#F2456E', '#8B5CF6', '#22C7B8', '#3B82F6', '#FF8A3D', '#0A0912'
 
-# ---------- emblems (drawn in a 120x120 box) ----------
-def em_consortium():
-    # four arms: four rounded petals in a pinwheel around a gold star — the Consortium's four subsidiaries
-    petal = 'M60 60 C60 30 74 14 96 14 C100 36 88 56 60 60Z'
-    cols = [GOLD, MAG, PUR, TEAL]
-    g = ''.join(f'<path d="{petal}" fill="{c}" transform="rotate({i*90} 60 60)"/>' for i, c in enumerate(cols))
-    star = 'M60 44 L64.7 55.3 L76 60 L64.7 64.7 L60 76 L55.3 64.7 L44 60 L55.3 55.3Z'
-    return f'<circle cx="60" cy="60" r="58" fill="{INK}" stroke="#FFFFFF" stroke-opacity=".18" stroke-width="2"/>{g}<circle cx="60" cy="60" r="15" fill="{INK}"/><path d="{star}" fill="#fff"/>'
+def write(name, s):
+    open(os.path.join(OUT, name), 'w').write(s)
 
-def em_bunge():
-    cols = ''.join(f'<rect x="{30+i*13}" y="62" width="7" height="26" rx="2" fill="{GOLD}"/>' for i in range(5))
-    return (f'<circle cx="60" cy="60" r="58" fill="#2A1D5C"/><circle cx="60" cy="60" r="52" fill="none" stroke="{GOLD}" stroke-opacity=".35" stroke-width="2"/>'
-            f'<path d="M30 56 A30 26 0 0 1 90 56Z" fill="{GOLD}"/><rect x="57" y="22" width="6" height="10" rx="2" fill="{GOLD}"/>'
-            f'<rect x="25" y="56" width="70" height="5" rx="2" fill="#fff"/>{cols}<rect x="22" y="89" width="76" height="6" rx="2" fill="#fff"/>')
-
-def em_theatre():
-    # stage arch with drawn curtains and three heads (community) in the spotlight
-    return (f'<circle cx="60" cy="60" r="58" fill="#3A0D24"/>'
-            f'<path d="M14 26 Q60 8 106 26 L106 34 Q60 18 14 34Z" fill="{GOLD}"/>'
-            f'<path d="M14 30 C30 34 34 62 30 100 L14 100Z" fill="{MAG}"/><path d="M106 30 C90 34 86 62 90 100 L106 100Z" fill="{MAG}"/>'
-            f'<path d="M60 30 L84 98 L36 98Z" fill="#fff" opacity=".12"/>'
-            f'<circle cx="46" cy="66" r="7" fill="#fff"/><path d="M36 92 Q46 74 56 92Z" fill="#fff"/>'
-            f'<circle cx="74" cy="66" r="7" fill="#fff"/><path d="M64 92 Q74 74 84 92Z" fill="#fff"/>'
-            f'<circle cx="60" cy="58" r="8.5" fill="{GOLD}"/><path d="M48 92 Q60 70 72 92Z" fill="{GOLD}"/>'
-            f'<rect x="20" y="96" width="80" height="5" rx="2" fill="{GOLD}"/>')
-
-def em_pgt():
-    import math
-    pts = []
-    for i in range(10):
-        r = 44 if i % 2 == 0 else 19; a = -math.pi / 2 + i * math.pi / 5
-        pts.append(f'{60 + r*math.cos(a):.1f} {58 + r*math.sin(a):.1f}')
-    star = 'M' + ' L'.join(pts) + 'Z'
-    rays = ''.join(f'<rect x="58.5" y="4" width="3" height="10" rx="1.5" fill="{GOLD}" opacity=".7" transform="rotate({i*30} 60 60)"/>' for i in range(12))
-    p, _ = text('PGT', 'display', 22, 60, 67, INK, track=.5, anchor='middle')
-    return f'<circle cx="60" cy="60" r="58" fill="#3D1A06"/>{rays}<path d="{star}" fill="{GOLD}" stroke="{ORANGE}" stroke-width="3" stroke-linejoin="round"/>{p}'
-
-def em_peatice():
-    # clapperboard whose slate smiles — comedy, screen and content
-    stripes = ''.join(f'<path d="M{24+i*16} 30 L{34+i*16} 30 L{28+i*16} 44 L{18+i*16} 44Z" fill="{INK}"/>' for i in range(5))
-    return (f'<circle cx="60" cy="60" r="58" fill="#0B2A5C"/>'
-            f'<g transform="rotate(-10 22 44)"><rect x="18" y="30" width="84" height="14" rx="3" fill="#fff"/>{stripes}</g>'
-            f'<rect x="18" y="48" width="84" height="48" rx="6" fill="#fff"/>'
-            f'<circle cx="44" cy="66" r="5" fill="{BLUE}"/><circle cx="76" cy="66" r="5" fill="{BLUE}"/>'
-            f'<path d="M40 78 Q60 94 80 78" fill="none" stroke="{TEAL}" stroke-width="6" stroke-linecap="round"/>')
-
-# ---------- lockups ----------
-def lockup(slug, title, emblem, line1, line2, tag, accent, light=False):
-    fg = INK if light else '#FFFFFF'; sub = '#3B3550' if light else '#C9C3DA'
-    if light: accent = {GOLD: '#A86B00', MAG: '#C2185B', ORANGE: '#C2500A', TEAL: '#0B7F75'}.get(accent, accent)
-    p1, w1 = text(line1, 'display', 64, 150, 70, fg, track=1)
-    p2, w2 = text(line2, 'sans', 17, 152, 98, accent, track=3.2)
-    p3, w3 = text(tag, 'serif', 18, 152, 124, sub) if tag else ('', 0)
-    W = int(max(150 + w1, 152 + w2, 152 + w3) + 18)
-    body = f'<g transform="translate(6 10)">{emblem}</g>{p1}{p2}{p3}'
-    open(os.path.join(OUT, f'{slug}{"-light" if light else ""}.svg'), 'w').write(svg(W, 140, body, title))
-    if not light:
-        open(os.path.join(OUT, f'{slug}-mark.svg'), 'w').write(svg(120, 120, emblem, title + ' emblem'))
 
 SET = [
-  ('pbag-consortium', 'PBAG Consortium logo', em_consortium(), 'PBAG', 'CONSORTIUM', 'Peers Best Art Group · since 2011', GOLD),
-  ('pbag-bunge', 'PBAG Bunge logo', em_bunge(), 'PBAG BUNGE', 'LEAD SUBSIDIARY · GOVERNANCE', 'Lead. Oversee. Account.', GOLD),
-  ('pbag-community-theatre', 'PBAG Community Theatre logo', em_theatre(), 'PBAG', 'COMMUNITY THEATRE', 'Stories from the soil we stand on', MAG),
-  ('peers-got-talanta', 'Peers Got Talanta (PGT) logo', em_pgt(), 'PEERS GOT TALANTA', 'PGT · COMMUNITY BASED ORGANISATION', 'Discover. Nurture. Shine.', ORANGE),
-  ('peatice-productions', 'Peatice Productions logo', em_peatice(), 'PEATICE', 'PRODUCTIONS', 'Comedy · Screen · Content', TEAL),
+    ('pbag-consortium', 'PBAG Consortium', 'PB', 'G', 'CONSORTIUM'),
+    ('pbag-community-theatre', 'PBAG Theatre', 'PB', 'G', 'THEATRE'),
+    ('pbag-bunge', 'PBAG Bunge', 'PB', 'G', 'BUNGE'),
+    ('peers-got-talanta', 'Peers Got Talanta (PGT)', '', 'PGT', 'PEERS GOT TALANTA'),
+    ('peatice-productions', 'Peatice Productions', '', 'PEATICE', 'PRODUCTIONS'),
 ]
-for s in SET:
-    lockup(*s); lockup(*s, light=True)
+mark = svg(120, 120, f'<circle cx="60" cy="60" r="60" fill="{WHITE}"/>' + emblem(56, 58, 42), 'PBAG emblem')
+for slug, title, pre, post, sub in SET:
+    body, w, h = wordmark(pre, post, sub)
+    px, py = 26, 20
+    # transparent, for light backgrounds
+    write(f'{slug}-light.svg', svg(w + 8, h + 6, f'<g transform="translate(4 3)">{body}</g>', title + ' logo'))
+    # white plate, for dark backgrounds (as on the poster)
+    plate = f'<rect width="{w + 2 * px:.0f}" height="{h + 2 * py:.0f}" rx="18" fill="{WHITE}"/><g transform="translate({px} {py})">{body}</g>'
+    write(f'{slug}.svg', svg(w + 2 * px, h + 2 * py, plate, title + ' logo'))
+    write(f'{slug}-mark.svg', mark)
+body, w, h = wordmark('PB', 'G', 'CONSORTIUM')
+write('pbag-consortium-compact.svg', svg(w + 28, h + 20, f'<rect width="{w + 28:.0f}" height="{h + 20:.0f}" rx="14" fill="{WHITE}"/><g transform="translate(14 10)">{body}</g>', 'PBAG Consortium'))
 print('logos written to', OUT)
-
-# compact header lockup (no tagline) for the site header and footer
-p1, w1 = text('PBAG', 'display', 70, 138, 72, '#FFFFFF', track=1)
-p2, w2 = text('CONSORTIUM', 'sans', 15.5, 140, 100, GOLD, track=3.6)
-W = int(max(138 + w1, 140 + w2) + 8)
-open(os.path.join(OUT, 'pbag-consortium-compact.svg'), 'w').write(svg(W, 120, f'<g>{em_consortium()}</g>{p1}{p2}', 'PBAG Consortium'))

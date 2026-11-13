@@ -1,6 +1,6 @@
 // In-browser stand-in for the PBAG API so the preview runs as one file, offline.
 import { offlineAnswer } from '../../server/offline.js';
-import { SEED_EVENTS, SEED_VIDEOS, ORG, SUBSIDIARIES, BOOKING_SERVICES, AI_SERVICES, FAQ, PAYMENT_DETAILS, SEED_AUDITIONS } from '../../server/content.js';
+import { SEED_EVENTS, SEED_VIDEOS, ORG, SUBSIDIARIES, BOOKING_SERVICES, AI_SERVICES, FAQ, PAYMENT_DETAILS, SEED_AUDITIONS, ITHAKA_TICKETS } from '../../server/content.js';
 
 try { const rs = history.replaceState.bind(history); history.replaceState = (...a) => { try { rs(...a); } catch {} }; } catch {}
 
@@ -37,10 +37,11 @@ window.fetch = async (url, opts = {}) => {
   const m = (opts.method || 'GET').toUpperCase(), body = opts.body ? JSON.parse(opts.body) : {};
   await new Promise((r) => setTimeout(r, 150));
   if (p.startsWith('/data/')) return p === '/data/gallery.json' && window.__GALLERY__ ? ok(window.__GALLERY__) : real(url, opts);
-  if (p === '/api/events') return ok(events.map(pub));
+  if (p === '/api/events') return ok(events.filter((e) => e.performances.some((x) => new Date(x.startsAt) > Date.now() - 6 * 3600e3)).sort((x, y) => (y.featured ? 1 : 0) - (x.featured ? 1 : 0) || new Date(x.performances[0].startsAt) - new Date(y.performances[0].startsAt)).map(pub));
+  if (p === '/api/orders' && m === 'POST') return err('Tickets are sold through our ticketing partner — use the Buy tickets link.', 403);
   let em; if ((em = p.match(/^\/api\/events\/([\w-]+)$/))) { const e = events.find((x) => x.slug === em[1] || x.id === em[1]); return e ? ok(pub(e)) : err('Event not found', 404); }
   if (p === '/api/videos') return ok({ channelPlaylist: ORG.youtubeUploads, videos: SEED_VIDEOS });
-  if (p === '/api/site') return ok({ org: ORG, subsidiaries: SUBSIDIARIES, bookingServices: BOOKING_SERVICES, aiServices: AI_SERVICES, faq: FAQ, payments: { mode: 'mock', mpesa: true, card: false, paypal: false, paybill: true, bank: true }, paymentDetails: PAYMENT_DETAILS });
+  if (p === '/api/site') return ok({ org: ORG, subsidiaries: SUBSIDIARIES, bookingServices: BOOKING_SERVICES, aiServices: AI_SERVICES, faq: FAQ, payments: { mode: 'mock', mpesa: true, card: false, paypal: false, paybill: true, bank: true }, paymentDetails: PAYMENT_DETAILS, salesOpen: false, ticketing: { mode: 'partner', vendor: 'Ticketvort', url: ITHAKA_TICKETS } });
   if (p === '/api/bookings/busy') return ok(events.flatMap((e) => e.performances.map((x) => x.startsAt.slice(0, 10))));
   if (p === '/api/bookings') { if (!body.name || !body.date) return err('Missing details'); const b = { ...body, id: 'BK' + rid(6) }; bookings.push(b); return ok(b, 201); }
   if (p === '/api/contact') return ok({ ok: true }, 201);

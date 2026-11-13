@@ -30,6 +30,28 @@ const faq = (q) => { const s = q.toLowerCase(), h = (...w) => w.some((x) => s.in
   return `I’m Cue, PBAG’s AI usher. Ask me about shows, tickets, hiring PBAG, our AI Studio or joining a subsidiary. (Preview mode — live answers use Gemini.)`; };
 
 const real = window.fetch.bind(window);
+// This static site has no server inbox, so every form ends with a one-tap hand-off: the visitor sends
+// the details they just typed to PBAG on WhatsApp or by email (a real person receives it).
+function handoff(kind, data, ref) {
+  const skip = new Set(['consent', 'key', 'source', 'lang', 'messages']);
+  const lines = Object.entries(data || {}).filter(([k, v]) => !skip.has(k) && v !== '' && v != null && typeof v !== 'object' || Array.isArray(v) && v.length).map(([k, v]) => `${k[0].toUpperCase() + k.slice(1)}: ${Array.isArray(v) ? v.join(', ') : v}`);
+  const text = `PBAG website — ${kind}${ref ? ' (' + ref + ')' : ''}\n` + lines.join('\n');
+  const wa = 'https://wa.me/254720960180?text=' + encodeURIComponent(text);
+  const mail = 'mailto:info@pbagco.com?subject=' + encodeURIComponent(`${kind}${ref ? ' ' + ref : ''}`) + '&body=' + encodeURIComponent(text);
+  const sw = document.documentElement.lang === 'sw';
+  document.getElementById('pbag-handoff')?.remove();
+  const d = document.createElement('div'); d.id = 'pbag-handoff'; d.setAttribute('role', 'dialog'); d.setAttribute('aria-modal', 'true');
+  d.style.cssText = 'position:fixed;inset:0;z-index:200;display:grid;place-items:center;background:rgba(5,4,10,.78);padding:18px';
+  d.innerHTML = `<div style="max-width:440px;width:100%;background:#16131f;border:1px solid rgba(255,194,61,.5);border-radius:20px;padding:26px;color:#fff;font-family:'DM Sans',sans-serif;box-shadow:0 30px 80px rgba(0,0,0,.6)">
+    <b style="display:block;font-size:1.3rem;margin-bottom:8px">${sw ? 'Hatua moja ya mwisho' : 'One last step'}</b>
+    <p style="margin:0 0 18px;color:#cfc9de;line-height:1.55">${sw ? 'Tuma maelezo yako kwa timu ya PBAG ili yawafikie moja kwa moja.' : 'Send your details to the PBAG team so they reach a real person straight away.'}</p>
+    <a href="${wa}" target="_blank" rel="noopener" style="display:block;text-align:center;padding:14px;border-radius:999px;background:#ffc23d;color:#1a1205;font-weight:800;margin-bottom:10px">${sw ? 'Tuma kupitia WhatsApp' : 'Send on WhatsApp'}</a>
+    <a href="${mail}" style="display:block;text-align:center;padding:13px;border-radius:999px;border:1px solid rgba(255,255,255,.25);color:#fff;font-weight:700;margin-bottom:10px">${sw ? 'Tuma kwa barua pepe' : 'Send by email'}</a>
+    <button type="button" style="display:block;width:100%;padding:10px;background:none;border:0;color:#9b94ad;cursor:pointer;font:inherit">${sw ? 'Funga' : 'Close'}</button></div>`;
+  d.addEventListener('click', (e) => { if (e.target === d || e.target.tagName === 'BUTTON' || e.target.tagName === 'A') setTimeout(() => d.remove(), 50); });
+  setTimeout(() => document.body.append(d), 400);
+}
+
 window.fetch = async (url, opts = {}) => {
   const u = new URL(url, location.href.startsWith('http') ? location.href : 'https://pbagco.com/');
   const p = '/' + u.pathname.slice(u.pathname.startsWith(BASE) ? BASE.length : 1);
@@ -43,12 +65,12 @@ window.fetch = async (url, opts = {}) => {
   if (p === '/api/videos') return ok({ channelPlaylist: ORG.youtubeUploads, videos: SEED_VIDEOS });
   if (p === '/api/site') return ok({ org: ORG, subsidiaries: SUBSIDIARIES, bookingServices: BOOKING_SERVICES, aiServices: AI_SERVICES, faq: FAQ, payments: { mode: 'mock', mpesa: true, card: false, paypal: false, paybill: true, bank: true }, paymentDetails: PAYMENT_DETAILS, salesOpen: false, ticketing: { mode: 'partner', vendor: 'Ticketvort', url: ITHAKA_TICKETS } });
   if (p === '/api/bookings/busy') return ok(events.flatMap((e) => e.performances.map((x) => x.startsAt.slice(0, 10))));
-  if (p === '/api/bookings') { if (!body.name || !body.date) return err('Missing details'); const b = { ...body, id: 'BK' + rid(6) }; bookings.push(b); return ok(b, 201); }
-  if (p === '/api/contact') return ok({ ok: true }, 201);
-  if (p === '/api/escalate') return body.question ? ok({ id: 'ES' + rid(6) }, 201) : err('Please share your question and a phone number or email');
+  if (p === '/api/bookings') { if (!body.name || !body.date) return err('Missing details'); const b = { ...body, id: 'BK' + rid(6) }; bookings.push(b); handoff('Booking request', b, b.id); return ok(b, 201); }
+  if (p === '/api/contact') { handoff('Website message', body); return ok({ ok: true }, 201); }
+  if (p === '/api/escalate') { if (!body.question) return err('Please share your question and a phone number or email'); const id = 'ES' + rid(6); handoff('Question for the PBAG Board & Management', body, id); return ok({ id }, 201); }
   if (p === '/api/auditions') return ok(SEED_AUDITIONS);
-  if (p === '/api/auditions/subscribe') return ok({ ok: true });
-  if (p === '/api/auditions/apply') { const a = SEED_AUDITIONS.find((x) => x.id === body.auditionId); if (!a || !body.name || !body.phone || !body.consent) return err('Name, phone and consent are required'); const id = 'AU' + rid(6); apps[id] = { id, name: body.name, phone: norm(body.phone), auditionTitle: a.title, status: 'submitted', slot: null, venue: a.venue, date: a.date }; save(); return ok({ id, status: 'submitted', auditionTitle: a.title, date: a.date }, 201); }
+  if (p === '/api/auditions/subscribe') { handoff(body.list === 'nlp' ? 'NLP community sign-up' : 'Audition alerts sign-up', body); return ok({ ok: true }); }
+  if (p === '/api/auditions/apply') { const a = SEED_AUDITIONS.find((x) => x.id === body.auditionId); if (!a || !body.name || !body.phone || !body.consent) return err('Name, phone and consent are required'); const id = 'AU' + rid(6); apps[id] = { id, name: body.name, phone: norm(body.phone), auditionTitle: a.title, status: 'submitted', slot: null, venue: a.venue, date: a.date }; save(); handoff('Audition application — ' + a.title, body, id); return ok({ id, status: 'submitted', auditionTitle: a.title, date: a.date }, 201); }
   if (p === '/api/auditions/status') { const a = apps[String(body.ref).toUpperCase().trim()]; return a && a.phone === norm(body.contact) ? ok(a) : err('No application matches that reference and contact', 404); }
   if (p === '/api/translate') return ok({ texts: body.texts, translated: 0, engine: 'none' });
   if (p === '/api/chat') { const a = offlineAnswer(body.messages.at(-1).text); return ok({ ...a, offline: true }); }

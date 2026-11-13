@@ -1,4 +1,4 @@
-name: Deploy preview to GitHub Pages
+name: Deploy site to GitHub Pages
 
 on:
   push:
@@ -24,10 +24,13 @@ jobs:
           node-version: "22"
           cache: "npm"
       - run: npm ci
+      - id: pages
+        uses: actions/configure-pages@v5
       - name: Build static site
-        # Served from /<repo-name>/ on github.io; from / when a custom domain (public/CNAME) is set.
+        # Served from /<repo-name>/ on github.io, and from / once the custom domain (pbagco.com) is set in Settings → Pages.
         run: |
-          if [ -f public/CNAME ]; then export BASE=/; else export BASE="/${{ github.event.repository.name }}/"; fi
+          export BASE="${{ steps.pages.outputs.base_path }}/"
+          echo "Building for BASE=$BASE (${{ steps.pages.outputs.base_url }})"
           npm run build:pages
       - uses: actions/upload-pages-artifact@v3
         with:

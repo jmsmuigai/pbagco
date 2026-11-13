@@ -19,7 +19,8 @@ const SEG = 'manifest.webmanifest|assets|api|data|about|subsidiaries|theatre|tic
 const rebase = (s) => s
   .replace(new RegExp(`(["'\`(,]\\s?)/(${SEG})`, 'g'), `$1${BASE}$2`)
   .replace(/(href|src|action)="\/"/g, `$1="${BASE}"`);
-const banner = `<div class="preview-flag" role="note">Preview site · ticket sales open soon — payments are simulated</div>`;
+const LIVE = BASE === '/' || process.env.LIVE === '1'; // custom domain: this build IS the public site
+const banner = LIVE ? '' : `<div class="preview-flag" role="note">Preview site · pbagco.com</div>`;
 const head = `<script>window.PBAG_STATIC={base:${JSON.stringify(BASE)},persist:true}</script><script src="${BASE}assets/js/static-mock.js"></script>
 <style>.preview-flag{position:fixed;left:12px;bottom:12px;z-index:96;max-width:calc(100vw - 120px);background:#ffc23d;color:#1a1205;font:700 12px/1.3 'DM Sans',sans-serif;padding:7px 12px;border-radius:999px;box-shadow:0 8px 20px rgba(0,0,0,.5)}</style>`;
 
@@ -36,5 +37,5 @@ for (const f of fs.readdirSync(out, { recursive: true })) {
   }
 }
 fs.writeFileSync(path.join(out, '.nojekyll'), '');
-fs.writeFileSync(path.join(out, 'robots.txt'), 'User-agent: *\nDisallow: /\n'); // keep preview out of search engines
+if (LIVE) fs.writeFileSync(path.join(out, 'CNAME'), 'pbagco.com\n'); else fs.writeFileSync(path.join(out, 'robots.txt'), 'User-agent: *\nDisallow: /\n'); // keep the preview out of search engines; the live build keeps the real robots.txt + sitemap
 console.log(`_site built for BASE=${BASE}`);
